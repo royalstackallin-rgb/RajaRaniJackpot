@@ -1,89 +1,124 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { supabase } from './lib/supabase'
 import './App.css'
 
 function App() {
-  const [step, setStep] = useState('phone')
-  const [phone, setPhone] = useState('')
-  const [otp, setOtp] = useState('')
+  const [mode, setMode] = useState('login')
   const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const [message, setMessage] = useState('')
   const [loading, setLoading] = useState(false)
+  const [session, setSession] = useState(null)
 
-  const sendOtp = async (event) => {
-    event.preventDefault()
-    setMessage('')
-    setLoading(true)
-
-    try {
-      const { error } = await supabase.auth.signInWithOtp({
-        phone,
-      })
-
-      if (error) throw error
-
-      setStep('otp')
-      setMessage('OTP sent to your phone.')
-    } catch (error) {
-      setMessage(error.message)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const verifyOtp = async (event) => {
-    event.preventDefault()
-    setMessage('')
-    setLoading(true)
-
-    try {
-      const { data, error } = await supabase.auth.verifyOtp({
-        phone,
-        token: otp,
-        type: 'sms',
-      })
-
-      if (error) throw error
-
-      if (data.user) {
-        setStep('username')
-        setMessage('Phone verified successfully.')
-      }
-    } catch (error) {
-      setMessage(error.message)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const saveUsername = async (event) => {
-    event.preventDefault()
-    setMessage('')
-    setLoading(true)
-
-    try {
+  useEffect(() => {
+    const loadSession = async () => {
       const {
-        data: { user },
-      } = await supabase.auth.getUser()
+        data: { session },
+      } = await supabase.auth.getSession()
 
-      if (!user) {
-        throw new Error('Your session has expired. Please start again.')
+      setSession(session)
+    }
+
+    loadSession()
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session)
+    })
+
+    return () => subscription.unsubscribe()
+  }, [])
+
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    setMessage('')
+    setLoading(true)
+
+    try {
+      if (mode === 'signup') {
+        const { error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            data: {
+              username,
+            },
+          },
+        })
+
+        if (error) throw error
+
+        setMessage(
+          'Account created. Check your email if email confirmation is enabled.'
+        )
+      } else {
+        const { error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        })
+
+        if (error) throw error
+
+        setMessage('Login successful.')
       }
-
-      const { error } = await supabase
-        .from('profiles')
-        .update({ username })
-        .eq('id', user.id)
-
-      if (error) throw error
-
-      setStep('success')
-      setMessage('Account setup complete!')
     } catch (error) {
       setMessage(error.message)
     } finally {
       setLoading(false)
     }
+  }
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut()
+    setMessage('')
+  }
+
+  if (session) {
+    return (
+      <main className="auth-page">
+        <div className="auth-card">
+          <div className="brand">
+            <div className="brand-mark">RJ</div>
+            <h1>RajaRaniJackpot</h1>
+            <p>Welcome back.</p>
+          </div>
+
+          <div className="success-panel">
+            <div className="success-icon">✓</div>
+            <h2>You're logged in</h2>
+            <p>{session.user.email}</p>
+
+            <button
+              className="submit-button"
+              type="button"
+              onClick={() => setMessage('Lobby coming next.')}
+            >
+              Enter Lobby
+            </button>
+
+            <button
+              className="secondary-button"
+              type="button"
+              onClick={handleLogout}
+            >
+              Logout
+            </button>
+          </div>
+
+          {message && (
+            <div className="message" role="status">
+              {message}
+            </div>
+          )}
+
+          <p className="footer-note">
+            Virtual credits only. No cash value.
+          </p>
+        </div>
+      </main>
+    )
   }
 
   return (
@@ -95,127 +130,79 @@ function App() {
           <p>Numbers. Rounds. Play.</p>
         </div>
 
-        {step === 'phone' && (
-          <>
-            <div className="section-heading">
-              <h2>Welcome</h2>
-              <p>Enter your phone number to continue.</p>
-            </div>
+        <div className="tabs">
+          <button
+            type="button"
+            className={mode === 'login' ? 'active' : ''}
+            onClick={() => {
+              setMode('login')
+              setMessage('')
+            }}
+          >
+            Login
+          </button>
 
-            <form onSubmit={sendOtp}>
-              <label>
-                Phone number
-                <input
-                  type="tel"
-                  value={phone}
-                  onChange={(event) => setPhone(event.target.value)}
-                  placeholder="+91 9876543210"
-                  required
-                  autoComplete="tel"
-                />
-              </label>
+          <button
+            type="button"
+            className={mode === 'signup' ? 'active' : ''}
+            onClick={() => {
+              setMode('signup')
+              setMessage('')
+            }}
+          >
+            Create Account
+          </button>
+        </div>
 
-              <button
-                className="submit-button"
-                type="submit"
-                disabled={loading}
-              >
-                {loading ? 'Sending OTP...' : 'Send OTP'}
-              </button>
-            </form>
-          </>
-        )}
+        <form onSubmit={handleSubmit}>
+          {mode === 'signup' && (
+            <label>
+              Username
+              <input
+                type="text"
+                value={username}
+                onChange={(event) => setUsername(event.target.value)}
+                placeholder="Choose a username"
+                minLength={3}
+                maxLength={20}
+                required
+              />
+            </label>
+          )}
 
-        {step === 'otp' && (
-          <>
-            <div className="section-heading">
-              <h2>Verify your phone</h2>
-              <p>Enter the OTP sent to {phone}.</p>
-            </div>
+          <label>
+            Email
+            <input
+              type="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              placeholder="you@example.com"
+              required
+              autoComplete="email"
+            />
+          </label>
 
-            <form onSubmit={verifyOtp}>
-              <label>
-                OTP
-                <input
-                  type="text"
-                  value={otp}
-                  onChange={(event) => setOtp(event.target.value)}
-                  placeholder="Enter OTP"
-                  inputMode="numeric"
-                  maxLength={6}
-                  required
-                />
-              </label>
+          <label>
+            Password
+            <input
+              type="password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              placeholder="At least 6 characters"
+              minLength={6}
+              required
+              autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
+            />
+          </label>
 
-              <button
-                className="submit-button"
-                type="submit"
-                disabled={loading}
-              >
-                {loading ? 'Verifying...' : 'Verify OTP'}
-              </button>
-
-              <button
-                className="secondary-button"
-                type="button"
-                onClick={() => {
-                  setStep('phone')
-                  setOtp('')
-                  setMessage('')
-                }}
-              >
-                Change phone number
-              </button>
-            </form>
-          </>
-        )}
-
-        {step === 'username' && (
-          <>
-            <div className="section-heading">
-              <h2>Create your player name</h2>
-              <p>This name will be shown in the game.</p>
-            </div>
-
-            <form onSubmit={saveUsername}>
-              <label>
-                Username
-                <input
-                  type="text"
-                  value={username}
-                  onChange={(event) => setUsername(event.target.value)}
-                  placeholder="Choose a username"
-                  minLength={3}
-                  maxLength={20}
-                  required
-                />
-              </label>
-
-              <button
-                className="submit-button"
-                type="submit"
-                disabled={loading}
-              >
-                {loading ? 'Saving...' : 'Continue'}
-              </button>
-            </form>
-          </>
-        )}
-
-        {step === 'success' && (
-          <div className="success-panel">
-            <div className="success-icon">✓</div>
-            <h2>You're ready!</h2>
-            <p>Your player account has been created.</p>
-            <button
-              className="submit-button"
-              type="button"
-              onClick={() => setMessage('Lobby coming next.')}
-            >
-              Enter Lobby
-            </button>
-          </div>
-        )}
+          <button className="submit-button" type="submit" disabled={loading}>
+            {loading
+              ? 'Please wait...'
+              : mode === 'login'
+                ? 'Login'
+                : 'Create Account'}
+          </button>
+        </form>
 
         {message && (
           <div className="message" role="status">
