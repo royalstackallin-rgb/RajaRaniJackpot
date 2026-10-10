@@ -175,8 +175,7 @@ function App() {
       <main className="auth-page">
         <div className="auth-card">
           <div className="brand">
-            <div className="brand-mark">T</div>
-            <h1 className="sr-only">Targetora</h1><img src="/targetora-wordmark.svg" alt="Targetora" style={{ width: "min(320px, 86vw)", maxWidth: "100%", display: "block", margin: "0 auto" }} />
+            <img src="/targetora-wordmark.svg" alt="Targetora" style={{ width: "min(340px, 90vw)", maxWidth: "100%", display: "block", margin: "0 auto" }} />
             <p>Welcome back.</p>
           </div>
 
@@ -220,8 +219,7 @@ function App() {
     <main className="auth-page">
       <div className="auth-card">
         <div className="brand">
-          <div className="brand-mark">T</div>
-          <h1>Targetora</h1>
+          <img src="/targetora-wordmark.svg" alt="Targetora" style={{ width: "min(340px, 90vw)", maxWidth: "100%", display: "block", margin: "0 auto" }} />
           <p>Numbers. Rounds. Play.</p>
         </div>
 
