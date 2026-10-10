@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useState } from 'react'
 import { supabase } from '../lib/supabase'
 
 const ROWS = [
@@ -172,9 +172,9 @@ function TicketLobby() {
     return () => clearInterval(resultTimer)
   }, [currentRound])
 
-  // Keep the latest round theme on the page when navigating to history screens.
-  // The history page uses this same active palette, while each saved card has its own round class.
-  useEffect(() => {
+  // Apply or clear the round theme before the browser paints, preventing a stale
+  // royal-crown palette from flashing when returning to the Lobby.
+  useLayoutEffect(() => {
     const roundTime = currentRound?.round_time
       ? String(currentRound.round_time).slice(0, 5)
       : ''
