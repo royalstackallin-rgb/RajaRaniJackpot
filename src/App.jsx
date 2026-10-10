@@ -3,6 +3,7 @@ import { supabase } from './lib/supabase'
 import TicketLobby from './components/TicketLobby'
 import MyBookings from './components/MyBookings'
 import GameResults from './components/GameResults'
+import DoubleGame from './components/DoubleGame'
 import './App.css'
 
 function App() {
@@ -87,7 +88,7 @@ function App() {
     setMessage('')
   }
 
-  if (session && ['tickets', 'bookings', 'results'].includes(view)) {
+  if (session && ['tickets', 'bookings', 'results', 'double'].includes(view)) {
     return (
       <main className={`app-page app-view-${view}`}>
         <div className="app-shell">
@@ -137,6 +138,13 @@ function App() {
             >
               Game Results
             </button>
+            <button
+              type="button"
+              className={view === 'double' ? 'active' : ''}
+              onClick={() => setView('double')}
+            >
+              Targetor Double
+            </button>
           </nav>
 
       {showLogoutConfirm && (
@@ -176,6 +184,7 @@ function App() {
           {view === 'tickets' && <TicketLobby />}
           {view === 'bookings' && <MyBookings />}
           {view === 'results' && <GameResults />}
+          {view === 'double' && <DoubleGame />}
 
           <p className="footer-note">
             Virtual credits only. No cash value.
