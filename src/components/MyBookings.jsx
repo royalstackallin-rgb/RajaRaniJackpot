@@ -22,6 +22,15 @@ function getRoundName(round) {
   return ROUND_NAMES[time] || 'RAJARANI JACKPOT'
 }
 
+function asArray(value) {
+  if (Array.isArray(value)) return value
+  return value == null ? [] : [value]
+}
+
+function getEntryResults(entry) {
+  return asArray(entry?.game_results)
+}
+
 function MyBookings() {
   const [bookings, setBookings] = useState([])
   const [loading, setLoading] = useState(true)
@@ -94,9 +103,11 @@ function MyBookings() {
       return { label: 'CANCELLED', payout: 0 }
     }
 
-    const entries = booking.game_entries || []
-    const round = booking.game_rounds
-    const results = entries.flatMap((entry) => entry.game_results || [])
+    const entries = asArray(booking.game_entries)
+    const round = Array.isArray(booking.game_rounds)
+      ? booking.game_rounds[0]
+      : booking.game_rounds
+    const results = entries.flatMap(getEntryResults)
     const isSettled =
       booking.status === 'settled' ||
       round?.status === 'settled' ||
@@ -141,8 +152,10 @@ function MyBookings() {
       <div className="booking-list">
         {bookings.map((booking) => {
           const outcome = getOutcome(booking)
-          const round = booking.game_rounds
-          const entries = booking.game_entries || []
+          const round = Array.isArray(booking.game_rounds)
+            ? booking.game_rounds[0]
+            : booking.game_rounds
+          const entries = asArray(booking.game_entries)
 
           return (
             <article className={`booking-card round-theme-${String(round?.round_time || '').slice(0, 5).replace(':', '-')}`} key={booking.id}>
@@ -185,8 +198,8 @@ function MyBookings() {
 
               <div className="booking-entries">
                 {entries.map((entry) => {
-                  const payout = (entry.game_results || []).reduce(
-                    (total, result) => total + Number(result.payout || 0),
+                  const payout = getEntryResults(entry).reduce(
+                    (total, result) => total + Number(result?.payout || 0),
                     0,
                   )
                   const won = payout > 0
