@@ -5,6 +5,7 @@ import MyBookings from './components/MyBookings'
 import GameResults from './components/GameResults'
 import DoubleGame from './components/DoubleGame'
 import Wallet from './components/Wallet'
+import DepositAdmin from './components/DepositAdmin'
 import './App.css'
 
 function App() {
@@ -89,7 +90,7 @@ function App() {
     setMessage('')
   }
 
-  if (session && ['tickets', 'bookings', 'results', 'double', 'wallet'].includes(view)) {
+  if (session && ['tickets', 'bookings', 'results', 'double', 'wallet', 'deposit-admin'].includes(view)) {
     return (
       <main className={`app-page app-view-${view}`}>
         <div className="app-shell">
@@ -112,6 +113,7 @@ function App() {
                     <strong>{session.user.email}</strong>
                   </div>
                   <button type="button" className="app-menu-wallet" onClick={() => { setShowAppMenu(false); setView('wallet') }}>Wallet / Buy In</button>
+                  <button type="button" className="app-menu-wallet" onClick={() => { setShowAppMenu(false); setView('deposit-admin') }}>Deposit Admin</button>
                   <button type="button" className="app-menu-logout" onClick={() => { setShowAppMenu(false); setShowLogoutConfirm(true) }}>Logout</button>
                 </div>
               )}
@@ -188,6 +190,7 @@ function App() {
           {view === 'results' && <GameResults />}
           {view === 'double' && <DoubleGame />}
           {view === 'wallet' && <Wallet />}
+          {view === 'deposit-admin' && <DepositAdmin />}
 
           <p className="footer-note">
             Virtual credits only. No cash value.
