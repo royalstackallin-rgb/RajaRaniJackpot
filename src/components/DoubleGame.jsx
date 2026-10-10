@@ -33,7 +33,7 @@ function formatMoney(value) {
 
 export default function DoubleGame() {
   const [rounds, setRounds] = useState([])
-  const [selectedNumber, setSelectedNumber] = useState('')
+  const [selectedNumbers, setSelectedNumbers] = useState([])
   const [stake, setStake] = useState('10')
   const [balance, setBalance] = useState(null)
   const [bookings, setBookings] = useState([])
@@ -99,7 +99,12 @@ export default function DoubleGame() {
     now.getTime() >= currentRoundTime - 60 * 60 * 1000 &&
     now.getTime() < currentRoundTime - 5 * 60 * 1000
   )
-  const potentialPayout = Number(stake) * 80
+  const potentialPayout = Number(stake) * selectedNumbers.length
+  const toggleNumber = (number) => {
+    setSelectedNumbers((current) => current.includes(number)
+      ? current.filter((item) => item !== number)
+      : [...current, number].sort((a, b) => Number(a) - Number(b)))
+  }
 
   const placeBooking = async () => {
     setMessage('')
@@ -108,30 +113,39 @@ export default function DoubleGame() {
       setMessage('Booking is not open for the selected round.')
       return
     }
-    if (!selectedNumber) {
-      setMessage('Please choose a number from 00 to 99.')
+    if (selectedNumbers.length === 0) {
+      setMessage('Please choose at least one number from 00 to 99.')
       return
     }
     if (!Number.isSafeInteger(amount) || amount < 1 || amount > 1000000) {
       setMessage('Enter a whole-number stake from ₹1 to ₹10,00,000.')
       return
     }
-    if (balance !== null && amount > Number(balance)) {
-      setMessage('Your wallet balance is too low for this stake.')
+    const totalStake = amount * selectedNumbers.length
+    if (!Number.isSafeInteger(totalStake)) {
+      setMessage('The combined stake is too large.')
+      return
+    }
+    if (balance !== null && totalStake > Number(balance)) {
+      setMessage(`Your wallet needs ₹${formatMoney(totalStake)} for ${selectedNumbers.length} numbers.`)
       return
     }
 
     setBusy(true)
     try {
-      const { data, error } = await supabase.rpc('book_double_number', {
-        p_round_id: currentRound.id,
-        p_number: selectedNumber,
-        p_stake: amount,
-      })
-      if (error) throw error
-      setMessage(`Booking confirmed: ${selectedNumber}. Potential payout: ₹${formatMoney(amount * 80)}.`)
-      setBalance(data?.balance ?? balance)
-      setSelectedNumber('')
+      const confirmed = []
+      for (const number of selectedNumbers) {
+        const { error } = await supabase.rpc('book_double_number', {
+          p_round_id: currentRound.id,
+          p_number: number,
+          p_stake: amount,
+        })
+        if (error) throw new Error(`${number} failed: ${error.message}`)
+        confirmed.push(number)
+      }
+      setMessage(`Booked ${confirmed.join(', ')}. Total stake: ₹${formatMoney(amount * confirmed.length)}; combined potential payout: ₹${formatMoney(amount * confirmed.length * 80)}.`)
+      setBalance((current) => current === null ? current : Number(current) - amount * confirmed.length)
+      setSelectedNumbers([])
       await loadData()
     } catch (error) {
       setMessage(error.message || 'Could not place booking.')
@@ -149,7 +163,7 @@ export default function DoubleGame() {
         <div>
           <p className="double-eyebrow">A SEPARATE GAME</p>
           <h1>Targetor Double</h1>
-          <p>Choose one number from 00–99 for the next draw.</p>
+          <p>Select multiple numbers from 00–99; stake applies to each selected number.</p>
         </div>
         <div className="double-wallet">
           <span>WALLET BALANCE</span>
@@ -181,15 +195,16 @@ export default function DoubleGame() {
             <strong>{currentRound.winning_number}</strong>
           </div>
         )}
-        <div className="double-payout-note">Potential payout: <strong>80× your stake</strong> if your number wins.</div>
+        <div className="double-payout-note">Potential payout: <strong>80× stake per winning number</strong>. Stake applies to each selected number.</div>
+        <p className="double-selected-summary">Selected: <strong>{selectedNumbers.length ? selectedNumbers.join(', ') : 'none'}</strong></p>
         <div className="double-number-grid" aria-label="Choose a number">
           {NUMBERS.map((number) => (
             <button
               type="button"
               key={number}
-              className={selectedNumber === number ? 'chosen' : ''}
-              onClick={() => setSelectedNumber(number)}
-              aria-pressed={selectedNumber === number}
+              className={selectedNumbers.includes(number) ? 'chosen' : ''}
+              onClick={() => toggleNumber(number)}
+              aria-pressed={selectedNumbers.includes(number)}
             >
               {number}
             </button>
@@ -210,10 +225,10 @@ export default function DoubleGame() {
           </label>
           <div className="double-potential">
             <span>POTENTIAL PAYOUT</span>
-            <strong>₹{Number.isSafeInteger(Number(stake)) && Number(stake) > 0 && Number(stake) <= 1000000 ? formatMoney(potentialPayout) : '—'}</strong>
+            <strong>₹{Number.isSafeInteger(Number(stake)) && Number(stake) > 0 && Number(stake) <= 1000000 && selectedNumbers.length ? formatMoney(potentialPayout * 80) : '—'}</strong>
           </div>
-          <button type="button" className="double-submit" disabled={busy || !canBook || !selectedNumber} onClick={placeBooking}>
-            {busy ? 'Booking…' : canBook ? 'Book Number' : 'Booking Closed'}
+          <button type="button" className="double-submit" disabled={busy || !canBook || !selectedNumbers.length} onClick={placeBooking}>
+            {busy ? 'Booking…' : canBook ? `Book ${selectedNumbers.length || ''} Number${selectedNumbers.length === 1 ? '' : 's'}` : 'Booking Closed'}
           </button>
         </div>
         {!canBook && currentRound?.status === 'open' && (
