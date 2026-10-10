@@ -91,7 +91,7 @@ function App() {
       <main className="app-page">
         <div className="app-shell">
           <header className="app-header">
-            <div className="app-brand"><img src="/targetora-wordmark.svg" alt="Targetora" style={{ width: "190px", maxWidth: "100%", display: "block" }} /></div>
+            <div className="app-brand"><img src="/targetora-wordmark.svg" alt="Targetora" style={{ width: "clamp(220px, 72vw, 330px)", maxWidth: "100%", display: "block" }} /></div>
           </header>
 
           <nav className="main-menu" aria-label="Main menu">
@@ -176,7 +176,7 @@ function App() {
         <div className="auth-card">
           <div className="brand">
             <div className="brand-mark">T</div>
-            <h1 className="sr-only">Targetora</h1><img src="/targetora-wordmark.svg" alt="Targetora" style={{ width: "240px", maxWidth: "100%", display: "block", margin: "0 auto" }} />
+            <h1 className="sr-only">Targetora</h1><img src="/targetora-wordmark.svg" alt="Targetora" style={{ width: "min(320px, 86vw)", maxWidth: "100%", display: "block", margin: "0 auto" }} />
             <p>Welcome back.</p>
           </div>
 
