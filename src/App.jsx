@@ -88,7 +88,7 @@ function App() {
 
   if (session && ['tickets', 'bookings', 'results'].includes(view)) {
     return (
-      <main className="app-page">
+      <main className={`app-page app-view-${view}`}>
         <div className="app-shell">
           <header className="app-header">
             <div className="app-brand"><img src="/targetora-wordmark.svg" alt="Targetora" style={{ width: "clamp(220px, 72vw, 330px)", maxWidth: "100%", display: "block" }} /></div>
