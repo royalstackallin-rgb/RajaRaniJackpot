@@ -1,5 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1465 190" role="img" aria-labelledby="title">
 <title id="title">TARGETORSTAKE</title>
+<defs>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@900&amp;display=swap');
+    .wordmark { font-family: 'Orbitron', 'Arial Black', sans-serif; font-weight: 900; font-style: normal; letter-spacing: -2px; }
+  </style>
+</defs>
 <rect width="1465" height="190" fill="none"/>
-<text x="732.5" y="132" text-anchor="middle" fill="#fff" font-family="Orbitron, Eurostile, 'Arial Black', sans-serif" font-size="128" font-weight="900" font-style="italic" letter-spacing="-4.5" textLength="1370" lengthAdjust="spacingAndGlyphs">TARGETORSTAKE</text>
+<text class="wordmark" x="732.5" y="132" text-anchor="middle" fill="#fff" font-size="126" textLength="1370" lengthAdjust="spacingAndGlyphs">TARGETORSTAKE</text>
 </svg>
