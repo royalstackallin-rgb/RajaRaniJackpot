@@ -2562,3 +2562,53 @@ body:has(.auth-page) .submit-button {
   color: #0b1220 !important;
   box-shadow: none !important;
 }
+
+
+/* TARGETORA AUTO ROUND THEME — apply the active palette to the actual ticket controls.
+   The old ticket grid used hard-coded red/amber colours, so it ignored round variables. */
+body[data-round-theme] .ticket-header,
+body[data-round-theme] .ticket-row {
+  border-color: var(--round-border) !important;
+  background:
+    radial-gradient(ellipse at 100% 0%, var(--round-glow), transparent 62%),
+    linear-gradient(145deg, color-mix(in srgb, var(--round-panel) 88%, #07111f), var(--round-deep)) !important;
+}
+body[data-round-theme] .ticket-round,
+body[data-round-theme] .wallet-balance,
+body[data-round-theme] .potential-payouts {
+  border-color: var(--round-border) !important;
+  background: color-mix(in srgb, var(--round-deep) 88%, #000) !important;
+}
+body[data-round-theme] .wallet-balance strong,
+body[data-round-theme] .ticket-round strong,
+body[data-round-theme] .row-summary strong,
+body[data-round-theme] .row-total-mini strong,
+body[data-round-theme] .potential-payout-item {
+  color: var(--round-accent) !important;
+}
+body[data-round-theme] .row-letter,
+body[data-round-theme] .main-menu button.active,
+body[data-round-theme] .book-button:not(:disabled),
+body[data-round-theme] .ticket-row button:not(:disabled) {
+  background: linear-gradient(135deg, var(--round-accent), var(--round-accent-2)) !important;
+  border-color: var(--round-border) !important;
+  color: var(--round-deep) !important;
+  box-shadow: 0 4px 14px var(--round-glow) !important;
+}
+body[data-round-theme] .number-input-column input {
+  border-color: var(--round-border) !important;
+  background: color-mix(in srgb, var(--round-deep) 86%, #000) !important;
+  color: #f8fafc !important;
+}
+body[data-round-theme] .number-input-column input:focus {
+  border-color: var(--round-accent) !important;
+  box-shadow: 0 0 0 2px var(--round-glow) !important;
+}
+body[data-round-theme] .potential-payout-item {
+  background: color-mix(in srgb, var(--round-accent-2) 24%, var(--round-deep)) !important;
+}
+body[data-round-theme] .ticket-row .book-button:disabled,
+body[data-round-theme] .ticket-row button:disabled {
+  filter: saturate(.35);
+  box-shadow: none !important;
+}
