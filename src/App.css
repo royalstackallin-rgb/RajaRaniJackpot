@@ -2613,9 +2613,3 @@ body[data-round-theme] .ticket-row button:disabled {
   box-shadow: none !important;
 }
 
-
-/* Targetora rebrand: remove the leftover royal-crown watermark from the Lobby header. */
-.ticket-header::after {
-  content: none !important;
-  display: none !important;
-}
