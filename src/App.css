@@ -2613,3 +2613,37 @@ body[data-round-theme] .ticket-row button:disabled {
   box-shadow: none !important;
 }
 
+
+
+/* Neutral first-paint fallback: never show the legacy royal palette while the
+   Lobby is loading its active round theme for the first time. */
+body:not([data-round-theme]):has(.ticket-lobby) .ticket-header {
+  border-color: rgba(148, 163, 184, 0.24) !important;
+  background: linear-gradient(145deg, #151d29, #0b1018) !important;
+  box-shadow: none !important;
+}
+body:not([data-round-theme]):has(.ticket-lobby) .ticket-header::after {
+  color: rgba(148, 163, 184, 0.08) !important;
+}
+body:not([data-round-theme]):has(.ticket-lobby) .eyebrow,
+body:not([data-round-theme]):has(.ticket-lobby) .ticket-header h2,
+body:not([data-round-theme]):has(.ticket-lobby) .wallet-balance strong,
+body:not([data-round-theme]):has(.ticket-lobby) .ticket-round strong {
+  color: #e2e8f0 !important;
+  text-shadow: none !important;
+}
+body:not([data-round-theme]):has(.ticket-lobby) .ticket-round,
+body:not([data-round-theme]):has(.ticket-lobby) .wallet-balance {
+  border-color: rgba(148, 163, 184, 0.24) !important;
+  background: #090d14 !important;
+}
+body:not([data-round-theme]):has(.ticket-lobby) .ticket-row {
+  border-color: rgba(148, 163, 184, 0.22) !important;
+  background: linear-gradient(145deg, #151d29, #0b1018) !important;
+}
+body:not([data-round-theme]):has(.ticket-lobby) .row-letter,
+body:not([data-round-theme]):has(.ticket-lobby) .book-button:not(:disabled) {
+  background: linear-gradient(135deg, #64748b, #334155) !important;
+  color: #f8fafc !important;
+  box-shadow: none !important;
+}
