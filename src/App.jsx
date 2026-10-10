@@ -98,7 +98,10 @@ function App() {
             <button
               type="button"
               className={view === 'tickets' ? 'active' : ''}
-              onClick={() => setView('tickets')}
+              onClick={() => {
+                delete document.body.dataset.roundTheme
+                setView('tickets')
+              }}
             >
               Lobby
             </button>
