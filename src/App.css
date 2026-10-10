@@ -2734,3 +2734,15 @@ body[data-round-theme] .main-menu button:not(.active) {
   color: var(--round-soft) !important;
   box-shadow: none !important;
 }
+
+.app-menu-wrap{position:relative;justify-self:end;z-index:30}
+.app-menu-trigger{width:44px;height:44px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;border:1px solid var(--round-border,rgba(251,191,36,.32));border-radius:12px;background:var(--round-deep,#100b05);color:var(--round-accent,#fbbf24);cursor:pointer}
+.app-menu-trigger span{display:block;width:19px;height:2px;border-radius:2px;background:currentColor}
+.app-menu-trigger.is-open{box-shadow:0 0 0 2px var(--round-glow,rgba(251,191,36,.12))}
+.app-menu-dropdown{position:absolute;top:calc(100% + 9px);right:0;width:min(280px,calc(100vw - 42px));padding:8px;border:1px solid var(--round-border,rgba(251,191,36,.3));border-radius:15px;background:var(--round-deep,#100b05);box-shadow:0 18px 45px rgba(0,0,0,.48)}
+.app-menu-account{display:grid;gap:4px;padding:10px 11px 12px;margin-bottom:5px;border-bottom:1px solid var(--round-border,rgba(251,191,36,.22))}
+.app-menu-account span{color:var(--round-accent,#fbbf24);font-size:10px;font-weight:800;letter-spacing:1.4px}
+.app-menu-account strong{color:var(--round-soft,#fff0c2);font-size:12px;overflow-wrap:anywhere}
+.app-menu-dropdown button{width:100%;min-height:43px;padding:10px 11px;border:0;border-radius:9px;background:transparent;color:var(--round-soft,#fff0c2);text-align:left;font-size:14px;cursor:pointer}
+.app-menu-dropdown button:active,.app-menu-dropdown button:focus-visible{outline:none;background:color-mix(in srgb,var(--round-accent,#fbbf24) 17%,transparent)}
+.app-menu-dropdown .app-menu-logout{margin-top:4px;border-top:1px solid var(--round-border,rgba(251,191,36,.22));border-radius:0 0 9px 9px}
