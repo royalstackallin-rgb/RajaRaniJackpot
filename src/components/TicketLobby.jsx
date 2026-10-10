@@ -172,6 +172,23 @@ function TicketLobby() {
     return () => clearInterval(resultTimer)
   }, [currentRound])
 
+  // Visual-only theme follows the selected round; booking/countdown logic stays unchanged.
+  useEffect(() => {
+    const roundTime = currentRound?.round_time
+      ? String(currentRound.round_time).slice(0, 5)
+      : ''
+
+    if (roundTime) {
+      document.body.dataset.roundTheme = roundTime
+    } else {
+      delete document.body.dataset.roundTheme
+    }
+
+    return () => {
+      delete document.body.dataset.roundTheme
+    }
+  }, [currentRound?.round_time])
+
   const startDrawAnimation = (results) => {
     const entries = Object.entries(results)
 
