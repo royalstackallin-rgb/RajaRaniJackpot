@@ -142,7 +142,7 @@ function GameResults() {
           const rowResults = round.game_round_results || []
 
           return (
-            <article className="result-card" key={round.id}>
+            <article className={`result-card round-theme-${String(round?.round_time || '').slice(0, 5).replace(':', '-')}`} key={round.id}>
               <div className="result-card-heading">
                 <div>
                   <h3>{getRoundName(round)}</h3>
