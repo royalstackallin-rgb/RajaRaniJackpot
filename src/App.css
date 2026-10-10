@@ -2688,3 +2688,37 @@ body:not([data-round-theme]):has(.history-page) .main-menu button.active {
   color: #f8fafc !important;
   box-shadow: none !important;
 }
+
+
+/* Final no-flash rule for view changes. The initial hard-coded legacy styles on
+   these page surfaces must never animate in before the active round palette. */
+.app-view-tickets .ticket-header,
+.app-view-tickets .ticket-row,
+.app-view-tickets .ticket-round,
+.app-view-tickets .wallet-balance,
+.app-view-tickets .row-letter,
+.app-view-tickets .number-input-column input,
+.app-view-tickets .potential-payouts,
+.app-view-tickets .potential-payout-item,
+.app-view-tickets .book-button,
+.app-view-results .app-header,
+.app-view-results .main-menu,
+.app-view-results .results-search,
+.app-view-results .results-search input,
+.app-view-results .results-search .submit-button,
+.app-view-results .result-card,
+.app-view-results .history-empty,
+.app-view-results .history-message,
+.app-view-results .history-error {
+  transition: none !important;
+  animation: none !important;
+}
+.app-view-results .app-header,
+.app-view-results .main-menu,
+.app-view-results .results-search,
+.app-view-results .result-card,
+.app-view-results .history-empty,
+.app-view-results .history-message,
+.app-view-results .history-error {
+  background-image: none;
+}
