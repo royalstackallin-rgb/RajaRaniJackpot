@@ -2746,3 +2746,8 @@ body[data-round-theme] .main-menu button:not(.active) {
 .app-menu-dropdown button{width:100%;min-height:43px;padding:10px 11px;border:0;border-radius:9px;background:transparent;color:var(--round-soft,#fff0c2);text-align:left;font-size:14px;cursor:pointer}
 .app-menu-dropdown button:active,.app-menu-dropdown button:focus-visible{outline:none;background:color-mix(in srgb,var(--round-accent,#fbbf24) 17%,transparent)}
 .app-menu-dropdown .app-menu-logout{margin-top:4px;border-top:1px solid var(--round-border,rgba(251,191,36,.22));border-radius:0 0 9px 9px}
+.app-menu-dropdown{z-index:1000;isolation:isolate;max-height:calc(100vh - 190px);overflow-y:auto}
+.app-menu-wrap{z-index:1000}
+.app-header{position:relative;z-index:1001;overflow:visible}
+.app-menu-dropdown button{display:block;position:relative;z-index:1;min-height:48px;padding:12px 14px;background:var(--round-panel,#241a08);border:1px solid var(--round-border,rgba(251,191,36,.25));margin-top:5px;color:var(--round-soft,#fff0c2);text-shadow:none;opacity:1;visibility:visible}
+.app-menu-dropdown .app-menu-account{position:relative;z-index:1;background:var(--round-deep,#100b05);color:var(--round-soft,#fff0c2)}
