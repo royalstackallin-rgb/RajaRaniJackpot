@@ -375,6 +375,14 @@ function TicketLobby() {
   const minutes = Math.floor(secondsUntilCutoff / 60)
   const seconds = secondsUntilCutoff % 60
 
+  const bookingStart = roundDateTime ? new Date(roundDateTime.getTime() - 60 * 60 * 1000) : null
+  const secondsUntilOpen = bookingStart && now < bookingStart ? Math.max(0, Math.floor((bookingStart - now) / 1000)) : 0
+  const openHours = Math.floor(secondsUntilOpen / 3600)
+  const openMinutes = Math.floor((secondsUntilOpen % 3600) / 60)
+  const openSeconds = secondsUntilOpen % 60
+  const openingCountdown = String(openHours).padStart(2, "0") + ":" + String(openMinutes).padStart(2, "0") + ":" + String(openSeconds).padStart(2, "0")
+
+
   return (
     <section className="ticket-lobby">
       <div className="ticket-header">
@@ -416,6 +424,9 @@ function TicketLobby() {
               <small className="booking-closed">
                 🔴 BOOKING CLOSED · LIVE GAME
               </small>
+            )}
+            {!bookingOpen && !bookingClosed && currentRound && bookingStart && now < bookingStart && (
+              <small>BOOKING OPENS IN · {openingCountdown}</small>
             )}
           </div>
         </div>
