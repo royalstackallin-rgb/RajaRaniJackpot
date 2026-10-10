@@ -2647,3 +2647,44 @@ body:not([data-round-theme]):has(.ticket-lobby) .book-button:not(:disabled) {
   color: #f8fafc !important;
   box-shadow: none !important;
 }
+
+
+/* FLASH FIX: round palettes should switch instantly, never cross-fade from the
+   previous round. When no round has been resolved yet, use neutral page chrome. */
+body[data-round-theme] {
+  transition: none !important;
+}
+body[data-round-theme] .ticket-header,
+body[data-round-theme] .ticket-row,
+body[data-round-theme] .app-header,
+body[data-round-theme] .main-menu,
+body[data-round-theme] .wallet-balance,
+body[data-round-theme] .ticket-round,
+body[data-round-theme] .number-input-column input,
+body[data-round-theme] .potential-payouts,
+body[data-round-theme] .potential-payout-item,
+body[data-round-theme] .row-letter,
+body[data-round-theme] .book-button,
+body[data-round-theme] .main-menu button {
+  transition: none !important;
+}
+body:not([data-round-theme]):has(.history-page) {
+  background: linear-gradient(180deg, #0b1018 0%, #070a10 52%, #05070b 100%) !important;
+}
+body:not([data-round-theme]):has(.history-page) .app-header,
+body:not([data-round-theme]):has(.history-page) .history-empty,
+body:not([data-round-theme]):has(.history-page) .history-message,
+body:not([data-round-theme]):has(.history-page) .history-error {
+  border-color: rgba(148, 163, 184, 0.24) !important;
+  background: linear-gradient(135deg, #151d29, #0b1018) !important;
+}
+body:not([data-round-theme]):has(.history-page) .main-menu {
+  border-color: rgba(148, 163, 184, 0.22) !important;
+  background: #090d14 !important;
+}
+body:not([data-round-theme]):has(.history-page) .main-menu button.active {
+  border-color: rgba(148, 163, 184, 0.3) !important;
+  background: linear-gradient(135deg, #334155, #1e293b) !important;
+  color: #f8fafc !important;
+  box-shadow: none !important;
+}
