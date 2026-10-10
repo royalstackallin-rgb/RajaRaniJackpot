@@ -91,7 +91,7 @@ function App() {
       <main className="app-page">
         <div className="app-shell">
           <header className="app-header">
-            <div className="app-brand">👑 RajaRaniJackpot</div>
+            <div className="app-brand">👑 Targetora</div>
           </header>
 
           <nav className="main-menu" aria-label="Main menu">
@@ -175,8 +175,8 @@ function App() {
       <main className="auth-page">
         <div className="auth-card">
           <div className="brand">
-            <div className="brand-mark">RJ</div>
-            <h1>RajaRaniJackpot</h1>
+            <div className="brand-mark">T</div>
+            <h1>Targetora</h1>
             <p>Welcome back.</p>
           </div>
 
@@ -220,8 +220,8 @@ function App() {
     <main className="auth-page">
       <div className="auth-card">
         <div className="brand">
-          <div className="brand-mark">RJ</div>
-          <h1>RajaRaniJackpot</h1>
+          <div className="brand-mark">T</div>
+          <h1>Targetora</h1>
           <p>Numbers. Rounds. Play.</p>
         </div>
 
