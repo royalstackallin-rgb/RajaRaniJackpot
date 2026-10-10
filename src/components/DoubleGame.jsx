@@ -34,7 +34,7 @@ function formatMoney(value) {
 export default function DoubleGame() {
   const [rounds, setRounds] = useState([])
   const [selectedNumbers, setSelectedNumbers] = useState([])
-  const [stake, setStake] = useState('10')
+  const [stakes, setStakes] = useState({})
   const [balance, setBalance] = useState(null)
   const [bookings, setBookings] = useState([])
   const [userId, setUserId] = useState(null)
@@ -99,7 +99,9 @@ export default function DoubleGame() {
     now.getTime() >= currentRoundTime - 60 * 60 * 1000 &&
     now.getTime() < currentRoundTime - 5 * 60 * 1000
   )
-  const potentialPayout = Number(stake) * selectedNumbers.length
+  const stakeFor = (number) => stakes[number] ?? '10'
+  const totalStake = selectedNumbers.reduce((sum, number) => sum + (Number(stakeFor(number)) || 0), 0)
+  const potentialPayout = selectedNumbers.reduce((sum, number) => sum + (Number(stakeFor(number)) || 0) * 80, 0)
   const toggleNumber = (number) => {
     setSelectedNumbers((current) => current.includes(number)
       ? current.filter((item) => item !== number)
@@ -108,7 +110,6 @@ export default function DoubleGame() {
 
   const placeBooking = async () => {
     setMessage('')
-    const amount = Number(stake)
     if (!currentRound || !canBook) {
       setMessage('Booking is not open for the selected round.')
       return
@@ -117,11 +118,14 @@ export default function DoubleGame() {
       setMessage('Please choose at least one number from 00 to 99.')
       return
     }
-    if (!Number.isSafeInteger(amount) || amount < 1 || amount > 1000000) {
-      setMessage('Enter a whole-number stake from ₹1 to ₹10,00,000.')
+    const invalidNumber = selectedNumbers.find((number) => {
+      const amount = Number(stakeFor(number))
+      return !Number.isSafeInteger(amount) || amount < 1 || amount > 1000000
+    })
+    if (invalidNumber) {
+      setMessage(`Enter a whole-number stake from ₹1 to ₹10,00,000 for ${invalidNumber}.`)
       return
     }
-    const totalStake = amount * selectedNumbers.length
     if (!Number.isSafeInteger(totalStake)) {
       setMessage('The combined stake is too large.')
       return
@@ -135,6 +139,7 @@ export default function DoubleGame() {
     try {
       const confirmed = []
       for (const number of selectedNumbers) {
+        const amount = Number(stakeFor(number))
         const { error } = await supabase.rpc('book_double_number', {
           p_round_id: currentRound.id,
           p_number: number,
@@ -143,8 +148,8 @@ export default function DoubleGame() {
         if (error) throw new Error(`${number} failed: ${error.message}`)
         confirmed.push(number)
       }
-      setMessage(`Booked ${confirmed.join(', ')}. Total stake: ₹${formatMoney(amount * confirmed.length)}; combined potential payout: ₹${formatMoney(amount * confirmed.length * 80)}.`)
-      setBalance((current) => current === null ? current : Number(current) - amount * confirmed.length)
+      setMessage(`Booked ${confirmed.join(', ')}. Total stake: ₹${formatMoney(totalStake)}; combined potential payout: ₹${formatMoney(potentialPayout)}.`)
+      setBalance((current) => current === null ? current : Number(current) - totalStake)
       setSelectedNumbers([])
       await loadData()
     } catch (error) {
@@ -210,22 +215,25 @@ export default function DoubleGame() {
             </button>
           ))}
         </div>
+        {selectedNumbers.length > 0 && <div className="double-stake-list">
+          <h3>Stake per number</h3>
+          {selectedNumbers.map((number) => (
+            <label className="double-stake-row" key={number}>
+              <span>Number <strong>{number}</strong></span>
+              <span className="double-stake-input-wrap">₹
+                <input type="number" inputMode="numeric" min="1" max="1000000" step="1" value={stakeFor(number)} onChange={(event) => setStakes((current) => ({ ...current, [number]: event.target.value }))} aria-label={`Stake for number ${number}`} />
+              </span>
+            </label>
+          ))}
+        </div>}
         <div className="double-booking-controls">
-          <label>
-            Stake (₹)
-            <input
-              type="number"
-              inputMode="numeric"
-              min="1"
-              max="1000000"
-              step="1"
-              value={stake}
-              onChange={(event) => setStake(event.target.value)}
-            />
-          </label>
           <div className="double-potential">
-            <span>POTENTIAL PAYOUT</span>
-            <strong>₹{Number.isSafeInteger(Number(stake)) && Number(stake) > 0 && Number(stake) <= 1000000 && selectedNumbers.length ? formatMoney(potentialPayout * 80) : '—'}</strong>
+            <span>TOTAL STAKE</span>
+            <strong>₹{formatMoney(totalStake)}</strong>
+          </div>
+          <div className="double-potential">
+            <span>COMBINED POTENTIAL PAYOUT</span>
+            <strong>₹{selectedNumbers.length && selectedNumbers.every((number) => Number.isSafeInteger(Number(stakeFor(number))) && Number(stakeFor(number)) > 0 && Number(stakeFor(number)) <= 1000000) ? formatMoney(potentialPayout) : '—'}</strong>
           </div>
           <button type="button" className="double-submit" disabled={busy || !canBook || !selectedNumbers.length} onClick={placeBooking}>
             {busy ? 'Booking…' : canBook ? `Book ${selectedNumbers.length || ''} Number${selectedNumbers.length === 1 ? '' : 's'}` : 'Booking Closed'}
