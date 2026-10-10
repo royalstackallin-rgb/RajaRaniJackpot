@@ -2804,6 +2804,17 @@ body[data-round-theme] .main-menu button:not(.active) {
 .double-disclaimer{color:#71819d;text-align:center;font-size:10px;margin:18px 0 0}
 @media(max-width:560px){.double-heading{flex-direction:column}.double-wallet{width:100%;text-align:left}.double-number-grid{gap:5px}.double-number-grid button{border-radius:7px}.double-booking-controls{grid-template-columns:1fr 1fr}.double-submit{grid-column:1/-1}}
 
+/* Compact Classic-style Targetor Double board */
+.double-number-grid{gap:8px 5px;align-items:start}
+.double-number-tile{gap:7px;padding:0;border:0;border-radius:0;background:transparent}
+.double-number-grid .double-number-tile>button{min-height:27px;padding:3px 0;border:0;border-radius:5px;background:transparent;box-shadow:none;font-size:clamp(10px,2.5vw,14px);font-weight:600}
+.double-number-grid .double-number-tile>button.chosen{border:1px solid #e8c879;background:linear-gradient(145deg,#b38a3e,#785722);color:#fff9e8}
+.double-tile-stake{gap:1px;font-size:9px}
+.double-tile-stake input{height:34px;padding:4px 1px;border:1px solid #334155;border-radius:7px;text-align:center;font-size:10px}
+.double-tile-stake input::placeholder{font-size:9px}
+.double-number-tile.selected{border:0;background:transparent}
+@media(max-width:560px){.double-number-grid{gap:8px 4px}.double-number-grid .double-number-tile>button{min-height:27px;font-size:10px}.double-tile-stake input{height:34px;font-size:10px}}
+
 /* Targetor Double: per-number stake entry */
 .double-number-grid{grid-template-columns:repeat(10,minmax(0,1fr));gap:5px}
 .double-number-tile{min-width:0;display:flex;flex-direction:column;gap:4px;padding:3px;border:1px solid #ffffff1c;border-radius:7px;background:#0a1325}
