@@ -172,7 +172,8 @@ function TicketLobby() {
     return () => clearInterval(resultTimer)
   }, [currentRound])
 
-  // Visual-only theme follows the selected round; booking/countdown logic stays unchanged.
+  // Keep the latest round theme on the page when navigating to history screens.
+  // The history page uses this same active palette, while each saved card has its own round class.
   useEffect(() => {
     const roundTime = currentRound?.round_time
       ? String(currentRound.round_time).slice(0, 5)
@@ -181,10 +182,6 @@ function TicketLobby() {
     if (roundTime) {
       document.body.dataset.roundTheme = roundTime
     } else {
-      delete document.body.dataset.roundTheme
-    }
-
-    return () => {
       delete document.body.dataset.roundTheme
     }
   }, [currentRound?.round_time])
