@@ -1313,3 +1313,339 @@ input:focus {
     gap: 8px;
   }
 }
+
+
+/* RAJARANIJACKPOT RED LUXURY THEME — visual-only overrides */
+:root {
+  color: #fff7f2;
+  background: #100608;
+}
+
+body {
+  background:
+    radial-gradient(ellipse at 50% -12%, rgba(164, 22, 28, 0.34), transparent 52%),
+    linear-gradient(180deg, #21090d 0%, #100608 48%, #080507 100%);
+}
+
+.app-page {
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(111, 12, 19, 0.18), transparent 52%);
+}
+
+.app-shell {
+  max-width: 920px;
+}
+
+.app-header {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  min-height: 70px;
+  margin-bottom: 16px;
+  padding: 16px 14px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 190, 89, 0.28);
+  border-radius: 20px;
+  background:
+    linear-gradient(110deg, rgba(70, 8, 15, 0.98), rgba(20, 7, 10, 0.98) 55%, rgba(72, 8, 13, 0.96));
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.3), inset 0 1px rgba(255, 225, 174, 0.08);
+}
+
+.app-header::before {
+  content: "♛";
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #ffd27a;
+  font-size: 27px;
+  text-shadow: 0 0 16px rgba(255, 178, 51, 0.34);
+}
+
+.app-header::after {
+  content: "ROYAL JACKPOT";
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255, 211, 143, 0.72);
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+}
+
+.app-brand {
+  color: #ffe0a0;
+  font-size: clamp(15px, 3.8vw, 20px);
+  font-weight: 900;
+  letter-spacing: 0.15px;
+  text-shadow: 0 2px 14px rgba(255, 177, 60, 0.18);
+}
+
+.main-menu {
+  border-color: rgba(255, 190, 89, 0.2);
+  border-radius: 15px;
+  background: rgba(18, 7, 10, 0.96);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.22);
+}
+
+.main-menu button {
+  border: 1px solid rgba(255, 255, 255, 0.035);
+  background: linear-gradient(180deg, #261015, #160a0e);
+  color: #e8d5d3;
+  transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+}
+
+.main-menu button.active {
+  border-color: rgba(255, 194, 91, 0.72);
+  background: linear-gradient(135deg, #ffcf72, #e99526 60%, #c84a19);
+  color: #32100b;
+  box-shadow: 0 5px 18px rgba(220, 92, 23, 0.2), inset 0 1px rgba(255, 255, 255, 0.4);
+}
+
+.ticket-header {
+  position: relative;
+  overflow: hidden;
+  border-color: rgba(255, 180, 75, 0.32);
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(169, 23, 31, 0.42), transparent 62%),
+    linear-gradient(145deg, #3a0d13 0%, #1b090e 52%, #10070a 100%);
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.28), inset 0 1px rgba(255, 226, 177, 0.08);
+}
+
+.ticket-header::after {
+  content: "♛";
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255, 198, 103, 0.10);
+  font-size: 104px;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.ticket-header > div {
+  position: relative;
+  z-index: 1;
+}
+
+.eyebrow {
+  color: #ffbf58;
+  letter-spacing: 2px;
+}
+
+.ticket-header h2 {
+  color: #fff7e8;
+  font-weight: 900;
+  letter-spacing: 1px;
+  text-shadow: 0 0 22px rgba(255, 178, 59, 0.2);
+}
+
+.wallet-balance,
+.ticket-round {
+  border-color: rgba(255, 192, 104, 0.26);
+  background: rgba(12, 7, 10, 0.78);
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.035);
+}
+
+.wallet-balance strong {
+  color: #ffd05f;
+}
+
+.ticket-round strong {
+  color: #ffbd66;
+}
+
+.ticket-row {
+  border-color: rgba(255, 100, 78, 0.24);
+  background: linear-gradient(145deg, rgba(38, 12, 17, 0.98), rgba(15, 8, 12, 0.98));
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25), inset 0 1px rgba(255, 255, 255, 0.025);
+}
+
+.row-letter {
+  background: linear-gradient(145deg, #ff6a36, #df1628 58%, #a70d1d);
+  border: 1px solid rgba(255, 207, 134, 0.55);
+  box-shadow: 0 5px 16px rgba(216, 24, 36, 0.24), inset 0 1px rgba(255, 255, 255, 0.22);
+}
+
+.row-title strong {
+  color: #fff4e9;
+}
+
+.row-payout {
+  color: #c6aeb0;
+}
+
+.number-label {
+  color: #f2dcdb;
+}
+
+.number-input-column input {
+  border-color: #57222b;
+  background: linear-gradient(180deg, #190b10, #10080b);
+  color: #fff7f2;
+}
+
+.number-input-column input:focus {
+  border-color: #ffb347;
+  box-shadow: 0 0 0 2px rgba(255, 179, 71, 0.18), 0 0 14px rgba(255, 80, 51, 0.10);
+}
+
+.row-summary {
+  border-top-color: rgba(255, 183, 113, 0.14);
+  color: #b59da0;
+}
+
+.row-summary strong,
+.potential-payout-item {
+  color: #ffd06a;
+}
+
+.potential-payouts {
+  border-color: rgba(255, 168, 89, 0.18);
+  background: rgba(10, 6, 9, 0.62);
+}
+
+.potential-payout-item {
+  background: rgba(114, 22, 29, 0.45);
+}
+
+.row-book-button,
+.submit-button,
+.book-button {
+  border: 1px solid rgba(255, 215, 151, 0.45);
+  background: linear-gradient(110deg, #ffd16f 0%, #f59a27 48%, #e34320 100%);
+  color: #35100b;
+  font-weight: 900;
+  box-shadow: 0 7px 18px rgba(207, 54, 28, 0.16), inset 0 1px rgba(255, 255, 255, 0.35);
+}
+
+.row-book-button:disabled,
+.submit-button:disabled,
+.book-button:disabled {
+  border-color: rgba(255, 255, 255, 0.06);
+  background: #342126;
+  color: #8c777b;
+  box-shadow: none;
+  opacity: 1;
+}
+
+.row-book-button.booked {
+  background: linear-gradient(110deg, #1d8b58, #14623f);
+  border-color: rgba(134, 239, 172, 0.4);
+  color: #f0fff4;
+}
+
+.ticket-message {
+  border: 1px solid rgba(255, 190, 89, 0.22);
+  background: rgba(77, 20, 22, 0.65);
+  color: #ffe0b5;
+}
+
+.live-draw-panel {
+  border-color: rgba(255, 188, 82, 0.42);
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(192, 24, 36, 0.32), transparent 65%),
+    linear-gradient(145deg, #310d13, #10070a);
+}
+
+.live-draw-card {
+  border-color: rgba(255, 186, 79, 0.26);
+  background: #17090d;
+}
+
+.live-draw-card strong {
+  color: #ffd16d;
+}
+
+.auth-card {
+  border-color: rgba(255, 190, 89, 0.24);
+  background: linear-gradient(145deg, rgba(45, 12, 17, 0.98), rgba(11, 7, 10, 0.98));
+}
+
+.brand-mark {
+  background: linear-gradient(135deg, #ffd16f, #ef7c22 52%, #c91d2b);
+  color: #35100b;
+  box-shadow: 0 10px 28px rgba(215, 40, 35, 0.26);
+}
+
+.tabs button.active {
+  border: 1px solid rgba(255, 194, 91, 0.55);
+  background: linear-gradient(135deg, #ffd16f, #e99526);
+  color: #35100b;
+}
+
+input:focus {
+  border-color: #ffb347;
+  box-shadow: 0 0 0 3px rgba(255, 179, 71, 0.16);
+}
+
+.logout-modal {
+  border-color: rgba(255, 190, 89, 0.38);
+  background: linear-gradient(145deg, #3a0d13, #10070a);
+}
+
+@media (max-width: 600px) {
+  .app-page {
+    padding: 9px;
+  }
+
+  .app-header {
+    min-height: 64px;
+    padding: 14px 10px;
+    border-radius: 17px;
+  }
+
+  .app-header::before {
+    left: 10px;
+    font-size: 23px;
+  }
+
+  .app-header::after {
+    display: none;
+  }
+
+  .app-brand {
+    font-size: 15px;
+  }
+
+  .ticket-header {
+    gap: 10px;
+    padding: 16px 12px;
+  }
+
+  .ticket-header h2 {
+    font-size: 28px;
+  }
+
+  .ticket-header p {
+    max-width: 230px;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .ticket-header-right {
+    min-width: 96px;
+  }
+
+  .main-menu button {
+    font-size: 11px;
+  }
+
+  .row-top {
+    align-items: flex-start;
+  }
+
+  .row-payout {
+    text-align: right;
+    white-space: normal;
+    line-height: 1.4;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .main-menu button {
+    transition: none;
+  }
+}
