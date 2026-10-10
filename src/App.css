@@ -1649,3 +1649,206 @@ input:focus {
     transition: none;
   }
 }
+
+
+/* AUTOMATIC ROUND THEMES — driven by the selected round, visual styles only */
+body[data-round-theme] {
+  --round-accent: #ffd16f;
+  --round-accent-2: #e34320;
+  --round-glow: rgba(164, 22, 28, 0.34);
+  --round-border: rgba(255, 190, 89, 0.28);
+  --round-panel: #260c12;
+  --round-deep: #100608;
+  --round-soft: #f7ded0;
+  background:
+    radial-gradient(ellipse at 50% -12%, var(--round-glow), transparent 52%),
+    linear-gradient(180deg, var(--round-panel) 0%, var(--round-deep) 70%, #080507 100%);
+  transition: background 350ms ease;
+}
+
+body[data-round-theme="07:00"] {
+  --round-accent: #fbbf24;
+  --round-accent-2: #d97706;
+  --round-glow: rgba(217, 119, 6, 0.28);
+  --round-border: rgba(251, 191, 36, 0.32);
+  --round-panel: #2a1a08;
+  --round-deep: #100b05;
+  --round-soft: #fff0c2;
+}
+body[data-round-theme="08:00"] {
+  --round-accent: #fb923c;
+  --round-accent-2: #ea580c;
+  --round-glow: rgba(249, 115, 22, 0.28);
+  --round-border: rgba(251, 146, 60, 0.32);
+  --round-panel: #2b1509;
+  --round-deep: #120805;
+  --round-soft: #ffdfc0;
+}
+body[data-round-theme="09:00"] {
+  --round-accent: #facc15;
+  --round-accent-2: #ca8a04;
+  --round-glow: rgba(234, 179, 8, 0.25);
+  --round-border: rgba(250, 204, 21, 0.32);
+  --round-panel: #292007;
+  --round-deep: #100c04;
+  --round-soft: #fff4b8;
+}
+body[data-round-theme="10:00"] {
+  --round-accent: #60a5fa;
+  --round-accent-2: #2563eb;
+  --round-glow: rgba(37, 99, 235, 0.28);
+  --round-border: rgba(96, 165, 250, 0.32);
+  --round-panel: #0c1d3b;
+  --round-deep: #050b18;
+  --round-soft: #dbeafe;
+}
+body[data-round-theme="11:00"] {
+  --round-accent: #ffbf58;
+  --round-accent-2: #df1628;
+  --round-glow: rgba(169, 23, 31, 0.38);
+  --round-border: rgba(255, 180, 75, 0.36);
+  --round-panel: #3a0d13;
+  --round-deep: #10070a;
+  --round-soft: #fff0dd;
+}
+body[data-round-theme="12:00"] {
+  --round-accent: #22d3ee;
+  --round-accent-2: #0284c7;
+  --round-glow: rgba(8, 145, 178, 0.3);
+  --round-border: rgba(34, 211, 238, 0.32);
+  --round-panel: #082936;
+  --round-deep: #041019;
+  --round-soft: #cffafe;
+}
+body[data-round-theme="13:00"] {
+  --round-accent: #d4af37;
+  --round-accent-2: #a16207;
+  --round-glow: rgba(161, 98, 7, 0.28);
+  --round-border: rgba(212, 175, 55, 0.34);
+  --round-panel: #2b200a;
+  --round-deep: #100c05;
+  --round-soft: #fef3c7;
+}
+body[data-round-theme="14:00"] {
+  --round-accent: #a5b4fc;
+  --round-accent-2: #6366f1;
+  --round-glow: rgba(99, 102, 241, 0.27);
+  --round-border: rgba(165, 180, 252, 0.34);
+  --round-panel: #191a3a;
+  --round-deep: #090918;
+  --round-soft: #e0e7ff;
+}
+body[data-round-theme="15:00"] {
+  --round-accent: #cbd5e1;
+  --round-accent-2: #64748b;
+  --round-glow: rgba(148, 163, 184, 0.22);
+  --round-border: rgba(203, 213, 225, 0.3);
+  --round-panel: #202735;
+  --round-deep: #0b0f17;
+  --round-soft: #f1f5f9;
+}
+body[data-round-theme="16:00"] {
+  --round-accent: #fb7185;
+  --round-accent-2: #e11d48;
+  --round-glow: rgba(225, 29, 72, 0.27);
+  --round-border: rgba(251, 113, 133, 0.32);
+  --round-panel: #321020;
+  --round-deep: #11070d;
+  --round-soft: #ffe4e6;
+}
+body[data-round-theme="17:00"] {
+  --round-accent: #c084fc;
+  --round-accent-2: #9333ea;
+  --round-glow: rgba(147, 51, 234, 0.28);
+  --round-border: rgba(192, 132, 252, 0.34);
+  --round-panel: #260d3d;
+  --round-deep: #0c0614;
+  --round-soft: #f3e8ff;
+}
+body[data-round-theme="18:00"] {
+  --round-accent: #34d399;
+  --round-accent-2: #059669;
+  --round-glow: rgba(5, 150, 105, 0.27);
+  --round-border: rgba(52, 211, 153, 0.32);
+  --round-panel: #082c21;
+  --round-deep: #04110d;
+  --round-soft: #d1fae5;
+}
+
+/* Shared elements read their colours from the active round palette */
+body[data-round-theme] .app-header {
+  border-color: var(--round-border);
+  background: linear-gradient(110deg, var(--round-panel), var(--round-deep) 58%, var(--round-panel));
+}
+body[data-round-theme] .app-header::before,
+body[data-round-theme] .app-brand,
+body[data-round-theme] .app-header::after {
+  color: var(--round-accent);
+}
+body[data-round-theme] .main-menu {
+  border-color: var(--round-border);
+  background: color-mix(in srgb, var(--round-deep) 94%, black);
+}
+body[data-round-theme] .main-menu button.active {
+  border-color: var(--round-accent);
+  background: linear-gradient(135deg, var(--round-accent), var(--round-accent-2));
+  color: #1b0a0b;
+  box-shadow: 0 5px 18px var(--round-glow);
+}
+body[data-round-theme] .ticket-header {
+  border-color: var(--round-border);
+  background: radial-gradient(ellipse at 50% 0%, var(--round-glow), transparent 68%),
+    linear-gradient(145deg, var(--round-panel), var(--round-deep));
+}
+body[data-round-theme] .eyebrow,
+body[data-round-theme] .wallet-balance strong,
+body[data-round-theme] .row-summary strong,
+body[data-round-theme] .potential-payout-item,
+body[data-round-theme] .live-draw-card strong {
+  color: var(--round-accent);
+}
+body[data-round-theme] .wallet-balance,
+body[data-round-theme] .ticket-round,
+body[data-round-theme] .number-input-column input,
+body[data-round-theme] .live-draw-card {
+  border-color: var(--round-border);
+  background-color: var(--round-deep);
+}
+body[data-round-theme] .ticket-row {
+  border-color: var(--round-border);
+  background: linear-gradient(145deg, var(--round-panel), var(--round-deep));
+}
+body[data-round-theme] .row-letter {
+  border-color: var(--round-border);
+  background: linear-gradient(145deg, var(--round-accent), var(--round-accent-2));
+  color: #1b0a0b;
+  box-shadow: 0 5px 16px var(--round-glow);
+}
+body[data-round-theme] .number-input-column input:focus {
+  border-color: var(--round-accent);
+  box-shadow: 0 0 0 2px var(--round-glow);
+}
+body[data-round-theme] .row-book-button:not(:disabled),
+body[data-round-theme] .submit-button:not(:disabled),
+body[data-round-theme] .book-button:not(:disabled) {
+  border-color: var(--round-border);
+  background: linear-gradient(110deg, var(--round-accent), var(--round-accent-2));
+  color: #1b0a0b;
+}
+body[data-round-theme] .live-draw-panel {
+  border-color: var(--round-border);
+  background: radial-gradient(ellipse at 50% 0%, var(--round-glow), transparent 68%),
+    linear-gradient(145deg, var(--round-panel), var(--round-deep));
+}
+body[data-round-theme] .auth-card {
+  border-color: var(--round-border);
+}
+@media (prefers-reduced-motion: no-preference) {
+  body[data-round-theme] .app-header,
+  body[data-round-theme] .ticket-header,
+  body[data-round-theme] .ticket-row,
+  body[data-round-theme] .main-menu button,
+  body[data-round-theme] .row-letter {
+    transition: background 350ms ease, border-color 350ms ease, box-shadow 350ms ease;
+  }
+}
