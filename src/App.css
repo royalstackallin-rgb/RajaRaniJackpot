@@ -2351,3 +2351,36 @@ body[data-round-theme] .auth-card {
   --history-glow: rgba(5,150,105,.2); --history-border: rgba(52,211,153,.34);
   --history-panel: #082c21; --history-deep: #04110d;
 }
+
+
+/* HISTORY PAGE FIX: keep the page chrome neutral/red-luxury while saved
+   booking slips and result cards retain their individual round colours. */
+body:has(.history-page) {
+  --history-page-border: rgba(255, 190, 89, 0.28);
+  background:
+    radial-gradient(ellipse at 50% -12%, rgba(164, 22, 28, 0.24), transparent 52%),
+    linear-gradient(180deg, #21090d 0%, #100608 48%, #080507 100%);
+}
+
+body:has(.history-page) .app-header {
+  border-color: var(--history-page-border);
+  background: linear-gradient(110deg, #2a0d13, #10070a 58%, #2a0d13);
+}
+
+body:has(.history-page) .app-header::before,
+body:has(.history-page) .app-brand,
+body:has(.history-page) .app-header::after {
+  color: #ffbf58;
+}
+
+body:has(.history-page) .main-menu {
+  border-color: var(--history-page-border);
+  background: #10070a;
+}
+
+body:has(.history-page) .main-menu button.active {
+  border-color: var(--history-page-border);
+  background: linear-gradient(135deg, #ffbf58, #df1628);
+  color: #1b0a0b;
+  box-shadow: 0 5px 18px rgba(169, 23, 31, 0.22);
+}
