@@ -34,14 +34,28 @@ export default function Wallet() {
     setMessage('')
     const rupees = Number(amount)
     if (!Number.isSafeInteger(rupees) || rupees < 10 || rupees > 50000) { setMessage('Enter a whole amount between ₹10 and ₹50,000.'); return }
-    const { data, error } = await supabase.from('wallet_payment_methods').select('id,label,upi_id').eq('active', true)
-    if (error) { setMessage('Could not load payment accounts. Please try again.'); return }
-    if (!data?.length) { setMessage('Deposits are temporarily unavailable. Please contact the host.'); return }
-    const method = data[Math.floor(Math.random() * data.length)]
-    setAssigned(method)
-    const note = 'TARGETORSTAKE deposit ' + crypto.randomUUID().slice(0, 8)
-    const upiUrl = 'upi://pay?pa=' + encodeURIComponent(method.upi_id) + '&pn=' + encodeURIComponent(method.label || 'TARGETORSTAKE') + '&am=' + encodeURIComponent(String(rupees)) + '&cu=INR&tn=' + encodeURIComponent(note)
-    window.location.href = upiUrl
+    setLoading(true)
+    try {
+      const { data, error } = await supabase.rpc('assign_manual_upi_method', { p_amount_rupees: rupees })
+      if (error) throw error
+      const assignment = Array.isArray(data) ? data[0] : data
+      if (!assignment?.assignment_id || !assignment?.assigned_upi_id) throw new Error('No UPI account could be assigned. Please contact the host.')
+      const method = {
+        id: assignment.assignment_id,
+        label: assignment.assigned_label,
+        upi_id: assignment.assigned_upi_id,
+        amount_rupees: assignment.amount_rupees,
+        expires_at: assignment.expires_at,
+      }
+      setAssigned(method)
+      const note = 'TARGETORSTAKE deposit ' + method.id.slice(0, 8)
+      const upiUrl = 'upi://pay?pa=' + encodeURIComponent(method.upi_id) + '&pn=' + encodeURIComponent(method.label || 'TARGETORSTAKE') + '&am=' + encodeURIComponent(String(rupees)) + '&cu=INR&tn=' + encodeURIComponent(note)
+      window.location.href = upiUrl
+    } catch (error) {
+      setMessage(error.message || 'Could not assign a UPI account.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   const submitRequest = async (event) => {
@@ -49,6 +63,7 @@ export default function Wallet() {
     const rupees = Number(amount)
     if (!Number.isSafeInteger(rupees) || rupees < 10 || rupees > 50000) { setMessage('Enter a whole amount between ₹10 and ₹50,000.'); return }
     if (!assigned) { setMessage('First tap Pay with UPI to receive an assigned payment account.'); return }
+    if (Number(assigned.amount_rupees) !== rupees) { setMessage('Amount changed. Start a new payment assignment.'); return }
     if (!reference.trim()) { setMessage('Enter the UPI transaction reference number.'); return }
     if (!proof) { setMessage('Upload the payment screenshot so the host can review your request.'); return }
     if (!['image/jpeg','image/png','image/webp'].includes(proof.type) || proof.size > 5 * 1024 * 1024) { setMessage('Choose a JPG, PNG or WEBP image under 5 MB.'); return }
@@ -59,12 +74,12 @@ export default function Wallet() {
       const path = user.id + '/' + crypto.randomUUID() + '-' + proof.name.replace(/[^a-zA-Z0-9._-]/g, '_')
       const { error: uploadError } = await supabase.storage.from('wallet-payment-proofs').upload(path, proof, { contentType: proof.type, upsert: false })
       if (uploadError) throw uploadError
-      const { error } = await supabase.from('wallet_deposits').insert({
-        user_id: user.id, amount_rupees: rupees, amount_paise: rupees * 100,
-        provider: 'manual_upi', payment_method: 'UPI', payment_reference: reference.trim(),
-        proof_path: path, assigned_payment_method_id: assigned.id, assigned_upi_id: assigned.upi_id, status: 'pending',
+      const { error: submitError } = await supabase.rpc('submit_manual_wallet_deposit', {
+        p_assignment_id: assigned.id,
+        p_payment_reference: reference.trim(),
+        p_proof_path: path,
       })
-      if (error) throw error
+      if (submitError) throw submitError
       setReference(''); setProof(null); setAssigned(null); setMessage('Request submitted. Your wallet will update only after the host verifies and approves the payment.')
       event.target.reset()
       await refresh()
@@ -75,7 +90,7 @@ export default function Wallet() {
   return <section className="wallet-page">
     <div className="wallet-heading"><div><p className="wallet-eyebrow">TARGETORSTAKE ACCOUNT</p><h1>Wallet / Buy In</h1><p className="wallet-subtitle">Choose an amount, pay the randomly assigned UPI account, then submit your reference and screenshot for host review.</p></div><button type="button" className="wallet-refresh" onClick={refresh} disabled={refreshing}>Refresh</button></div>
     <div className="wallet-balance-card"><span>AVAILABLE BALANCE</span><strong>{refreshing && balance === null ? 'Loading…' : money(balance)}</strong><small>Pending requests are not included in your balance.</small></div>
-    <div className="wallet-deposit-card"><h2>Step 1 · Pay by UPI</h2><label htmlFor="wallet-deposit-amount">Deposit amount (₹)</label><input id="wallet-deposit-amount" type="number" inputMode="numeric" min="10" max="50000" step="1" value={amount} onChange={e => { setAmount(e.target.value); setAssigned(null) }} required /><div className="wallet-quick-amounts">{[100,500,1000,2000].map(v => <button key={v} type="button" className={Number(amount) === v ? 'selected' : ''} onClick={() => { setAmount(String(v)); setAssigned(null) }}>₹{v.toLocaleString('en-IN')}</button>)}</div><button className="wallet-buy-button" type="button" onClick={startPayment}>Pay with UPI</button>{assigned && <div className="wallet-upi-id"><span>Assigned receiving account</span><strong>{assigned.label}</strong><strong>{assigned.upi_id}</strong><p>Pay exactly {money(amount)} to this account. If you cancel the payment, do not submit a deposit request.</p><button type="button" onClick={() => { navigator.clipboard?.writeText(assigned.upi_id); setMessage('UPI ID copied if clipboard permission is available.') }}>Copy UPI ID</button></div>}<p className="wallet-secure-note">Opening a UPI app does not confirm payment. Verify the recipient in your UPI app. Never enter your UPI PIN on this website.</p></div>
+    <div className="wallet-deposit-card"><h2>Step 1 · Pay by UPI</h2><label htmlFor="wallet-deposit-amount">Deposit amount (₹)</label><input id="wallet-deposit-amount" type="number" inputMode="numeric" min="10" max="50000" step="1" value={amount} onChange={e => { setAmount(e.target.value); setAssigned(null) }} required /><div className="wallet-quick-amounts">{[100,500,1000,2000].map(v => <button key={v} type="button" className={Number(amount) === v ? 'selected' : ''} onClick={() => { setAmount(String(v)); setAssigned(null) }}>₹{v.toLocaleString('en-IN')}</button>)}</div><button className="wallet-buy-button" type="button" onClick={startPayment} disabled={loading}>{loading ? 'Preparing payment…' : 'Pay with UPI'}</button>{assigned && <div className="wallet-upi-id"><span>Assigned receiving account</span><strong>{assigned.label}</strong><strong>{assigned.upi_id}</strong><p>Pay exactly {money(amount)} to this account. If you cancel the payment, do not submit a deposit request.</p><button type="button" onClick={() => { navigator.clipboard?.writeText(assigned.upi_id); setMessage('UPI ID copied if clipboard permission is available.') }}>Copy UPI ID</button></div>}<p className="wallet-secure-note">Opening a UPI app does not confirm payment. Verify the recipient in your UPI app. Never enter your UPI PIN on this website.</p></div>
     <form className="wallet-deposit-card" onSubmit={submitRequest}>
       <h2>Step 2 · Submit payment request</h2><p>Only submit this after completing the payment. Cancelled payments should not be submitted.</p>
       <label htmlFor="wallet-upi-reference">UPI transaction reference / UTR</label><input id="wallet-upi-reference" value={reference} onChange={e => setReference(e.target.value)} maxLength={100} placeholder="Enter transaction reference" required />
