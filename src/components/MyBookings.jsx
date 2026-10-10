@@ -188,11 +188,11 @@ function MyBookings() {
                 </div>
                 <div>
                   <span>Cost</span>
-                  <strong>{Number(booking.total_amount).toLocaleString('en-IN')} coins</strong>
+                  <strong>₹{Number(booking.total_amount).toLocaleString('en-IN')}</strong>
                 </div>
                 <div>
                   <span>Payout</span>
-                  <strong>{outcome.payout.toLocaleString('en-IN')} coins</strong>
+                  <strong>₹{outcome.payout.toLocaleString('en-IN')}</strong>
                 </div>
               </div>
 
@@ -215,7 +215,7 @@ function MyBookings() {
                       </span>
                       <span>Qty: {entry.quantity}</span>
                       <span style={won ? { color: '#86efac', fontWeight: 800 } : undefined}>
-                        {won ? 'WON · ' : ''}{Number(entry.amount).toLocaleString('en-IN')} coins
+                        {won ? 'WON · ' : ''}₹{Number(entry.amount).toLocaleString('en-IN')}
                       </span>
                     </div>
                   )
