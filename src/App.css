@@ -2832,3 +2832,39 @@ body[data-round-theme] .main-menu button:not(.active) {
 .double-number-tile.selected{border-color:#e8c87980;background:#b38a3e12}
 .double-selected-summary{overflow-wrap:anywhere}
 @media(max-width:560px){.double-number-grid{grid-template-columns:repeat(10,minmax(0,1fr));gap:3px}.double-number-tile{padding:2px;gap:3px;border-radius:5px}.double-number-grid .double-number-tile>button{min-height:26px;font-size:10px}.double-tile-stake{gap:1px;font-size:9px}.double-tile-stake input{padding:4px 0;font-size:9px}.double-tile-stake input::placeholder{font-size:8px}}
+
+/* TARGETORSTAKE Wallet / Buy In */
+.app-menu-wallet{display:block;width:100%;padding:12px 14px;border:0;border-bottom:1px solid #ffffff18;background:transparent;color:#f5d58b;text-align:left;font:inherit;font-weight:800;cursor:pointer}
+.wallet-page{max-width:900px;margin:0 auto;padding:clamp(14px,3vw,26px);color:#edf3ff}
+.wallet-heading{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:18px}
+.wallet-heading h1{margin:4px 0;font-size:clamp(25px,5vw,34px);letter-spacing:-.04em}
+.wallet-eyebrow{margin:0;color:#d7b56d;font-size:10px;font-weight:900;letter-spacing:.14em}
+.wallet-subtitle{max-width:560px;margin:8px 0 0;color:#aab8d0;font-size:13px;line-height:1.6}
+.wallet-refresh,.wallet-history-heading button{padding:9px 12px;border:1px solid #ffffff30;border-radius:9px;background:#0b1425;color:#dce6f8;cursor:pointer}
+.wallet-balance-card,.wallet-deposit-card,.wallet-history-card{margin:14px 0;padding:clamp(16px,3vw,24px);border:1px solid #ffffff20;border-radius:18px;background:linear-gradient(145deg,#172235,#080e1a)}
+.wallet-balance-card{display:grid;gap:8px}
+.wallet-balance-card>span{color:#9baecb;font-size:10px;font-weight:900;letter-spacing:.13em}
+.wallet-balance-card strong{font-size:clamp(30px,7vw,42px);color:#f5d58b}
+.wallet-balance-card small{color:#8392ab}
+.wallet-deposit-card h2,.wallet-history-card h2{margin:0;font-size:19px}
+.wallet-deposit-card>p{color:#aab8d0;font-size:13px;line-height:1.5}
+.wallet-deposit-card label{display:block;margin:18px 0 7px;color:#aab8d0;font-size:12px;font-weight:800}
+.wallet-deposit-card>input{box-sizing:border-box;width:100%;padding:14px;border:1px solid #ffffff35;border-radius:10px;background:#050b16;color:#fff;font:inherit;font-size:18px}
+.wallet-quick-amounts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:10px}
+.wallet-quick-amounts button{padding:10px 3px;border:1px solid #ffffff25;border-radius:9px;background:#0a1325;color:#dce6f8;cursor:pointer}
+.wallet-quick-amounts button.selected{border-color:#d7b56d;background:#a67c2d26;color:#f5d58b}
+.wallet-buy-button{width:100%;min-height:48px;margin-top:16px;padding:12px;border:0;border-radius:10px;background:linear-gradient(135deg,#e8c879,#b38a3e);color:#17130a;font-weight:900;font-size:15px;cursor:pointer}
+.wallet-buy-button:disabled,.wallet-refresh:disabled{opacity:.6;cursor:wait}
+.wallet-secure-note,.wallet-disclaimer{color:#8492aa;font-size:11px;line-height:1.6}
+.wallet-history-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.wallet-empty{color:#94a3b8;font-size:13px}
+.wallet-deposit-list{display:grid;gap:10px;margin-top:14px}
+.wallet-deposit-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px;border:1px solid #ffffff18;border-radius:10px;background:#050b1680}
+.wallet-deposit-row>div{display:grid;gap:5px;min-width:0}
+.wallet-deposit-row>div strong{font-size:14px}
+.wallet-deposit-row>div span{color:#8492aa;font-size:10px}
+.wallet-deposit-status{padding:6px 8px;border-radius:99px;background:#94a3b81a;color:#cbd5e1;font-size:9px;font-weight:900;text-transform:uppercase;white-space:nowrap}
+.wallet-deposit-status.credited{background:#22c55e20;color:#86efac}
+.wallet-deposit-status.failed{background:#f8717120;color:#fca5a5}
+.wallet-message{margin:12px 0;padding:12px;border:1px solid #d7b56d50;border-radius:10px;color:#f5d58b;font-size:13px;overflow-wrap:anywhere}
+@media(max-width:560px){.wallet-heading{align-items:flex-start}.wallet-refresh{padding:8px}.wallet-quick-amounts{gap:5px}.wallet-quick-amounts button{font-size:12px}.wallet-deposit-row{align-items:flex-start}}
