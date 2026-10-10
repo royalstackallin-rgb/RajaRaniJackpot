@@ -109,9 +109,6 @@ function App() {
                     <span>ACCOUNT</span>
                     <strong>{session.user.email}</strong>
                   </div>
-                  <button type="button" onClick={() => { setView('tickets'); setShowAppMenu(false) }}>Lobby</button>
-                  <button type="button" onClick={() => { setView('bookings'); setShowAppMenu(false) }}>My Bookings</button>
-                  <button type="button" onClick={() => { setView('results'); setShowAppMenu(false) }}>Game Results</button>
                   <button type="button" className="app-menu-logout" onClick={() => { setShowAppMenu(false); setShowLogoutConfirm(true) }}>Logout</button>
                 </div>
               )}
