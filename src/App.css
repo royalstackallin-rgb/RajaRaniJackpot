@@ -2415,3 +2415,54 @@ body[data-round-theme]:has(.history-page) .main-menu button.active {
   color: #1b0a0b !important;
   box-shadow: 0 5px 18px rgba(169, 23, 31, 0.22) !important;
 }
+
+
+/* HISTORY PAGE: neutral dark page chrome; only the saved slips/cards keep round colours. */
+body:has(.history-page),
+body[data-round-theme]:has(.history-page) {
+  background: linear-gradient(180deg, #0b1018 0%, #070a10 52%, #05070b 100%) !important;
+}
+
+body:has(.history-page) .app-page {
+  background: transparent !important;
+}
+
+body:has(.history-page) .app-header,
+body[data-round-theme]:has(.history-page) .app-header {
+  border-color: rgba(148, 163, 184, 0.24) !important;
+  background: linear-gradient(135deg, #151d29, #0b1018) !important;
+}
+
+body:has(.history-page) .app-header::before,
+body:has(.history-page) .app-brand,
+body:has(.history-page) .app-header::after {
+  color: #e2e8f0 !important;
+}
+
+body:has(.history-page) .main-menu,
+body[data-round-theme]:has(.history-page) .main-menu {
+  border-color: rgba(148, 163, 184, 0.22) !important;
+  background: #090d14 !important;
+}
+
+body:has(.history-page) .main-menu button.active,
+body[data-round-theme]:has(.history-page) .main-menu button.active {
+  border-color: rgba(148, 163, 184, 0.3) !important;
+  background: linear-gradient(135deg, #334155, #1e293b) !important;
+  color: #f8fafc !important;
+  box-shadow: none !important;
+}
+
+/* Keep the search/filter and empty states neutral; per-round cards remain untouched. */
+body:has(.history-page) .results-search,
+body:has(.history-page) .history-empty,
+body:has(.history-page) .history-message,
+body:has(.history-page) .history-error {
+  border-color: rgba(148, 163, 184, 0.22) !important;
+  background: linear-gradient(145deg, #151d29, #0b1018) !important;
+}
+
+body:has(.history-page) .results-search input {
+  border-color: rgba(148, 163, 184, 0.28) !important;
+  background: #090d14 !important;
+}
