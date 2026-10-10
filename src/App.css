@@ -2466,3 +2466,41 @@ body:has(.history-page) .results-search input {
   border-color: rgba(148, 163, 184, 0.28) !important;
   background: #090d14 !important;
 }
+
+
+/* FINAL HISTORY THEME BEHAVIOUR:
+   page/header/navigation follow the current Lobby round palette;
+   individual booking and result cards continue using their saved round palette. */
+body[data-round-theme]:has(.history-page) {
+  background:
+    radial-gradient(ellipse at 50% -12%, var(--round-glow), transparent 52%),
+    linear-gradient(180deg, var(--round-panel) 0%, var(--round-deep) 70%, #080507 100%) !important;
+}
+
+body[data-round-theme]:has(.history-page) .app-page {
+  background:
+    radial-gradient(ellipse at 50% 0%, var(--round-glow), transparent 58%) !important;
+}
+
+body[data-round-theme]:has(.history-page) .app-header {
+  border-color: var(--round-border) !important;
+  background: linear-gradient(110deg, var(--round-panel), var(--round-deep) 58%, var(--round-panel)) !important;
+}
+
+body[data-round-theme]:has(.history-page) .app-header::before,
+body[data-round-theme]:has(.history-page) .app-brand,
+body[data-round-theme]:has(.history-page) .app-header::after {
+  color: var(--round-accent) !important;
+}
+
+body[data-round-theme]:has(.history-page) .main-menu {
+  border-color: var(--round-border) !important;
+  background: color-mix(in srgb, var(--round-deep) 94%, black) !important;
+}
+
+body[data-round-theme]:has(.history-page) .main-menu button.active {
+  border-color: var(--round-accent) !important;
+  background: linear-gradient(135deg, var(--round-accent), var(--round-accent-2)) !important;
+  color: #1b0a0b !important;
+  box-shadow: 0 5px 18px var(--round-glow) !important;
+}
