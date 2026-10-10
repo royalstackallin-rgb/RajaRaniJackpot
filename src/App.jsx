@@ -15,6 +15,7 @@ function App() {
   const [session, setSession] = useState(null)
   const [view, setView] = useState('home')
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false)
+  const [showAppMenu, setShowAppMenu] = useState(false)
 
   useEffect(() => {
     const loadSession = async () => {
@@ -92,6 +93,29 @@ function App() {
         <div className="app-shell">
           <header className="app-header">
             <div className="app-brand"><img src="/targetora-wordmark.svg" alt="Targetora" style={{ width: "clamp(220px, 72vw, 330px)", maxWidth: "100%", display: "block" }} /></div>
+            <div className="app-menu-wrap">
+              <button
+                type="button"
+                className={`app-menu-trigger ${showAppMenu ? 'is-open' : ''}`}
+                aria-label={showAppMenu ? 'Close menu' : 'Open menu'}
+                aria-expanded={showAppMenu}
+                onClick={() => setShowAppMenu((open) => !open)}
+              >
+                <span></span><span></span><span></span>
+              </button>
+              {showAppMenu && (
+                <div className="app-menu-dropdown">
+                  <div className="app-menu-account">
+                    <span>ACCOUNT</span>
+                    <strong>{session.user.email}</strong>
+                  </div>
+                  <button type="button" onClick={() => { setView('tickets'); setShowAppMenu(false) }}>Lobby</button>
+                  <button type="button" onClick={() => { setView('bookings'); setShowAppMenu(false) }}>My Bookings</button>
+                  <button type="button" onClick={() => { setView('results'); setShowAppMenu(false) }}>Game Results</button>
+                  <button type="button" className="app-menu-logout" onClick={() => { setShowAppMenu(false); setShowLogoutConfirm(true) }}>Logout</button>
+                </div>
+              )}
+            </div>
           </header>
 
           <nav className="main-menu" aria-label="Main menu">
@@ -115,12 +139,6 @@ function App() {
               onClick={() => setView('results')}
             >
               Game Results
-            </button>
-            <button
-              type="button"
-              onClick={() => setShowLogoutConfirm(true)}
-            >
-              Logout
             </button>
           </nav>
 
