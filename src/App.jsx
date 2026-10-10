@@ -93,7 +93,7 @@ function App() {
       <main className={`app-page app-view-${view}`}>
         <div className="app-shell">
           <header className="app-header">
-            <div className="app-brand"><img src="/targetora-wordmark.svg" alt="Targetora" style={{ width: "clamp(220px, 72vw, 330px)", maxWidth: "100%", display: "block" }} /></div>
+            <div className="app-brand"><img src="/targetora-wordmark.svg" alt="TARGETORSTAKE" style={{ width: "clamp(220px, 72vw, 330px)", maxWidth: "100%", display: "block" }} /></div>
             <div className="app-menu-wrap">
               <button
                 type="button"
@@ -199,7 +199,7 @@ function App() {
       <main className="auth-page">
         <div className="auth-card">
           <div className="brand">
-            <img src="/targetora-wordmark.svg" alt="Targetora" style={{ width: "min(340px, 90vw)", maxWidth: "100%", display: "block", margin: "0 auto" }} />
+            <img src="/targetora-wordmark.svg" alt="TARGETORSTAKE" style={{ width: "min(340px, 90vw)", maxWidth: "100%", display: "block", margin: "0 auto" }} />
             <p>Welcome back.</p>
           </div>
 
@@ -243,7 +243,7 @@ function App() {
     <main className="auth-page">
       <div className="auth-card">
         <div className="brand">
-          <img src="/targetora-wordmark.svg" alt="Targetora" style={{ width: "min(340px, 90vw)", maxWidth: "100%", display: "block", margin: "0 auto" }} />
+          <img src="/targetora-wordmark.svg" alt="TARGETORSTAKE" style={{ width: "min(340px, 90vw)", maxWidth: "100%", display: "block", margin: "0 auto" }} />
           <p>Numbers. Rounds. Play.</p>
         </div>
 
