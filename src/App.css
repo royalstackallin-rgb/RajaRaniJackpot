@@ -2805,12 +2805,12 @@ body[data-round-theme] .main-menu button:not(.active) {
 @media(max-width:560px){.double-heading{flex-direction:column}.double-wallet{width:100%;text-align:left}.double-number-grid{gap:5px}.double-number-grid button{border-radius:7px}.double-booking-controls{grid-template-columns:1fr 1fr}.double-submit{grid-column:1/-1}}
 
 /* Targetor Double: per-number stake entry */
-.double-number-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
-.double-number-tile{min-width:0;display:flex;flex-direction:column;gap:5px;padding:5px;border:1px solid #ffffff1c;border-radius:10px;background:#0a1325}
-.double-number-grid .double-number-tile>button{width:100%;aspect-ratio:auto;min-height:34px;border-radius:7px}
+.double-number-grid{grid-template-columns:repeat(10,minmax(0,1fr));gap:5px}
+.double-number-tile{min-width:0;display:flex;flex-direction:column;gap:4px;padding:3px;border:1px solid #ffffff1c;border-radius:7px;background:#0a1325}
+.double-number-grid .double-number-tile>button{width:100%;aspect-ratio:auto;min-height:30px;padding:3px 0;border-radius:5px;font-size:clamp(9px,2.4vw,13px)}
 .double-tile-stake{display:flex;align-items:center;gap:3px;min-width:0;color:#f5d58b;font-size:11px}
-.double-tile-stake input{width:100%;min-width:0;max-width:100%;padding:6px 2px;border:1px solid #ffffff30;border-radius:6px;background:#050b16;color:#fff;text-align:center;font-size:11px}
+.double-tile-stake input{width:100%;min-width:0;max-width:100%;padding:4px 1px;border:1px solid #ffffff30;border-radius:6px;background:#050b16;color:#fff;text-align:center;font-size:11px}
 .double-tile-stake input::placeholder{color:#71819d;font-size:10px}
 .double-number-tile.selected{border-color:#e8c87980;background:#b38a3e12}
 .double-selected-summary{overflow-wrap:anywhere}
-@media(min-width:700px){.double-number-grid{grid-template-columns:repeat(10,minmax(0,1fr))}.double-tile-stake input{font-size:12px}}
+@media(max-width:560px){.double-number-grid{grid-template-columns:repeat(10,minmax(0,1fr));gap:3px}.double-number-tile{padding:2px;gap:3px;border-radius:5px}.double-number-grid .double-number-tile>button{min-height:26px;font-size:10px}.double-tile-stake{gap:1px;font-size:9px}.double-tile-stake input{padding:4px 0;font-size:9px}.double-tile-stake input::placeholder{font-size:8px}}
