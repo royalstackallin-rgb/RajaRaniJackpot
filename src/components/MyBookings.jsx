@@ -184,35 +184,13 @@ function MyBookings() {
               </div>
 
               <div className="booking-entries">
-                {entries.map((entry) => {
-                  const entryPayout = (entry.game_results || []).reduce(
-                    (sum, result) => sum + Number(result.payout || 0),
-                    0,
-                  )
-                  const isWinner = entryPayout > 0
-
-                  return (
-                    <div
-                      className={`booking-entry ${isWinner ? 'booking-entry-winner' : ''}`}
-                      key={entry.id}
-                      style={isWinner ? {
-                        border: '2px solid #22c55e',
-                        background: 'linear-gradient(110deg, rgba(20, 83, 45, 0.72), rgba(6, 78, 59, 0.38))',
-                        boxShadow: '0 0 14px rgba(34, 197, 94, 0.2)',
-                      } : undefined}
-                    >
-                      <span className="booking-number">{entry.number}</span>
-                      <span>Qty: {entry.quantity}</span>
-                      {isWinner ? (
-                        <span style={{ color: '#86efac', fontWeight: 800, textAlign: 'right' }}>
-                          ✓ WON · +{entryPayout.toLocaleString('en-IN')} coins
-                        </span>
-                      ) : (
-                        <span>{Number(entry.amount).toLocaleString('en-IN')} coins</span>
-                      )}
-                    </div>
-                  )
-                })}
+                {entries.map((entry) => (
+                  <div className="booking-entry" key={entry.id}>
+                    <span className="booking-number">{entry.number}</span>
+                    <span>Qty: {entry.quantity}</span>
+                    <span>{Number(entry.amount).toLocaleString('en-IN')} coins</span>
+                  </div>
+                ))}
               </div>
 
               <p className="booking-created">
