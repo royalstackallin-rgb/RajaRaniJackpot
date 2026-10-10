@@ -145,7 +145,7 @@ function MyBookings() {
           const entries = booking.game_entries || []
 
           return (
-            <article className="booking-card" key={booking.id}>
+            <article className={`booking-card round-theme-${String(round?.round_time || '').slice(0, 5).replace(':', '-')}`} key={booking.id}>
               <div className="booking-card-top">
                 <div>
                   <span className="booking-row-label">
