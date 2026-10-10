@@ -2722,3 +2722,15 @@ body:not([data-round-theme]):has(.history-page) .main-menu button.active {
 .app-view-results .history-error {
   background-image: none;
 }
+
+/* Keep inactive navigation buttons in the active round palette instead of the legacy maroon. */
+body[data-round-theme] .main-menu {
+  border-color: var(--round-border) !important;
+  background: color-mix(in srgb, var(--round-deep) 88%, var(--round-panel)) !important;
+}
+body[data-round-theme] .main-menu button:not(.active) {
+  border-color: var(--round-border) !important;
+  background: color-mix(in srgb, var(--round-panel) 72%, var(--round-deep)) !important;
+  color: var(--round-soft) !important;
+  box-shadow: none !important;
+}
