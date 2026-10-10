@@ -2531,3 +2531,34 @@ body[data-round-theme]:has(.history-page) .main-menu button.active {
   object-fit: contain;
   filter: drop-shadow(0 1px 5px rgba(0, 0, 0, 0.18));
 }
+
+
+/* Keep authentication screens neutral, independent of the active game round. */
+body:has(.auth-page) {
+  --round-accent: #dbe4f0;
+  --round-accent-2: #94a3b8;
+  --round-glow: rgba(148, 163, 184, 0.08);
+  --round-border: rgba(148, 163, 184, 0.22);
+  --round-panel: #111827;
+  --round-deep: #080d16;
+  --round-soft: #e2e8f0;
+  background: linear-gradient(180deg, #101827 0%, #080d16 100%) !important;
+}
+body:has(.auth-page) .auth-card {
+  border-color: rgba(148, 163, 184, 0.24) !important;
+  background: linear-gradient(145deg, #111827, #090e17) !important;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.35) !important;
+}
+body:has(.auth-page) .brand-mark {
+  display: none !important;
+}
+body:has(.auth-page) .brand img {
+  margin-bottom: 12px !important;
+}
+body:has(.auth-page) .tabs button.active,
+body:has(.auth-page) .submit-button {
+  background: linear-gradient(135deg, #e2e8f0, #94a3b8) !important;
+  border-color: rgba(226, 232, 240, 0.4) !important;
+  color: #0b1220 !important;
+  box-shadow: none !important;
+}
