@@ -1,4 +1,2 @@
-project_id = "TARGETORSTAKE_SUPABASE_PROJECT_REF"
-
 [functions.razorpay-wallet-webhook]
 verify_jwt = false
