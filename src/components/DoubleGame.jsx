@@ -37,7 +37,6 @@ export default function DoubleGame() {
   const [stakes, setStakes] = useState({})
   const [balance, setBalance] = useState(null)
   const [bookings, setBookings] = useState([])
-  const [userId, setUserId] = useState(null)
   const [message, setMessage] = useState('')
   const [busy, setBusy] = useState(false)
   const [now, setNow] = useState(new Date())
@@ -45,7 +44,6 @@ export default function DoubleGame() {
   const loadData = useCallback(async () => {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return
-    setUserId(user.id)
 
     const today = istDateString()
     const tomorrowDate = new Date(Date.now() + 36 * 60 * 60 * 1000)
@@ -99,7 +97,7 @@ export default function DoubleGame() {
     now.getTime() >= currentRoundTime - 60 * 60 * 1000 &&
     now.getTime() < currentRoundTime - 5 * 60 * 1000
   )
-  const stakeFor = (number) => stakes[number] ?? '10'
+  const stakeFor = (number) => stakes[number] ?? ''
   const totalStake = selectedNumbers.reduce((sum, number) => sum + (Number(stakeFor(number)) || 0), 0)
   const potentialPayout = selectedNumbers.reduce((sum, number) => sum + (Number(stakeFor(number)) || 0) * 80, 0)
   const toggleNumber = (number) => {
@@ -202,30 +200,40 @@ export default function DoubleGame() {
         )}
         <div className="double-payout-note">Potential payout: <strong>80× stake per winning number</strong>. Stake applies to each selected number.</div>
         <p className="double-selected-summary">Selected: <strong>{selectedNumbers.length ? selectedNumbers.join(', ') : 'none'}</strong></p>
-        <div className="double-number-grid" aria-label="Choose a number">
+        <div className="double-number-grid" aria-label="Choose numbers and enter individual stakes">
           {NUMBERS.map((number) => (
-            <button
-              type="button"
-              key={number}
-              className={selectedNumbers.includes(number) ? 'chosen' : ''}
-              onClick={() => toggleNumber(number)}
-              aria-pressed={selectedNumbers.includes(number)}
-            >
-              {number}
-            </button>
+            <div className={`double-number-tile ${selectedNumbers.includes(number) ? 'selected' : ''}`} key={number}>
+              <button
+                type="button"
+                className={selectedNumbers.includes(number) ? 'chosen' : ''}
+                onClick={() => toggleNumber(number)}
+                aria-pressed={selectedNumbers.includes(number)}
+              >
+                {number}
+              </button>
+              <label className="double-tile-stake">
+                <span>₹</span>
+                <input
+                  type="number"
+                  inputMode="numeric"
+                  min="1"
+                  max="1000000"
+                  step="1"
+                  placeholder="Amount"
+                  value={stakeFor(number)}
+                  onChange={(event) => {
+                    const value = event.target.value
+                    setStakes((current) => ({ ...current, [number]: value }))
+                    if (value !== '' && Number(value) > 0) {
+                      setSelectedNumbers((current) => current.includes(number) ? current : [...current, number].sort((a, b) => Number(a) - Number(b)))
+                    }
+                  }}
+                  aria-label={`Stake amount for number ${number}`}
+                />
+              </label>
+            </div>
           ))}
         </div>
-        {selectedNumbers.length > 0 && <div className="double-stake-list">
-          <h3>Stake per number</h3>
-          {selectedNumbers.map((number) => (
-            <label className="double-stake-row" key={number}>
-              <span>Number <strong>{number}</strong></span>
-              <span className="double-stake-input-wrap">₹
-                <input type="number" inputMode="numeric" min="1" max="1000000" step="1" value={stakeFor(number)} onChange={(event) => setStakes((current) => ({ ...current, [number]: event.target.value }))} aria-label={`Stake for number ${number}`} />
-              </span>
-            </label>
-          ))}
-        </div>}
         <div className="double-booking-controls">
           <div className="double-potential">
             <span>TOTAL STAKE</span>
@@ -261,7 +269,7 @@ export default function DoubleGame() {
                   <div className="double-history-number">{booking.number}</div>
                   <div className="double-history-details">
                     <strong>{roundLabel(round)}</strong>
-                    <span>Stake ₹{formatMoney(booking.stake)} · Payout ₹{formatMoney(booking.payout)}</span>
+                    <span>Stake ₹{formatMoney(booking.stake)} · Potential winning ₹{formatMoney(Number(booking.stake) * 80)}</span>
                   </div>
                   <span className={`double-status ${booking.status === 'win' ? 'won' : booking.status === 'loss' ? 'lost' : ''}`}>
                     {booking.status.toUpperCase()}
