@@ -184,13 +184,29 @@ function MyBookings() {
               </div>
 
               <div className="booking-entries">
-                {entries.map((entry) => (
-                  <div className="booking-entry" key={entry.id}>
-                    <span className="booking-number">{entry.number}</span>
-                    <span>Qty: {entry.quantity}</span>
-                    <span>{Number(entry.amount).toLocaleString('en-IN')} coins</span>
-                  </div>
-                ))}
+                {entries.map((entry) => {
+                  const payout = (entry.game_results || []).reduce(
+                    (total, result) => total + Number(result.payout || 0),
+                    0,
+                  )
+                  const won = payout > 0
+
+                  return (
+                    <div
+                      className="booking-entry"
+                      key={entry.id}
+                      style={won ? { border: '2px solid #22c55e', backgroundColor: 'rgba(22, 101, 52, 0.28)' } : undefined}
+                    >
+                      <span className="booking-number">
+                        {won ? '✓ ' : ''}{entry.number}
+                      </span>
+                      <span>Qty: {entry.quantity}</span>
+                      <span style={won ? { color: '#86efac', fontWeight: 800 } : undefined}>
+                        {won ? 'WON · ' : ''}{Number(entry.amount).toLocaleString('en-IN')} coins
+                      </span>
+                    </div>
+                  )
+                })}
               </div>
 
               <p className="booking-created">
