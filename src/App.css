@@ -2868,3 +2868,28 @@ body[data-round-theme] .main-menu button:not(.active) {
 .wallet-deposit-status.failed{background:#f8717120;color:#fca5a5}
 .wallet-message{margin:12px 0;padding:12px;border:1px solid #d7b56d50;border-radius:10px;color:#f5d58b;font-size:13px;overflow-wrap:anywhere}
 @media(max-width:560px){.wallet-heading{align-items:flex-start}.wallet-refresh{padding:8px}.wallet-quick-amounts{gap:5px}.wallet-quick-amounts button{font-size:12px}.wallet-deposit-row{align-items:flex-start}}
+
+/* Manual UPI deposit review panel */
+.wallet-upi-id{display:grid;gap:8px;padding:14px;margin:14px 0;border:1px solid #d7b56d55;border-radius:12px;background:#050b16}
+.wallet-upi-id span{color:#9baecb;font-size:10px;font-weight:900;letter-spacing:.1em;text-transform:uppercase}
+.wallet-upi-id strong{overflow-wrap:anywhere;color:#f5d58b;font-size:15px}
+.wallet-upi-id button{justify-self:start;padding:8px 11px;border:1px solid #d7b56d55;border-radius:8px;background:#a67c2d22;color:#f5d58b;font-weight:800}
+#wallet-proof{height:auto;min-height:48px;padding:10px;background:#050b16}
+.deposit-admin-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:14px 0}
+.deposit-admin-stats>div{display:grid;gap:6px;padding:14px;border:1px solid #ffffff20;border-radius:12px;background:#111b2f}
+.deposit-admin-stats span{color:#9baecb;font-size:11px}
+.deposit-admin-stats strong{font-size:24px;color:#f5d58b}
+.deposit-admin-list{display:grid;gap:12px}
+.deposit-admin-card{padding:16px;border:1px solid #ffffff22;border-radius:14px;background:linear-gradient(145deg,#172235,#080e1a);overflow:hidden}
+.deposit-admin-card p{font-size:12px;color:#cbd5e1;overflow-wrap:anywhere;line-height:1.55}
+.deposit-admin-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.deposit-admin-card-head>div{display:grid;gap:5px}
+.deposit-admin-card-head strong{font-size:22px;color:#f5d58b}
+.deposit-admin-card-head small{font-size:10px;color:#94a3b8}
+.deposit-reference{overflow-wrap:anywhere;user-select:text}
+.deposit-proof-link{display:inline-block;margin:4px 0 8px;color:#f5d58b;font-weight:800;font-size:13px}
+.deposit-admin-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:14px}
+.deposit-admin-actions button{min-height:44px;border:0;border-radius:9px;background:linear-gradient(135deg,#e8c879,#b38a3e);color:#17130a;font-weight:900}
+.deposit-admin-actions button.reject{border:1px solid #f8717155;background:#7f1d1d33;color:#fecaca}
+.deposit-admin-actions button:disabled{opacity:.5}
+@media(max-width:560px){.deposit-admin-stats>div{padding:10px}.deposit-admin-card{padding:12px}.deposit-admin-actions{grid-template-columns:1fr}}
