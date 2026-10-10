@@ -2188,3 +2188,50 @@ body[data-round-theme] .auth-card {
     font-size: 11px;
   }
 }
+
+
+/* FIX: ensure history cards actually inherit the Red Luxury look.
+   These selectors intentionally work even when TicketLobby is not mounted. */
+.history-page .booking-card,
+.history-page .result-card,
+.history-page .history-empty,
+.history-page .results-search {
+  border-color: rgba(255, 180, 75, 0.28);
+  background:
+    radial-gradient(ellipse at 100% 0%, rgba(154, 25, 36, 0.16), transparent 58%),
+    linear-gradient(145deg, #2a0d13 0%, #17090e 58%, #10070a 100%);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.24), inset 0 1px rgba(255, 226, 177, 0.035);
+}
+
+.history-page .booking-details > div,
+.history-page .result-number-item {
+  border-color: rgba(255, 180, 75, 0.16);
+  background: linear-gradient(145deg, #1d0b11, #10070a);
+}
+
+.history-page .booking-entry {
+  border-color: rgba(255, 180, 75, 0.12);
+  background: linear-gradient(100deg, rgba(99, 20, 29, 0.38), rgba(24, 10, 15, 0.8));
+}
+
+.history-page .booking-details strong {
+  color: #fff0dd;
+}
+
+.history-page .booking-number,
+.history-page .result-number-item strong {
+  color: #ffd16f;
+}
+
+.history-page .results-search input {
+  border-color: rgba(255, 180, 75, 0.28);
+  background: #13090e;
+}
+
+.history-page .history-empty,
+.history-page .history-message,
+.history-page .history-error {
+  border-color: rgba(255, 180, 75, 0.25);
+  background: linear-gradient(145deg, #2a0d13, #10070a);
+}
+
