@@ -408,9 +408,9 @@ function TicketLobby() {
 
         <div className="ticket-header-right">
           <div className="wallet-balance">
-            <span>COINS</span>
+            <span>BALANCE</span>
             <strong>
-              {balance === null ? '—' : balance.toLocaleString()}
+              {balance === null ? '—' : `₹${balance.toLocaleString('en-IN')}`}
             </strong>
           </div>
 
@@ -487,11 +487,11 @@ function TicketLobby() {
                 <div className="row-title">
                   <span className="row-letter">{row.letter}</span>
 
-                  <strong>{row.price} coins / ticket</strong>
+                  <strong>₹{row.price} / ticket</strong>
                 </div>
 
                 <div className="row-payout">
-                  Payout: {row.payout} coins / winning ticket
+                  Payout: ₹{row.payout} / winning ticket
                 </div>
               </div>
 
@@ -544,7 +544,7 @@ function TicketLobby() {
                           className="potential-payout-item"
                           key={number}
                         >
-                          {number} → {quantity * row.payout} coins
+                          {number} → ₹{(quantity * row.payout).toLocaleString('en-IN')}
                         </span>
                       )
                     })}
@@ -554,7 +554,7 @@ function TicketLobby() {
 
               <div className="row-summary">
                 <span>{total.tickets} tickets</span>
-                <strong>{total.amount} coins</strong>
+                <strong>₹{total.amount.toLocaleString('en-IN')}</strong>
               </div>
 
               <button
