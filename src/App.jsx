@@ -16,6 +16,7 @@ function App() {
   const [message, setMessage] = useState('')
   const [loading, setLoading] = useState(false)
   const [session, setSession] = useState(null)
+  const [isWalletAdmin, setIsWalletAdmin] = useState(false)
   const [view, setView] = useState('home')
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false)
   const [showAppMenu, setShowAppMenu] = useState(false)
@@ -39,6 +40,22 @@ function App() {
 
     return () => subscription.unsubscribe()
   }, [])
+
+  useEffect(() => {
+    let cancelled = false
+    const checkAdmin = async () => {
+      setIsWalletAdmin(false)
+      if (!session?.user?.id) return
+      const { data, error } = await supabase
+        .from('wallet_admins')
+        .select('user_id')
+        .eq('user_id', session.user.id)
+        .maybeSingle()
+      if (!cancelled) setIsWalletAdmin(!error && Boolean(data))
+    }
+    checkAdmin()
+    return () => { cancelled = true }
+  }, [session?.user?.id])
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -113,7 +130,7 @@ function App() {
                     <strong>{session.user.email}</strong>
                   </div>
                   <button type="button" className="app-menu-wallet" onClick={() => { setShowAppMenu(false); setView('wallet') }}>Wallet / Buy In</button>
-                  <button type="button" className="app-menu-wallet" onClick={() => { setShowAppMenu(false); setView('deposit-admin') }}>Deposit Admin</button>
+                  {isWalletAdmin && <button type="button" className="app-menu-wallet" onClick={() => { setShowAppMenu(false); setView('deposit-admin') }}>Deposit Admin</button>}
                   <button type="button" className="app-menu-logout" onClick={() => { setShowAppMenu(false); setShowLogoutConfirm(true) }}>Logout</button>
                 </div>
               )}
@@ -190,7 +207,7 @@ function App() {
           {view === 'results' && <GameResults />}
           {view === 'double' && <DoubleGame />}
           {view === 'wallet' && <Wallet />}
-          {view === 'deposit-admin' && <DepositAdmin />}
+          {view === 'deposit-admin' && isWalletAdmin && <DepositAdmin />}
 
           <p className="footer-note">
             Virtual credits only. No cash value.
