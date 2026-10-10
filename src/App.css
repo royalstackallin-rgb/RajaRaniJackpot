@@ -2504,3 +2504,30 @@ body[data-round-theme]:has(.history-page) .main-menu button.active {
   color: #1b0a0b !important;
   box-shadow: 0 5px 18px var(--round-glow) !important;
 }
+
+
+/* Targetora wordmark: blend directly into each round's existing header. */
+.app-header {
+  background: transparent;
+  box-shadow: none;
+  border-color: color-mix(in srgb, var(--round-accent, #ffffff) 20%, transparent);
+}
+.app-header::before,
+.app-header::after {
+  display: none !important;
+  content: none !important;
+}
+.app-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-width: 0;
+  text-shadow: none;
+}
+.app-brand img {
+  display: block;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 5px rgba(0, 0, 0, 0.18));
+}
