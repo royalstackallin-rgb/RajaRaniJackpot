@@ -2804,6 +2804,13 @@ body[data-round-theme] .main-menu button:not(.active) {
 .double-disclaimer{color:#71819d;text-align:center;font-size:10px;margin:18px 0 0}
 @media(max-width:560px){.double-heading{flex-direction:column}.double-wallet{width:100%;text-align:left}.double-number-grid{gap:5px}.double-number-grid button{border-radius:7px}.double-booking-controls{grid-template-columns:1fr 1fr}.double-submit{grid-column:1/-1}}
 
+/* Compact amount inputs: prevent tall, stretched fields on mobile */
+.double-tile-stake{display:block;position:relative;min-width:0;font-size:0;line-height:1}
+.double-tile-stake input{display:block;box-sizing:border-box;width:100%;height:28px;min-height:0;margin:0;padding:4px 2px;border:1px solid #334155;border-radius:6px;text-align:center;font-size:10px;line-height:18px}
+.double-tile-stake input::placeholder{font-size:9px}
+.double-number-tile{gap:4px}
+@media(max-width:560px){.double-tile-stake input{height:27px;padding:3px 1px;font-size:10px}.double-tile-stake input::placeholder{font-size:8px}}
+
 /* Compact Classic-style Targetor Double board */
 .double-number-grid{gap:8px 5px;align-items:start}
 .double-number-tile{gap:7px;padding:0;border:0;border-radius:0;background:transparent}
