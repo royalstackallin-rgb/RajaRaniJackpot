@@ -103,12 +103,12 @@ export default function DepositAdmin() {
       p_note: answer.trim() || null,
     })
     const resultMessage = error
-      ? "Withdrawal review failed: " + error.message
+      ? "Withdrawal review failed: " + JSON.stringify({ message: error.message, code: error.code, details: error.details, hint: error.hint })
       : data === "rejected"
         ? "Withdrawal rejected and reserved balance refunded."
         : data === "approved"
           ? "Withdrawal approved. No payment was sent."
-          : "Unexpected response from withdrawal review: " + String(data)
+          : "Unexpected response from withdrawal review: " + JSON.stringify(data)
     setBusyId("")
     await refresh()
     setMessage(resultMessage)
