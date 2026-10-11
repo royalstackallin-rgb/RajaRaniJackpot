@@ -105,7 +105,8 @@ export default function ProbabilityLab() {
               placeholder="0"
               value={stakes[number] ?? ''}
               onChange={(event) => {
-                const raw = event.target.value
+                const typed = event.target.value
+                const raw = typed === '' ? '' : String(Math.max(0, Math.floor(Number(typed) || 0)))
                 setStakes((current) => {
                   const next = { ...current }
                   if (raw === '') delete next[number]
