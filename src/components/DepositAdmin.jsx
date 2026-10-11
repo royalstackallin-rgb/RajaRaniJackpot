@@ -102,10 +102,16 @@ export default function DepositAdmin() {
       p_approve: approve,
       p_note: answer.trim() || null,
     })
-    if (error) setMessage("Withdrawal review failed: " + error.message)
-    else setMessage(data === "rejected" ? "Withdrawal rejected and reserved balance refunded." : "Withdrawal marked approved for further review. No payment was sent.")
+    const resultMessage = error
+      ? "Withdrawal review failed: " + error.message
+      : data === "rejected"
+        ? "Withdrawal rejected and reserved balance refunded."
+        : data === "approved"
+          ? "Withdrawal approved. No payment was sent."
+          : "Unexpected response from withdrawal review: " + String(data)
     setBusyId("")
     await refresh()
+    setMessage(resultMessage)
   }
 
   const review = async (item, approve) => {
