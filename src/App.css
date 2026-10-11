@@ -2893,3 +2893,33 @@ body[data-round-theme] .main-menu button:not(.active) {
 .deposit-admin-actions button.reject{border:1px solid #f8717155;background:#7f1d1d33;color:#fecaca}
 .deposit-admin-actions button:disabled{opacity:.5}
 @media(max-width:560px){.deposit-admin-stats>div{padding:10px}.deposit-admin-card{padding:12px}.deposit-admin-actions{grid-template-columns:1fr}}
+
+
+/* Virtual-only Double probability lab */
+.double-lab-toggle-row{display:flex;justify-content:flex-start;margin:0 0 14px}
+.double-lab-toggle,.probability-lab-actions button,.probability-lab-controls button{min-height:40px;padding:9px 13px;border:1px solid #d7b56d70;border-radius:9px;background:#a67c2d20;color:#f5d58b;font-weight:800;cursor:pointer}
+.probability-lab{margin:14px 0 20px;padding:clamp(14px,3vw,22px);border:1px solid #6b8bb955;border-radius:18px;background:linear-gradient(145deg,#101b2c,#060b14);color:#edf3ff}
+.probability-lab-header h2{margin:0;font-size:clamp(21px,4vw,28px)}
+.probability-lab-header p:last-child{color:#aab8d0;font-size:12px;line-height:1.5}
+.probability-lab-rules{padding:12px;border:1px solid #ffffff1b;border-radius:10px;background:#03081280;font-size:12px;line-height:1.65}
+.probability-lab-rules ul{padding-left:20px;margin:8px 0 0;color:#cbd5e1}
+.probability-lab-actions{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.probability-lab-actions button{font-size:11px}
+.probability-lab-grid{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:5px}
+.probability-lab-number{min-width:0;display:grid;gap:3px;text-align:center;font-size:10px;color:#f5d58b}
+.probability-lab-number input{min-width:0;width:100%;height:32px;min-height:32px;padding:3px 1px;border:1px solid #334155;border-radius:6px;background:#050b16;color:#fff;text-align:center;font-size:11px}
+.probability-lab-controls{display:flex;align-items:end;gap:10px;flex-wrap:wrap;margin-top:14px}
+.probability-lab-controls label{display:grid;gap:6px;color:#aab8d0;font-size:11px}
+.probability-lab-controls select{min-height:40px;padding:8px;border:1px solid #334155;border-radius:8px;background:#050b16;color:#fff}
+.probability-lab-controls button:disabled{opacity:.5}
+.probability-lab-note{color:#aab8d0;font-size:12px;line-height:1.6}
+.probability-lab-note strong{color:#f5d58b}
+.probability-lab-results{margin-top:16px;padding-top:14px;border-top:1px solid #ffffff20}
+.probability-lab-results h3{font-size:16px}
+.probability-lab-results p{font-size:12px;color:#cbd5e1}
+.probability-lab-results-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px}
+.probability-lab-result{display:grid;gap:3px;padding:7px 3px;border:1px solid #ffffff18;border-radius:7px;background:#03081280;text-align:center}
+.probability-lab-result span{color:#f5d58b;font-size:10px}
+.probability-lab-result strong{font-size:13px}
+.probability-lab-result small{color:#94a3b8;font-size:9px}
+@media(max-width:560px){.probability-lab-grid{gap:3px}.probability-lab-number input{height:29px;min-height:29px;font-size:10px}.probability-lab-number{font-size:9px}.probability-lab-results-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.probability-lab-controls{align-items:stretch;flex-direction:column}.probability-lab-controls button{width:100%}}
