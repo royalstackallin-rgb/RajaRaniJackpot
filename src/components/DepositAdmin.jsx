@@ -13,6 +13,8 @@ export default function DepositAdmin() {
   const [busyId, setBusyId] = useState('')
   const [message, setMessage] = useState('')
   const [proofUrls, setProofUrls] = useState({})
+  const [withdrawalRequests, setWithdrawalRequests] = useState([])
+  const [withdrawalQrUrls, setWithdrawalQrUrls] = useState({})
 
   const refresh = useCallback(async () => {
     setLoading(true); setMessage('')
@@ -21,9 +23,10 @@ export default function DepositAdmin() {
     const { data: adminRow, error: adminError } = await supabase.from('wallet_admins').select('user_id').eq('user_id', user.id).maybeSingle()
     if (adminError || !adminRow) { setIsAdmin(false); setMessage('This account is not authorized to access the deposit admin panel.'); setLoading(false); return }
     setIsAdmin(true)
-    const [depositResult, methodResult] = await Promise.all([
+    const [depositResult, methodResult, withdrawalResult] = await Promise.all([
       supabase.from('wallet_deposits').select('id,user_id,amount_rupees,status,payment_reference,payment_method,proof_path,created_at,review_note,assigned_upi_id').eq('provider', 'manual_upi').order('created_at', { ascending: false }).limit(100),
       supabase.from('wallet_payment_methods').select('id,label,upi_id,active,created_at').order('created_at', { ascending: false }),
+      supabase.from('withdrawal_requests').select('id,user_id,amount_rupees,status,qr_storage_path,created_at,admin_note').order('created_at', { ascending: false }).limit(100),
     ])
     if (depositResult.error) setMessage('Could not load requests: ' + depositResult.error.message)
     else {
@@ -39,6 +42,19 @@ export default function DepositAdmin() {
     }
     if (methodResult.error) setMessage('Could not load UPI accounts: ' + methodResult.error.message)
     else setMethods(methodResult.data || [])
+    if (withdrawalResult.error) setMessage("Could not load withdrawals: " + withdrawalResult.error.message)
+    else {
+      const items = withdrawalResult.data || []
+      setWithdrawalRequests(items)
+      const urls = {}
+      for (const item of items) {
+        if (item.qr_storage_path) {
+          const { data: signed } = await supabase.storage.from("withdrawal-qr-codes").createSignedUrl(item.qr_storage_path, 300)
+          if (signed?.signedUrl) urls[item.id] = signed.signedUrl
+        }
+      }
+      setWithdrawalQrUrls(urls)
+    }
     setLoading(false)
   }, [])
 
@@ -73,6 +89,25 @@ export default function DepositAdmin() {
     setBusyId('')
   }
 
+  const reviewWithdrawal = async (item, approve) => {
+    const promptText = approve
+      ? "Confirm this withdrawal only for further review. This does not send money. Type OK to continue."
+      : "Optional reason for rejecting this withdrawal:"
+    const answer = window.prompt(promptText, approve ? "" : "Withdrawal request rejected")
+    if (answer === null || (approve && answer.trim().toUpperCase() !== "OK")) return
+    setBusyId(item.id)
+    setMessage("")
+    const { data, error } = await supabase.rpc("review_withdrawal_request", {
+      p_request_id: item.id,
+      p_approve: approve,
+      p_note: answer.trim() || null,
+    })
+    if (error) setMessage("Withdrawal review failed: " + error.message)
+    else setMessage(data === "rejected" ? "Withdrawal rejected and reserved balance refunded." : "Withdrawal marked approved for further review. No payment was sent.")
+    setBusyId("")
+    await refresh()
+  }
+
   const review = async (item, approve) => {
     const promptText = approve
       ? 'Confirm you checked your bank transaction history, the exact amount arrived to ' + (item.assigned_upi_id || 'the assigned account') + ', and the reference matches. Type OK to credit this wallet.'
@@ -94,6 +129,22 @@ export default function DepositAdmin() {
     {!isAdmin ? <div className="wallet-history-card"><h2>Admin access required</h2><p className="wallet-subtitle">Add your authenticated user ID to public.wallet_admins in the correct Supabase project before using these tools.</p></div> : <>
       <div className="wallet-history-card"><h2>Add receiving UPI account</h2><p>Only add accounts you control and are permitted to use for this activity.</p><form onSubmit={addMethod} className="deposit-method-form"><label htmlFor="deposit-method-label">Account label</label><input id="deposit-method-label" value={label} onChange={e => setLabel(e.target.value)} placeholder="e.g. SBI UPI" maxLength={60} required /><label htmlFor="deposit-method-upi">UPI ID</label><input id="deposit-method-upi" value={upiId} onChange={e => setUpiId(e.target.value)} placeholder="name@bank" maxLength={255} autoCapitalize="none" required /><button className="wallet-buy-button" type="submit" disabled={busyId === 'method'}>{busyId === 'method' ? 'Adding…' : 'Add UPI account'}</button></form>
       <h3>Saved receiving accounts</h3>{methods.length === 0 ? <p className="wallet-empty">No UPI accounts added yet. Add at least one active account before players can start deposits.</p> : <div className="deposit-admin-list">{methods.map(method => <article className="deposit-admin-card" key={method.id}><div className="deposit-admin-card-head"><div><strong>{method.label}</strong><small>{method.upi_id}</small></div><span className={'wallet-deposit-status ' + (method.active ? 'credited' : 'failed')}>{method.active ? 'active' : 'disabled'}</span></div><div className="deposit-admin-actions"><button disabled={busyId === method.id} onClick={() => toggleMethod(method)}>{method.active ? 'Disable' : 'Enable'}</button><button className="reject" disabled={busyId === method.id} onClick={() => deleteMethod(method)}>Delete</button></div></article>)}</div>}</div>
+      <div className="wallet-history-card">
+        <h2>Withdrawal Requests</h2>
+        <p>Approval means approved for further review only. No money is transferred by this action.</p>
+        <div className="deposit-admin-stats">
+          <div><span>Pending</span><strong>{withdrawalRequests.filter(x => x.status === "pending").length}</strong></div>
+          <div><span>Approved for review</span><strong>{withdrawalRequests.filter(x => x.status === "approved_for_review").length}</strong></div>
+          <div><span>Rejected</span><strong>{withdrawalRequests.filter(x => x.status === "rejected").length}</strong></div>
+        </div>
+        {loading ? <p className="wallet-empty">Loading withdrawals...</p> : withdrawalRequests.length === 0 ? <p className="wallet-empty">No withdrawal requests yet.</p> : <div className="deposit-admin-list">{withdrawalRequests.map(item => <article className="deposit-admin-card" key={item.id}>
+          <div className="deposit-admin-card-head"><div><strong>{money(item.amount_rupees)}</strong><small>{new Date(item.created_at).toLocaleString("en-IN")}</small></div><span className={"wallet-deposit-status " + item.status}>{item.status === "approved_for_review" ? "approved for review" : item.status}</span></div>
+          <p><b>Player ID:</b> <span className="deposit-reference">{item.user_id}</span></p>
+          {withdrawalQrUrls[item.id] && <p><a className="deposit-proof-link" href={withdrawalQrUrls[item.id]} target="_blank" rel="noreferrer">View player UPI QR image</a></p>}
+          {item.admin_note && <p><b>Review note:</b> {item.admin_note}</p>}
+          {item.status === "pending" && <div className="deposit-admin-actions"><button disabled={busyId === item.id} onClick={() => reviewWithdrawal(item, true)}>Approve for review</button><button className="reject" disabled={busyId === item.id} onClick={() => reviewWithdrawal(item, false)}>Reject &amp; refund</button></div>}
+        </article>)}</div>}
+      </div>
       <div className="deposit-admin-stats"><div><span>Pending</span><strong>{requests.filter(x => x.status === 'pending').length}</strong></div><div><span>Approved</span><strong>{requests.filter(x => x.status === 'credited').length}</strong></div><div><span>Rejected</span><strong>{requests.filter(x => x.status === 'failed').length}</strong></div></div>
       {loading ? <p className="wallet-empty">Loading requests…</p> : requests.length === 0 ? <div className="wallet-history-card"><p className="wallet-empty">No deposit requests yet.</p></div> : <div className="deposit-admin-list">{requests.map(item => <article className="deposit-admin-card" key={item.id}>
         <div className="deposit-admin-card-head"><div><strong>{money(item.amount_rupees)}</strong><small>{new Date(item.created_at).toLocaleString('en-IN')}</small></div><span className={'wallet-deposit-status ' + item.status}>{item.status}</span></div>
