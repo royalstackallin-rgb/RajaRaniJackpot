@@ -91,7 +91,7 @@ export default function DepositAdmin() {
 
   const reviewWithdrawal = async (item, approve) => {
     const promptText = approve
-      ? "Confirm this withdrawal only for further review. This does not send money. Type OK to continue."
+      ? "Approve this withdrawal request? This changes its status to Approved but does not transfer money. Type OK to continue."
       : "Optional reason for rejecting this withdrawal:"
     const answer = window.prompt(promptText, approve ? "" : "Withdrawal request rejected")
     if (answer === null || (approve && answer.trim().toUpperCase() !== "OK")) return
