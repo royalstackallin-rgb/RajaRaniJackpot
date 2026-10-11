@@ -5,6 +5,7 @@ import MyBookings from './components/MyBookings'
 import GameResults from './components/GameResults'
 import DoubleGame from './components/DoubleGame'
 import Wallet from './components/Wallet'
+import Withdraw from './components/Withdraw'
 import DepositAdmin from './components/DepositAdmin'
 import './App.css'
 
@@ -107,7 +108,7 @@ function App() {
     setMessage('')
   }
 
-  if (session && ['tickets', 'bookings', 'results', 'double', 'wallet', 'deposit-admin'].includes(view)) {
+  if (session && ['tickets', 'bookings', 'results', 'double', 'wallet', 'withdraw', 'deposit-admin'].includes(view)) {
     return (
       <main className={`app-page app-view-${view}`}>
         <div className="app-shell">
@@ -130,6 +131,7 @@ function App() {
                     <strong>{session.user.email}</strong>
                   </div>
                   <button type="button" className="app-menu-wallet" onClick={() => { setShowAppMenu(false); setView('wallet') }}>Wallet / Buy In</button>
+                  <button type="button" className="app-menu-wallet" onClick={() => { setShowAppMenu(false); setView('withdraw') }}>Withdraw</button>
                   {isWalletAdmin && <button type="button" className="app-menu-wallet" onClick={() => { setShowAppMenu(false); setView('deposit-admin') }}>Deposit Admin</button>}
                   <button type="button" className="app-menu-logout" onClick={() => { setShowAppMenu(false); setShowLogoutConfirm(true) }}>Logout</button>
                 </div>
@@ -207,6 +209,7 @@ function App() {
           {view === 'results' && <GameResults />}
           {view === 'double' && <DoubleGame />}
           {view === 'wallet' && <Wallet />}
+          {view === 'withdraw' && <Withdraw />}
           {view === 'deposit-admin' && isWalletAdmin && <DepositAdmin />}
 
           <p className="footer-note">
