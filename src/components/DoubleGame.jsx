@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { supabase } from '../lib/supabase'
-import ProbabilityLab from './ProbabilityLab'
 
 const TIMES = ['09:00', '12:00', '15:00', '18:00']
 const NUMBERS = Array.from({ length: 100 }, (_, i) => String(i).padStart(2, '0'))
@@ -41,7 +40,6 @@ export default function DoubleGame() {
   const [message, setMessage] = useState('')
   const [busy, setBusy] = useState(false)
   const [now, setNow] = useState(new Date())
-  const [showProbabilityLab, setShowProbabilityLab] = useState(false)
 
   const loadData = useCallback(async () => {
     const { data: { user } } = await supabase.auth.getUser()
@@ -175,13 +173,6 @@ export default function DoubleGame() {
           <strong>{balance === null ? '—' : `₹${formatMoney(balance)}`}</strong>
         </div>
       </div>
-
-      <div className="double-lab-toggle-row">
-        <button type="button" className="double-lab-toggle" onClick={() => setShowProbabilityLab((visible) => !visible)}>
-          {showProbabilityLab ? 'Hide probability lab' : 'Open virtual probability lab'}
-        </button>
-      </div>
-      {showProbabilityLab && <ProbabilityLab />}
 
       <div className="double-times" aria-label="Daily draw times">
         {TIMES.map((time) => (
