@@ -134,15 +134,15 @@ export default function DepositAdmin() {
         <p>Approval means approved for further review only. No money is transferred by this action.</p>
         <div className="deposit-admin-stats">
           <div><span>Pending</span><strong>{withdrawalRequests.filter(x => x.status === "pending").length}</strong></div>
-          <div><span>Approved for review</span><strong>{withdrawalRequests.filter(x => x.status === "approved_for_review").length}</strong></div>
+          <div><span>Approved</span><strong>{withdrawalRequests.filter(x => x.status === "approved").length}</strong></div>
           <div><span>Rejected</span><strong>{withdrawalRequests.filter(x => x.status === "rejected").length}</strong></div>
         </div>
         {loading ? <p className="wallet-empty">Loading withdrawals...</p> : withdrawalRequests.length === 0 ? <p className="wallet-empty">No withdrawal requests yet.</p> : <div className="deposit-admin-list">{withdrawalRequests.map(item => <article className="deposit-admin-card" key={item.id}>
-          <div className="deposit-admin-card-head"><div><strong>{money(item.amount_rupees)}</strong><small>{new Date(item.created_at).toLocaleString("en-IN")}</small></div><span className={"wallet-deposit-status " + item.status}>{item.status === "approved_for_review" ? "approved for review" : item.status}</span></div>
+          <div className="deposit-admin-card-head"><div><strong>{money(item.amount_rupees)}</strong><small>{new Date(item.created_at).toLocaleString("en-IN")}</small></div><span className={"wallet-deposit-status " + item.status}>{item.status === "approved" ? "approved" : item.status}</span></div>
           <p><b>Player ID:</b> <span className="deposit-reference">{item.user_id}</span></p>
           {withdrawalQrUrls[item.id] && <p><a className="deposit-proof-link" href={withdrawalQrUrls[item.id]} target="_blank" rel="noreferrer">View player UPI QR image</a></p>}
           {item.admin_note && <p><b>Review note:</b> {item.admin_note}</p>}
-          {item.status === "pending" && <div className="deposit-admin-actions"><button disabled={busyId === item.id} onClick={() => reviewWithdrawal(item, true)}>Approve for review</button><button className="reject" disabled={busyId === item.id} onClick={() => reviewWithdrawal(item, false)}>Reject &amp; refund</button></div>}
+          {item.status === "pending" && <div className="deposit-admin-actions"><button disabled={busyId === item.id} onClick={() => reviewWithdrawal(item, true)}>Approve</button><button className="reject" disabled={busyId === item.id} onClick={() => reviewWithdrawal(item, false)}>Reject &amp; refund</button></div>}
         </article>)}</div>}
       </div>
       <div className="deposit-admin-stats"><div><span>Pending</span><strong>{requests.filter(x => x.status === 'pending').length}</strong></div><div><span>Approved</span><strong>{requests.filter(x => x.status === 'credited').length}</strong></div><div><span>Rejected</span><strong>{requests.filter(x => x.status === 'failed').length}</strong></div></div>
