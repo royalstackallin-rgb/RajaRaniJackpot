@@ -64,7 +64,7 @@ export default function ProbabilityLab() {
     }, 0)
   }
 
-  const highestStakeNumbers = probabilityInfo.maxStake === 0
+  const highestStakeNumbers = probabilityInfo.maxStake === 0 || probabilityInfo.highestNumbers.length === 100
     ? []
     : probabilityInfo.highestNumbers.filter((number) => (Number(stakes[number]) || 0) === probabilityInfo.maxStake)
 
