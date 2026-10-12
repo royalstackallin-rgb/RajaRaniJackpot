@@ -428,3 +428,21 @@
   background: #b38a3e25;
   color: #f1d48d;
 }
+
+
+/* My Bookings embeds only the Double history, not the betting screen. */
+.double-page.double-history-only > .double-heading,
+.double-page.double-history-only > .double-times,
+.double-page.double-history-only > .double-panel:first-of-type {
+  display: none;
+}
+.double-page.double-history-only {
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+.double-page.double-history-only .double-panel:last-of-type {
+  margin-top: 0;
+}
