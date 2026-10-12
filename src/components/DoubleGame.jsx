@@ -51,7 +51,7 @@ export default function DoubleGame() {
 
     const [roundResponse, walletResponse, bookingResponse] = await Promise.all([
       supabase.from('double_rounds')
-        .select('id, round_code, game_date, round_time, status, winning_number')
+        .select('id, round_code, game_date, round_time, status, winning_number, drawn_at')
         .gte('game_date', today)
         .lte('game_date', tomorrow)
         .order('game_date', { ascending: true })
@@ -80,13 +80,15 @@ export default function DoubleGame() {
 
   const currentRound = useMemo(() => {
     const timestamp = now.getTime()
-    const upcoming = rounds.find((round) =>
+    const recentResult = [...rounds].reverse().find((round) => {
+      if (!['drawn', 'settled'].includes(round.status) || !round.drawn_at) return false
+      const drawnAt = new Date(round.drawn_at).getTime()
+      return timestamp >= drawnAt && timestamp - drawnAt < 5 * 60 * 1000
+    })
+    if (recentResult) return recentResult
+
+    return rounds.find((round) =>
       round.status === 'open' && roundTimestamp(round) > timestamp
-    )
-    if (upcoming) return upcoming
-    return [...rounds].reverse().find((round) =>
-      (round.status === 'drawn' || round.status === 'settled') &&
-      timestamp - roundTimestamp(round) < 4 * 60 * 60 * 1000
     ) || null
   }, [rounds, now])
 
@@ -94,7 +96,6 @@ export default function DoubleGame() {
   const canBook = Boolean(
     currentRound &&
     currentRound.status === 'open' &&
-    now.getTime() >= currentRoundTime - 60 * 60 * 1000 &&
     now.getTime() < currentRoundTime - 5 * 60 * 1000
   )
   const stakeFor = (number) => stakes[number] ?? ''
@@ -248,7 +249,7 @@ export default function DoubleGame() {
           </button>
         </div>
         {!canBook && currentRound?.status === 'open' && (
-          <p className="double-hint">Booking opens 1 hour before the draw and closes 5 minutes before it.</p>
+          <p className="double-hint">Bookings stay open until 5 minutes before the draw. The result is shown for 5 minutes, then bookings open for the next round.</p>
         )}
         {message && <p className="double-message" role="status">{message}</p>}
       </div>
