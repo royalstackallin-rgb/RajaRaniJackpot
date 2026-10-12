@@ -139,7 +139,12 @@ function App() {
               )}
             </div>
           </header>
-
+          {view !== 'home' && (
+            <div className="view-navigation">
+              <button type="button" className="view-back-button" onClick={() => setView('home')}>← Back to Home</button>
+              <span>{({ tickets: 'StakeClassic Lobby', double: 'Targetor Double Lobby', bookings: 'My Bookings', results: 'Game Results', wallet: 'Wallet', withdraw: 'Withdraw', 'deposit-admin': 'Deposit Admin' })[view] || ''}</span>
+            </div>
+          )}
 
       {showLogoutConfirm && (
         <div className="logout-modal-backdrop">
