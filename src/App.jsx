@@ -114,7 +114,7 @@ function App() {
       <main className={`app-page app-view-${view}`}>
         <div className="app-shell">
           <header className="app-header">
-            <div className="app-brand"><img src="/targetora-wordmark.svg" alt="TARGETORSTAKE" style={{ width: "clamp(220px, 72vw, 330px)", maxWidth: "100%", display: "block" }} /></div>
+            <button type="button" className="app-brand app-brand-home" onClick={() => setView('home')} aria-label="Go to Home"><img src="/targetora-wordmark.svg" alt="TARGETORSTAKE" style={{ width: "clamp(220px, 72vw, 330px)", maxWidth: "100%", display: "block" }} /></button>
             <div className="app-menu-wrap">
               <button
                 type="button"
