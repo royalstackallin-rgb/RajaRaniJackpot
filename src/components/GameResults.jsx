@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import DoubleResults from './DoubleResults'
 import { supabase } from '../lib/supabase'
 
 function localDateString() {
@@ -35,6 +36,7 @@ function getRoundName(round) {
 }
 
 function GameResults() {
+  const [selectedGame, setSelectedGame] = useState(null)
   const [date, setDate] = useState(localDateString())
   const [time, setTime] = useState('')
   const [rounds, setRounds] = useState([])
@@ -89,8 +91,44 @@ function GameResults() {
     searchResults()
   }, [])
 
+  if (selectedGame === 'double') {
+    return (
+      <section className="history-page">
+        <div style={{ marginBottom: 18 }}>
+          <button type="button" className="secondary-button" onClick={() => setSelectedGame(null)}>← Back to games</button>
+        </div>
+        <DoubleResults />
+      </section>
+    )
+  }
+
+  if (selectedGame === null) {
+    return (
+      <section className="history-page">
+        <div className="history-heading">
+          <span className="history-eyebrow">OFFICIAL HISTORY</span>
+          <h2>Game Results</h2>
+          <p>Choose a game to view its completed results.</p>
+        </div>
+        <div className="booking-list">
+          <button type="button" className="history-empty" style={{ display: 'block', width: '100%', textAlign: 'left', cursor: 'pointer' }} onClick={() => setSelectedGame('classic')}>
+            <h3>StakeClassic</h3>
+            <p>View A–G winning numbers for completed rounds.</p>
+          </button>
+          <button type="button" className="history-empty" style={{ display: 'block', width: '100%', textAlign: 'left', cursor: 'pointer' }} onClick={() => setSelectedGame('double')}>
+            <h3>Targetor Double</h3>
+            <p>View completed rounds and Double winning numbers.</p>
+          </button>
+        </div>
+      </section>
+    )
+  }
+
   return (
     <section className="history-page">
+      <div style={{ marginBottom: 18 }}>
+        <button type="button" className="secondary-button" onClick={() => setSelectedGame(null)}>← Back to games</button>
+      </div>
       <div className="history-heading">
         <span className="history-eyebrow">OFFICIAL HISTORY</span>
         <h2>Game Results</h2>
