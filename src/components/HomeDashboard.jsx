@@ -172,17 +172,37 @@ export default function HomeDashboard({ onOpenGame, onOpenBookings, onOpenResult
       </article>
 
       <div className="home-game-grid home-game-grid-bottom">
-        <button type="button" className="home-game-card" onClick={() => onOpenGame('tickets')}>
+        <button type="button" className="home-game-card home-classic-entry" onClick={() => onOpenGame('tickets')}>
           <span className="home-game-icon">A–G</span>
-          <span className="home-game-copy"><strong>StakeClassic Lobby</strong><small>Next draw, seven rows and ticket booking</small><em>ENTER LOBBY</em></span>
-          <span className="home-arrow">→</span>
-        </button>
-        <button type="button" className="home-game-card home-double-card" onClick={() => onOpenGame('double')}>
-          <span className="home-game-icon home-game-icon-double">00–99</span>
-          <span className="home-game-copy"><strong>Targetor Double Lobby</strong><small>Next draw: {nextDoubleRound ? formatTime(nextDoubleRound.round_time) : 'Schedule updating'} · {nextDoubleRound?.game_date || '—'}</small><span className={`home-status ${doubleStatusClass}`}>{doubleBookingStatus}</span><small>{doubleBookingOpen ? 'Booking closes in' : 'Draw countdown'} · {doubleDrawAt ? formatCountdown(doubleDrawAt - now - (doubleBookingOpen ? 5 * 60 * 1000 : 0)) : '—'}</small><span className="home-double-latest">{latestDoubleRound ? `Latest result: ${String(latestDoubleRound.winning_number).padStart(2, '0')} · ${formatTime(latestDoubleRound.round_time)}` : 'Latest result: waiting for first draw'}</span><em>ENTER LOBBY</em></span>
+          <span className="home-game-copy"><strong>Enter StakeClassic Lobby</strong><small>Next draw, seven rows and ticket booking</small></span>
           <span className="home-arrow">→</span>
         </button>
       </div>
+
+      <article className="home-double-draw-card">
+        <div className="home-double-title-row">
+          <span className="home-double-emblem">00<br />99</span>
+          <div className="home-double-title">
+            <span className="home-eyebrow">YOUR SECOND GAME</span>
+            <h2>TARGETOR DOUBLE</h2>
+            <p>00–99 · Single numbers</p>
+          </div>
+          <span className={`home-status ${doubleStatusClass}`}>{doubleBookingStatus}</span>
+        </div>
+        <div className="home-double-draw-details">
+          <div className="home-double-next">
+            <span className="home-detail-label">NEXT DRAW</span>
+            <strong>{nextDoubleRound ? formatTime(nextDoubleRound.round_time) : 'Schedule updating'}</strong>
+            <small>{nextDoubleRound?.game_date || 'Check again shortly'}</small>
+          </div>
+          <div className="home-double-countdown">
+            <span className="home-detail-label">{doubleBookingOpen ? 'BOOKING CLOSES IN' : doubleBookingClosed ? 'DRAW STARTS IN' : 'DRAW COUNTDOWN'}</span>
+            <strong>{doubleDrawAt ? formatCountdown(doubleDrawAt - now - (doubleBookingOpen ? 5 * 60 * 1000 : 0)) : '--:--:--'}</strong>
+            <small>{nextDoubleRound?.round_code || 'Next available round'}</small>
+          </div>
+        </div>
+        <button type="button" className="home-double-enter" onClick={() => onOpenGame('double')}>Enter Targetor Double Lobby <span>→</span></button>
+      </article>
 
       <article className="home-latest-card home-double-result">
         <div className="home-section-heading">
@@ -196,6 +216,14 @@ export default function HomeDashboard({ onOpenGame, onOpenBookings, onOpenResult
           </>
         ) : <p className="home-loading">The latest Targetor Double result will appear here.</p>}
       </article>
+
+      <div className="home-game-grid home-double-entry-grid">
+        <button type="button" className="home-game-card home-double-entry" onClick={() => onOpenGame('double')}>
+          <span className="home-game-icon home-game-icon-double">00–99</span>
+          <span className="home-game-copy"><strong>Enter Targetor Double Lobby</strong><small>Choose numbers 00–99 and book your stake</small></span>
+          <span className="home-arrow">→</span>
+        </button>
+      </div>
     </section>
   )
 }
