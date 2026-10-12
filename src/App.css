@@ -3074,3 +3074,5 @@ body[data-round-theme] .main-menu button:not(.active) {
 .home-double-card .home-game-copy .home-status{align-self:flex-start;padding:5px 8px}
 .home-double-latest{display:block;color:#f5d58b;font-size:10px;font-weight:800;line-height:1.45}
 .home-double-card .home-arrow{padding-top:12px}
+
+.home-center-result{order:0}.home-game-grid-bottom{order:1}.home-double-result{order:2}.home-double-result .home-section-heading h2{font-size:clamp(18px,4.5vw,24px)}.home-double-result-number{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px;border:1px solid #e7c77930;border-radius:12px;background:#050b16}.home-double-result-number span{color:#9baecb;font-size:10px;font-weight:900;letter-spacing:.1em}.home-double-result-number strong{display:grid;place-items:center;width:66px;height:66px;border:1px solid #e7c77955;border-radius:13px;background:#e7c77912;color:#f5d58b;font-size:30px}@media(max-width:560px){.home-double-result .home-section-heading{align-items:flex-start}.home-double-result .home-section-heading h2{font-size:19px}}
