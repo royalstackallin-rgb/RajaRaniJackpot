@@ -430,10 +430,9 @@
 }
 
 
-/* My Bookings embeds only the Double history, not the betting screen. */
+/* Hide live-game sections in My Bookings, but keep its history panel visible. */
 .double-page.double-history-only > .double-heading,
-.double-page.double-history-only > .double-times,
-.double-page.double-history-only > .double-panel:first-of-type {
+.double-page.double-history-only > .double-times {
   display: none;
 }
 .double-page.double-history-only {
