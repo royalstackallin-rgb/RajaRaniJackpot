@@ -157,8 +157,6 @@ export default function HomeDashboard({ onOpenGame, onOpenBookings, onOpenResult
           <p className="home-loading">The latest completed result will appear here.</p>
         )}
       </article>
-
-</div>
     </section>
   )
 }
