@@ -206,7 +206,9 @@ export default function DoubleGame() {
           item.status === booking.status &&
           pattern.matches.includes(item.number)
         )
-        if (members.length !== 10 || !pattern.matches.every((n) => members.some((item) => item.number === n))) continue
+        // Duplicate bookings for a number should not prevent recognizing a complete
+        // starting/ending group. We identify the pattern by its ten distinct numbers.
+        if (!pattern.matches.every((n) => members.some((item) => item.number === n))) continue
 
         const key = [booking.round_id, booking.stake, booking.status, pattern.kind, pattern.digit].join('|')
         if (!groups.has(key)) {
