@@ -66,6 +66,7 @@ function TicketLobby() {
   const [rowMessages, setRowMessages] = useState({})
   const [balance, setBalance] = useState(null)
   const [currentRound, setCurrentRound] = useState(null)
+  const [resultRound, setResultRound] = useState(null)
   const [now, setNow] = useState(new Date())
   const [drawResults, setDrawResults] = useState({})
   const [drawPhase, setDrawPhase] = useState(false)
@@ -120,7 +121,10 @@ function TicketLobby() {
         return roundTime >= currentTime
       })
 
-      setCurrentRound(liveRound || nextOpenRound || null)
+      // Booking always targets the next future open round. Results may continue
+      // showing the just-drawn round without blocking the next round's inputs.
+      setCurrentRound(nextOpenRound || liveRound || null)
+      setResultRound(liveRound || null)
     }
 
     const loadBalance = async () => {
@@ -150,13 +154,18 @@ function TicketLobby() {
   }, [])
 
   useEffect(() => {
-    if (!currentRound) return
+    const resultsRound = resultRound || currentRound
+    if (!resultsRound) {
+      setDrawResults({})
+      setDrawPhase(false)
+      return
+    }
 
     const loadResults = async () => {
       const { data, error } = await supabase
         .from('game_round_results')
         .select('ticket_row, winning_number')
-        .eq('round_id', currentRound.id)
+        .eq('round_id', resultsRound.id)
         .order('ticket_row')
 
       if (error) return
@@ -185,7 +194,7 @@ function TicketLobby() {
     const resultTimer = setInterval(loadResults, 3000)
 
     return () => clearInterval(resultTimer)
-  }, [currentRound])
+  }, [currentRound, resultRound])
 
   // Apply or clear the round theme before the browser paints, preventing a stale
   // royal-crown palette from flashing when returning to the Lobby.
