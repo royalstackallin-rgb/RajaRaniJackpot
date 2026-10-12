@@ -3124,3 +3124,10 @@ body[data-round-theme] .main-menu button:not(.active) {
 .home-double-entry .home-arrow{color:#ff5574}
 .home-double-entry-grid{margin-bottom:8px}
 @media(max-width:420px){.home-double-title-row{gap:9px}.home-double-emblem{flex-basis:54px;height:54px;font-size:15px}.home-double-draw-details{gap:8px;padding:12px 0}.home-double-countdown{padding-left:9px}.home-double-draw-card{padding:14px}.home-double-title h2{font-size:18px}.home-double-draw-card>.home-double-title-row>.home-status{font-size:8px;padding:6px}}
+
+.home-wallet-strip{display:flex;align-items:center;gap:12px;width:100%;padding:12px 14px;border:1px solid #b5283d;border-radius:14px;background:linear-gradient(100deg,#23080e,#07090e);color:#fff;text-align:left;cursor:pointer}
+.home-wallet-icon{display:grid;place-items:center;flex:0 0 40px;height:40px;border:1px solid #ffbf3b;border-radius:10px;background:#ffbf3b18;color:#ffd45d;font-size:23px;font-weight:900}
+.home-wallet-copy{display:grid;gap:4px;flex:1}
+.home-wallet-copy small{color:#c6aab0;font-size:9px;font-weight:900;letter-spacing:.1em}
+.home-wallet-copy strong{color:#fff1c7;font-size:20px}
+.home-wallet-add{display:grid;place-items:center;width:38px;height:38px;border-radius:10px;background:#00dc83;color:#032315;font-size:27px;font-weight:700}
