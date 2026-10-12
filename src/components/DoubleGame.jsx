@@ -276,7 +276,7 @@ export default function DoubleGame({ historyOnly = false }) {
       <div className="double-heading">
         <div>
           <p className="double-eyebrow">YOUR DOUBLE LOBBY · 00–99</p>
-          <h1>Targetor Double</h1>
+          <h1>Twin Fortune</h1>
           <p>Track the next draw, booking deadline and latest winning number before choosing your numbers.</p>
         </div>
         <div className="double-wallet">
@@ -293,9 +293,9 @@ export default function DoubleGame({ historyOnly = false }) {
         ))}
       </div>
 
-      <section className="double-lobby-summary" aria-label="Targetor Double draw summary">
+      <section className="double-lobby-summary" aria-label="Twin Fortune draw summary">
         <div className="double-lobby-summary-top">
-          <div><span className="double-label">NEXT TARGETOR DOUBLE DRAW</span><strong>{currentRound ? displayTime(currentRound.round_time) : 'Schedule updating'}</strong><small>{currentRound?.game_date || 'Check again shortly'}</small></div>
+          <div><span className="double-label">NEXT TWIN FORTUNE DRAW</span><strong>{currentRound ? displayTime(currentRound.round_time) : 'Schedule updating'}</strong><small>{currentRound?.game_date || 'Check again shortly'}</small></div>
           <span className={canBook ? 'double-status open' : 'double-status'}>{canBook ? 'BOOKINGS OPEN' : currentRound && now.getTime() >= currentRoundTime - 5 * 60 * 1000 && now.getTime() < currentRoundTime ? 'BOOKINGS CLOSED' : currentRound && ['drawn', 'settled'].includes(currentRound.status) ? 'RESULT POSTED' : 'WAITING FOR DRAW'}</span>
         </div>
         {currentRound && <div className="double-lobby-countdown"><span>{canBook ? 'BOOKING CLOSES IN' : 'DRAW TIME / STATUS'}</span><strong>{countdownText}</strong></div>}

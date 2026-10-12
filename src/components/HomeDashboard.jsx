@@ -182,13 +182,13 @@ export default function HomeDashboard({ onOpenGame, onOpenBookings, onOpenResult
 
       <button type="button" className="home-bookings-shortcut" onClick={onOpenBookings}>
         <span className="home-bookings-icon">▤</span>
-        <span><strong>My Bookings</strong><small>StakeClassic + Targetor Double · View both histories</small></span>
+        <span><strong>My Bookings</strong><small>Crown 24 + Twin Fortune · View both histories</small></span>
         <span className="home-arrow">→</span>
       </button>
 
       <article className="home-next-draw">
         <div className="home-card-topline">
-          <span className="home-eyebrow">NEXT STAKECLASSIC DRAW</span>
+          <span className="home-eyebrow">NEXT CROWN 24 DRAW</span>
           <span className={`home-status ${statusClass}`}>{bookingStatus}</span>
         </div>
         {loading ? (
@@ -211,12 +211,12 @@ export default function HomeDashboard({ onOpenGame, onOpenBookings, onOpenResult
           <p className="home-loading">No upcoming round is available right now. Please check again shortly.</p>
         )}
         {loadError && <p className="home-error" role="status">{loadError}</p>}
-        <button type="button" className="home-primary-button" onClick={() => onOpenGame('tickets')}>Enter StakeClassic Lobby <span>→</span></button>
+        <button type="button" className="home-primary-button" onClick={() => onOpenGame('tickets')}>Enter Crown 24 Lobby <span>→</span></button>
       </article>
 
       <article className="home-latest-card home-center-result">
         <div className="home-section-heading">
-          <div><span className="home-eyebrow">MOST RECENT COMPLETED ROUND</span><h2>Latest StakeClassic result</h2></div>
+          <div><span className="home-eyebrow">MOST RECENT COMPLETED ROUND</span><h2>Latest Crown 24 result</h2></div>
           <button type="button" onClick={() => onOpenResults('classic')}>All results →</button>
         </div>
         {latestRound ? (
@@ -226,13 +226,13 @@ export default function HomeDashboard({ onOpenGame, onOpenBookings, onOpenResult
               {resultRows.map((item) => <div className="home-result-number" key={item.letter}><span>{item.letter}</span><strong>{item.number ?? '—'}</strong></div>)}
             </div>
           </>
-        ) : <p className="home-loading">The latest StakeClassic result will appear here.</p>}
+        ) : <p className="home-loading">The latest Crown 24 result will appear here.</p>}
       </article>
 
       <div className="home-game-grid home-game-grid-bottom">
         <button type="button" className="home-game-card home-classic-entry" onClick={() => onOpenGame('tickets')}>
           <span className="home-game-icon">A–G</span>
-          <span className="home-game-copy"><strong>Enter StakeClassic Lobby</strong><small>Next draw, seven rows and ticket booking</small></span>
+          <span className="home-game-copy"><strong>Enter Crown 24 Lobby</strong><small>Next draw, seven rows and ticket booking</small></span>
           <span className="home-arrow">→</span>
         </button>
       </div>
@@ -241,7 +241,7 @@ export default function HomeDashboard({ onOpenGame, onOpenBookings, onOpenResult
         <div className="home-double-title-row">
           <span className="home-double-emblem">00<br />99</span>
           <div className="home-double-title">
-              <h2>TARGETOR DOUBLE</h2>
+              <h2>TWIN FORTUNE</h2>
             <p>00–99 · Single numbers</p>
           </div>
           <span className={`home-status ${doubleStatusClass}`}>{doubleBookingStatus}</span>
@@ -258,12 +258,12 @@ export default function HomeDashboard({ onOpenGame, onOpenBookings, onOpenResult
             <small>{nextDoubleRound?.round_code || 'Next available round'}</small>
           </div>
         </div>
-        <button type="button" className="home-double-enter" onClick={() => onOpenGame('double')}>Enter Targetor Double Lobby <span>→</span></button>
+        <button type="button" className="home-double-enter" onClick={() => onOpenGame('double')}>Enter Twin Fortune Lobby <span>→</span></button>
       </article>
 
       <article className="home-latest-card home-double-result">
         <div className="home-section-heading">
-          <div><span className="home-eyebrow">MOST RECENT COMPLETED ROUND</span><h2>Latest Targetor Double result</h2></div>
+          <div><span className="home-eyebrow">MOST RECENT COMPLETED ROUND</span><h2>Latest Twin Fortune result</h2></div>
           <button type="button" onClick={() => onOpenResults('double')}>All results →</button>
         </div>
         {latestDoubleRound ? (
@@ -271,13 +271,13 @@ export default function HomeDashboard({ onOpenGame, onOpenBookings, onOpenResult
             <div className="home-result-meta">{latestDoubleRound.game_date} <span>·</span> {formatTime(latestDoubleRound.round_time)}</div>
             <div className="home-double-result-number"><span>WINNING NUMBER</span><strong>{String(latestDoubleRound.winning_number).padStart(2, '0')}</strong></div>
           </>
-        ) : <p className="home-loading">The latest Targetor Double result will appear here.</p>}
+        ) : <p className="home-loading">The latest Twin Fortune result will appear here.</p>}
       </article>
 
       <div className="home-game-grid home-double-entry-grid">
         <button type="button" className="home-game-card home-double-entry" onClick={() => onOpenGame('double')}>
           <span className="home-game-icon home-game-icon-double">00–99</span>
-          <span className="home-game-copy"><strong>Enter Targetor Double Lobby</strong><small>Choose numbers 00–99 and book your stake</small></span>
+          <span className="home-game-copy"><strong>Enter Twin Fortune Lobby</strong><small>Choose numbers 00–99 and book your stake</small></span>
           <span className="home-arrow">→</span>
         </button>
       </div>
