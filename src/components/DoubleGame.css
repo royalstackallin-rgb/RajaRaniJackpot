@@ -112,3 +112,29 @@
     font-size: 9px;
   }
 }
+
+/* Number labels are not clickable; entering an amount selects the number automatically. */
+.double-page .double-number-label {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-height: 28px;
+  padding: 3px 0;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  color: #dce6f6;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+.double-page .double-number-label.chosen {
+  border-color: #e8c879;
+  background: #a67c2d30;
+  color: #ffe5a3;
+}
+@media (max-width: 560px) {
+  .double-page .double-number-label {
+    min-height: 25px;
+    font-size: 11px;
+  }
+}
