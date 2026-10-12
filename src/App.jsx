@@ -186,7 +186,7 @@ function App() {
           {view === 'bookings' && <MyBookings />}
           {view === 'results' && <GameResults initialGame={resultsGame} />}
           {view === 'double' && <DoubleGame />}
-          {view === 'wallet' && <Wallet />}
+          {view === 'wallet' && <Wallet onOpenWithdraw={() => setView('withdraw')} />}
           {view === 'withdraw' && <Withdraw />}
           {view === 'deposit-admin' && isWalletAdmin && <DepositAdmin />}
 
