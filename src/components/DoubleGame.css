@@ -403,3 +403,28 @@
     font-size: 11px;
   }
 }
+
+.double-page .double-quick-mode {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin: 12px 0;
+  padding: 4px;
+  border: 1px solid #29384d;
+  border-radius: 10px;
+  background: #030914;
+}
+.double-page .double-quick-mode button {
+  min-height: 38px;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  background: transparent;
+  color: #a8b6cc;
+  font-size: 14px;
+  font-weight: 600;
+}
+.double-page .double-quick-mode button.active {
+  border-color: #a98a4d;
+  background: #b38a3e25;
+  color: #f1d48d;
+}
