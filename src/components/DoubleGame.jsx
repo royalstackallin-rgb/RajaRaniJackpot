@@ -190,7 +190,7 @@ export default function DoubleGame() {
             <strong>{roundLabel(currentRound)}</strong>
           </div>
           <span className={currentRound?.status === 'open' ? 'double-status open' : 'double-status'}>
-            {currentRound ? currentRound.status.toUpperCase() : 'WAITING'}
+            {currentRound && ['drawn', 'settled'].includes(currentRound.status) ? 'RESULT' : currentRound ? currentRound.status.toUpperCase() : 'WAITING'}
           </span>
         </div>
         {currentRound?.winning_number && (
