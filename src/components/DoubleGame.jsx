@@ -46,6 +46,7 @@ export default function DoubleGame({ historyOnly = false }) {
   const [quickStake, setQuickStake] = useState('10')
   const [balance, setBalance] = useState(null)
   const [bookings, setBookings] = useState([])
+  const [expandedHistory, setExpandedHistory] = useState({})
   const [message, setMessage] = useState('')
   const [busy, setBusy] = useState(false)
   const [now, setNow] = useState(new Date())
@@ -193,13 +194,11 @@ export default function DoubleGame({ historyOnly = false }) {
   }
 
   const groupedBookings = useMemo(() => {
-    const normalized = bookings.map((booking) => ({
-      ...booking,
-      number: String(booking.number).padStart(2, '0'),
-    }))
+    const normalized = bookings.map((booking) => ({ ...booking, number: String(booking.number).padStart(2, '0') }))
     const groups = new Map()
     const groupedIds = new Set()
 
+    // Detect the ten-number Starting/Ending quick-booking slips.
     for (const booking of normalized) {
       for (const pattern of [
         { kind: 'Starting', digit: booking.number[0], matches: NUMBERS.filter((n) => n.startsWith(booking.number[0])) },
@@ -211,26 +210,14 @@ export default function DoubleGame({ historyOnly = false }) {
           item.status === booking.status &&
           pattern.matches.includes(item.number)
         )
-        // Duplicate bookings for a number should not prevent recognizing a complete
-        // starting/ending group. We identify the pattern by its ten distinct numbers.
         if (!pattern.matches.every((n) => members.some((item) => item.number === n))) continue
-
         const key = [booking.round_id, booking.stake, booking.status, pattern.kind, pattern.digit].join('|')
         if (!groups.has(key)) {
           groups.set(key, {
-            type: 'group',
-            key,
-            round_id: booking.round_id,
-            stake: Number(booking.stake),
-            status: booking.status,
-            kind: pattern.kind,
-            digit: pattern.digit,
-            numbers: pattern.matches,
+            type: 'group', key, round_id: booking.round_id, stake: Number(booking.stake),
+            status: booking.status, kind: pattern.kind, digit: pattern.digit,
             bookings: members,
-            created_at: members.reduce((latest, item) =>
-              new Date(item.created_at) > new Date(latest) ? item.created_at : latest,
-              members[0].created_at
-            ),
+            created_at: members.reduce((latest, item) => new Date(item.created_at) > new Date(latest) ? item.created_at : latest, members[0].created_at),
           })
           members.forEach((item) => groupedIds.add(item.id))
         }
@@ -238,19 +225,35 @@ export default function DoubleGame({ historyOnly = false }) {
       }
     }
 
-    const groupedItems = [...groups.values()].map((group) => ({
-      ...group,
-      totalStake: group.stake * 10,
-      payoutPerWinningNumber: group.stake * 80,
-    }))
-    const singles = normalized
-      .filter((booking) => !groupedIds.has(booking.id))
-      .map((booking) => ({ type: 'single', key: booking.id, booking, created_at: booking.created_at }))
+    // Group other numbers placed together within a 15-second booking burst.
+    const batches = []
+    for (const booking of normalized.filter((item) => !groupedIds.has(item.id))) {
+      const time = new Date(booking.created_at).getTime()
+      let batch = batches.find((candidate) =>
+        candidate.round_id === booking.round_id &&
+        candidate.status === booking.status &&
+        Math.abs(candidate.firstTime - time) <= 15000
+      )
+      if (!batch) {
+        batch = { type: 'batch', key: `batch-${booking.round_id}-${booking.id}`, round_id: booking.round_id, status: booking.status, firstTime: time, created_at: booking.created_at, bookings: [] }
+        batches.push(batch)
+      }
+      batch.bookings.push(booking)
+    }
 
-    return [...groupedItems, ...singles].sort((a, b) =>
-      new Date(b.created_at || b.booking?.created_at || 0) -
-      new Date(a.created_at || a.booking?.created_at || 0)
-    )
+    const slips = [...groups.values()].map((item) => ({
+      ...item,
+      bookings: item.bookings,
+      totalStake: item.stake * 10,
+      potentialPayout: item.stake * 80,
+    }))
+    for (const batch of batches) {
+      batch.bookings.sort((a, b) => a.number.localeCompare(b.number))
+      batch.totalStake = batch.bookings.reduce((sum, item) => sum + Number(item.stake || 0), 0)
+      batch.potentialPayout = batch.bookings.reduce((sum, item) => sum + Number(item.stake || 0) * 80, 0)
+      slips.push(batch)
+    }
+    return slips.sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0))
   }, [bookings])
 
   const displayTime = (time) => ({ '09:00': '9:00 AM', '12:00': '12:00 PM', '15:00': '3:00 PM', '18:00': '6:00 PM' }[String(time).slice(0, 5)] || String(time).slice(0, 5))
@@ -384,33 +387,42 @@ export default function DoubleGame({ historyOnly = false }) {
           ) : (
             <div className="double-history-list">
               {groupedBookings.map((item) => {
-                if (item.type === 'group') {
-                  const round = rounds.find((candidate) => candidate.id === item.round_id)
-                  return (
-                    <div className="double-history-item" key={item.key}>
-                      <div className="double-history-number">{item.digit}</div>
-                      <div className="double-history-details">
-                        <strong>{item.kind} {item.digit} · {roundLabel(round)}</strong>
-                        <span>Stake ₹{formatMoney(item.stake)} each · Total ₹{formatMoney(item.totalStake)} · Potential payout ₹{formatMoney(item.payoutPerWinningNumber)} per winning number</span>
-                      </div>
-                      <span className={`double-status ${item.status === 'win' ? 'won' : item.status === 'loss' ? 'lost' : ''}`}>
-                        {item.status.toUpperCase()}
-                      </span>
-                    </div>
-                  )
-                }
-                const booking = item.booking
-                const round = rounds.find((candidate) => candidate.id === booking.round_id)
+                const round = rounds.find((candidate) => candidate.id === item.round_id)
+                const expanded = Boolean(expandedHistory[item.key])
+                const isPattern = item.type === 'group'
+                const count = item.bookings.length
+                const title = isPattern
+                  ? `${item.kind} ${item.digit} · ${roundLabel(round)}`
+                  : `${count} number${count === 1 ? '' : 's'} · ${roundLabel(round)}`
                 return (
-                  <div className="double-history-item" key={booking.id}>
-                    <div className="double-history-number">{booking.number}</div>
-                    <div className="double-history-details">
-                      <strong>{roundLabel(round)}</strong>
-                      <span>Stake ₹{formatMoney(booking.stake)} · Potential winning ₹{formatMoney(Number(booking.stake) * 80)}</span>
-                    </div>
-                    <span className={`double-status ${booking.status === 'win' ? 'won' : booking.status === 'loss' ? 'lost' : ''}`}>
-                      {booking.status.toUpperCase()}
-                    </span>
+                  <div className="double-history-item double-history-item-expandable" key={item.key}>
+                    <button
+                      type="button"
+                      className="double-history-summary"
+                      aria-expanded={expanded}
+                      onClick={() => setExpandedHistory((current) => ({ ...current, [item.key]: !current[item.key] }))}
+                    >
+                      <span className="double-history-number">{isPattern ? item.digit : count === 1 ? item.bookings[0].number : count}</span>
+                      <span className="double-history-details">
+                        <strong>{title}</strong>
+                        <span>{isPattern
+                          ? `Stake ₹${formatMoney(item.stake)} each · Total ₹${formatMoney(item.totalStake)} · Potential payout ₹${formatMoney(item.potentialPayout)} per winning number`
+                          : `Total stake ₹${formatMoney(item.totalStake)} · Potential payout up to ₹${formatMoney(item.potentialPayout)}`}</span>
+                      </span>
+                      <span className={`double-status ${item.status === 'win' ? 'won' : item.status === 'loss' ? 'lost' : ''}`}>{item.status.toUpperCase()}</span>
+                      <span className="double-history-chevron">{expanded ? '−' : '+'}</span>
+                    </button>
+                    {expanded && (
+                      <div className="double-history-expanded">
+                        {item.bookings.map((booking) => (
+                          <div className="double-history-number-row" key={booking.id}>
+                            <span>{booking.number}</span>
+                            <span>Stake ₹{formatMoney(booking.stake)}</span>
+                            <span>Potential ₹{formatMoney(Number(booking.stake) * 80)}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 )
               })}
