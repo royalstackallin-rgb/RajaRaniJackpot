@@ -3155,3 +3155,227 @@ body[data-round-theme] .main-menu button:not(.active) {
 .booking-game-arrow{display:grid;place-items:center;flex:0 0 30px;height:30px;border:1px solid #ffffff16;border-radius:50%;color:#f1cf87;font-size:20px}
 .booking-game-choice-double .booking-game-arrow{color:#f08b9b}
 @media(max-width:420px){.booking-game-choice{gap:11px;padding:15px 12px;min-height:104px}.booking-game-mark{flex-basis:50px;height:50px;font-size:12px}.booking-game-copy strong{font-size:17px}.booking-game-copy small{font-size:11px}}
+
+
+/* Wallet redesign: balance actions */
+.wallet-balance-card {
+  position: relative;
+  overflow: hidden;
+  gap: 10px;
+  padding: 24px;
+  border: 1px solid rgba(230, 194, 112, 0.32);
+  border-radius: 22px;
+  background: radial-gradient(ellipse at top right, #34435a 0%, transparent 58%), linear-gradient(145deg, #19283d, #080e1a 78%);
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.22);
+}
+
+.wallet-balance-card > span {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+}
+
+.wallet-balance-card > strong {
+  font-size: clamp(34px, 8vw, 44px);
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+.wallet-action-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.wallet-action-buttons button {
+  min-height: 48px;
+  padding: 12px 10px;
+  border-radius: 12px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 850;
+  cursor: pointer;
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.wallet-action-buttons button:active {
+  transform: scale(0.98);
+}
+
+.wallet-add-money {
+  border: 1px solid #f1d28b;
+  background: linear-gradient(135deg, #f3d994, #c59a49);
+  color: #17130a;
+}
+
+.wallet-withdraw-button {
+  border: 1px solid #52647f;
+  background: #101c2e;
+  color: #f0f4fb;
+}
+
+#wallet-add-money {
+  scroll-margin-top: 20px;
+}
+
+@media (max-width: 380px) {
+  .wallet-balance-card {
+    padding: 18px;
+  }
+
+  .wallet-action-buttons {
+    gap: 7px;
+  }
+
+  .wallet-action-buttons button {
+    padding: 10px 5px;
+    font-size: 13px;
+  }
+}
+
+
+/* Wallet mobile refinement: tighter spacing and clearer alignment */
+.wallet-page {
+  max-width: 760px;
+  padding: 12px clamp(12px, 3vw, 22px) 28px;
+  text-align: left;
+}
+
+.wallet-heading {
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+
+.wallet-heading > div {
+  min-width: 0;
+}
+
+.wallet-heading h1,
+.wallet-subtitle {
+  text-align: left;
+}
+
+.wallet-subtitle {
+  max-width: 520px;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.wallet-balance-card {
+  align-items: start;
+  justify-items: start;
+  gap: 7px;
+  padding: clamp(18px, 4vw, 24px);
+  text-align: left;
+}
+
+.wallet-balance-card > strong {
+  margin: 2px 0;
+  font-size: clamp(32px, 7vw, 40px);
+  line-height: 1.08;
+}
+
+.wallet-balance-card > small {
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.wallet-action-buttons {
+  width: 100%;
+  margin-top: 9px;
+}
+
+.wallet-action-buttons button {
+  min-height: 46px;
+  padding: 10px 8px;
+  font-size: 14px;
+}
+
+.wallet-deposit-card,
+.wallet-history-card {
+  padding: clamp(16px, 3.5vw, 22px);
+  text-align: left;
+}
+
+.wallet-deposit-card h2,
+.wallet-history-card h2 {
+  text-align: left;
+  font-size: clamp(17px, 4.4vw, 20px);
+  line-height: 1.3;
+}
+
+.wallet-deposit-card > p,
+.wallet-deposit-card label,
+.wallet-history-card p,
+.wallet-secure-note,
+.wallet-disclaimer {
+  text-align: left;
+}
+
+.wallet-deposit-card label {
+  margin-top: 15px;
+}
+
+.wallet-quick-amounts {
+  gap: 7px;
+  margin-top: 9px;
+}
+
+.wallet-quick-amounts button {
+  min-height: 44px;
+}
+
+.wallet-buy-button {
+  min-height: 48px;
+  margin-top: 13px;
+}
+
+.wallet-secure-note {
+  margin: 10px 0 0;
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.wallet-history-heading {
+  align-items: center;
+}
+
+.wallet-deposit-row {
+  gap: 10px;
+}
+
+@media (max-width: 420px) {
+  .wallet-page {
+    padding-top: 10px;
+  }
+
+  .wallet-heading {
+    gap: 8px;
+  }
+
+  .wallet-heading h1 {
+    font-size: 25px;
+  }
+
+  .wallet-balance-card {
+    padding: 18px;
+    border-radius: 18px;
+  }
+
+  .wallet-balance-card > span {
+    font-size: 10px;
+  }
+
+  .wallet-action-buttons {
+    gap: 8px;
+  }
+
+  .wallet-action-buttons button {
+    font-size: 13px;
+  }
+
+  .wallet-deposit-card,
+  .wallet-history-card {
+    border-radius: 16px;
+  }
+}
