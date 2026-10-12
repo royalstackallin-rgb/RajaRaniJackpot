@@ -36,6 +36,9 @@ export default function DoubleGame() {
   const [rounds, setRounds] = useState([])
   const [selectedNumbers, setSelectedNumbers] = useState([])
   const [stakes, setStakes] = useState({})
+  const [endingDigit, setEndingDigit] = useState('')
+  const [startingDigit, setStartingDigit] = useState('')
+  const [quickStake, setQuickStake] = useState('10')
   const [balance, setBalance] = useState(null)
   const [bookings, setBookings] = useState([])
   const [message, setMessage] = useState('')
@@ -110,6 +113,29 @@ export default function DoubleGame() {
   const stakeFor = (number) => stakes[number] ?? ''
   const totalStake = selectedNumbers.reduce((sum, number) => sum + (Number(stakeFor(number)) || 0), 0)
   const potentialPayout = selectedNumbers.reduce((sum, number) => sum + (Number(stakeFor(number)) || 0) * 80, 0)
+  const applyQuickBooking = (kind) => {
+    const digit = kind === 'ending' ? endingDigit : startingDigit
+    const amount = Number(quickStake)
+    if (!/^[0-9]$/.test(digit)) {
+      setMessage(`Choose a ${kind} digit from 0 to 9.`)
+      return
+    }
+    if (!Number.isSafeInteger(amount) || amount < 1 || amount > 1000000) {
+      setMessage('Enter a whole-number amount from ₹1 to ₹10,00,000 per number.')
+      return
+    }
+    const matchingNumbers = NUMBERS.filter((number) =>
+      kind === 'ending' ? number.endsWith(digit) : number.startsWith(digit)
+    )
+    setStakes((current) => {
+      const next = { ...current }
+      matchingNumbers.forEach((number) => { next[number] = String(amount) })
+      return next
+    })
+    setSelectedNumbers((current) => [...new Set([...current, ...matchingNumbers])].sort((a, b) => Number(a) - Number(b)))
+    setMessage(`Selected ${matchingNumbers.join(', ')}. ₹${formatMoney(amount)} each × 10 numbers = ₹${formatMoney(amount * 10)} total.`)
+  }
+
   const placeBooking = async () => {
     setMessage('')
     if (!currentRound || !canBook) {
@@ -204,6 +230,33 @@ export default function DoubleGame() {
         )}
         <div className="double-payout-note">Potential payout: <strong>80× stake per winning number</strong>. Stake applies to each selected number.</div>
         <p className="double-selected-summary">Selected: <strong>{selectedNumbers.length ? selectedNumbers.join(', ') : 'none'}</strong></p>
+        <div className="double-quick-booking">
+          <h3>Easy Booking</h3>
+          <p>Choose a starting or ending digit. The amount is applied to all 10 matching numbers.</p>
+          <div className="double-quick-fields">
+            <label>
+              <span>Amount per number (₹)</span>
+              <input type="number" inputMode="numeric" min="1" max="1000000" step="1" value={quickStake} onChange={(event) => setQuickStake(event.target.value)} />
+            </label>
+            <label>
+              <span>Ending digit (0–9)</span>
+              <select value={endingDigit} onChange={(event) => setEndingDigit(event.target.value)}>
+                <option value="">Choose</option>
+                {Array.from({ length: 10 }, (_, i) => <option key={i} value={String(i)}>{i}</option>)}
+              </select>
+            </label>
+            <button type="button" className="double-quick-button" onClick={() => applyQuickBooking('ending')}>Select Ending</button>
+            <label>
+              <span>Starting digit (0–9)</span>
+              <select value={startingDigit} onChange={(event) => setStartingDigit(event.target.value)}>
+                <option value="">Choose</option>
+                {Array.from({ length: 10 }, (_, i) => <option key={i} value={String(i)}>{i}</option>)}
+              </select>
+            </label>
+            <button type="button" className="double-quick-button" onClick={() => applyQuickBooking('starting')}>Select Starting</button>
+          </div>
+          <p className="double-quick-example">Example: ending 2 selects 02, 12, 22 … 92. Starting 2 selects 20–29. ₹10 each = ₹100 total per group.</p>
+        </div>
         <div className="double-number-grid" aria-label="Choose numbers and enter individual stakes">
           {NUMBERS.map((number) => (
             <div className={`double-number-tile ${selectedNumbers.includes(number) ? 'selected' : ''}`} key={number}>
