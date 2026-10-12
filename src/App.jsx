@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { supabase } from './lib/supabase'
 import TicketLobby from './components/TicketLobby'
+import HomeDashboard from './components/HomeDashboard'
 import MyBookings from './components/MyBookings'
 import GameResults from './components/GameResults'
 import DoubleGame from './components/DoubleGame'
@@ -108,7 +109,7 @@ function App() {
     setMessage('')
   }
 
-  if (session && ['tickets', 'bookings', 'results', 'double', 'wallet', 'withdraw', 'deposit-admin'].includes(view)) {
+  if (session && ['home', 'tickets', 'bookings', 'results', 'double', 'wallet', 'withdraw', 'deposit-admin'].includes(view)) {
     return (
       <main className={`app-page app-view-${view}`}>
         <div className="app-shell">
@@ -140,6 +141,13 @@ function App() {
           </header>
 
           <nav className="main-menu" aria-label="Main menu">
+            <button
+              type="button"
+              className={view === 'home' ? 'active' : ''}
+              onClick={() => setView('home')}
+            >
+              Home
+            </button>
             <button
               type="button"
               className={view === 'tickets' ? 'active' : ''}
@@ -204,6 +212,7 @@ function App() {
         </div>
       )}
 
+          {view === 'home' && <HomeDashboard onOpenGame={setView} onOpenBookings={() => setView('bookings')} onOpenResults={() => setView('results')} />}
           {view === 'tickets' && <TicketLobby />}
           {view === 'bookings' && <MyBookings />}
           {view === 'results' && <GameResults />}
@@ -237,7 +246,7 @@ function App() {
             <button
               className="submit-button"
               type="button"
-              onClick={() => setView('tickets')}
+              onClick={() => setView('home')}
             >
               Enter Lobby
             </button>
