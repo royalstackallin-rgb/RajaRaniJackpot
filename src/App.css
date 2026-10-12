@@ -2923,3 +2923,92 @@ body[data-round-theme] .main-menu button:not(.active) {
 .probability-lab-result strong{font-size:13px}
 .probability-lab-result small{color:#94a3b8;font-size:9px}
 @media(max-width:560px){.probability-lab-grid{gap:3px}.probability-lab-number input{height:29px;min-height:29px;font-size:10px}.probability-lab-number{font-size:9px}.probability-lab-results-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.probability-lab-controls{align-items:stretch;flex-direction:column}.probability-lab-controls button{width:100%}}
+
+
+/* Compact, expandable StakeClassic booking history */
+.booking-card-compact {
+  padding: 0 !important;
+  overflow: hidden;
+}
+.booking-compact-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+  padding: 15px 16px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.booking-compact-main {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+.booking-compact-title {
+  color: #f8fafc;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+.booking-compact-date,
+.booking-compact-meta {
+  color: #9eb0c5;
+  font-size: 12px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+.booking-compact-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.booking-compact-right .booking-status {
+  font-size: 10px;
+  padding: 7px 9px;
+}
+.booking-compact-chevron {
+  color: #f1d48d;
+  font-size: 20px;
+  line-height: 1;
+}
+.booking-compact-expanded {
+  padding: 0 14px 14px;
+  border-top: 1px solid rgba(148, 163, 184, .18);
+}
+.booking-compact-expanded .booking-details {
+  margin-top: 12px;
+}
+.booking-compact-expanded .booking-entries {
+  margin-top: 12px;
+}
+@media (max-width: 560px) {
+  .booking-compact-summary {
+    gap: 8px;
+    padding: 12px 10px;
+  }
+  .booking-compact-title {
+    font-size: 13px;
+  }
+  .booking-compact-date,
+  .booking-compact-meta {
+    font-size: 11px;
+  }
+  .booking-compact-right {
+    gap: 5px;
+  }
+  .booking-compact-right .booking-status {
+    font-size: 9px;
+    padding: 6px 7px;
+  }
+  .booking-compact-expanded {
+    padding: 0 10px 12px;
+  }
+}
