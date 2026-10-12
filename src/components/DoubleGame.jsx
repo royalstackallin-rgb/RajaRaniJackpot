@@ -2,7 +2,12 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { supabase } from '../lib/supabase'
 import './DoubleGame.css'
 
-const TIMES = ['09:00', '12:00', '15:00', '18:00']
+const TIMES = [
+  { value: '09:00', label: '9:00 AM' },
+  { value: '12:00', label: '12:00 PM' },
+  { value: '15:00', label: '3:00 PM' },
+  { value: '18:00', label: '6:00 PM' },
+]
 const NUMBERS = Array.from({ length: 100 }, (_, i) => String(i).padStart(2, '0'))
 
 function istDateString(date = new Date()) {
@@ -248,8 +253,9 @@ export default function DoubleGame() {
     )
   }, [bookings])
 
+  const displayTime = (time) => ({ '09:00': '9:00 AM', '12:00': '12:00 PM', '15:00': '3:00 PM', '18:00': '6:00 PM' }[String(time).slice(0, 5)] || String(time).slice(0, 5))
   const roundLabel = (round) =>
-    round ? `${round.game_date} · ${String(round.round_time).slice(0, 5)} IST` : 'No round available'
+    round ? `${round.game_date} · ${displayTime(round.round_time)}` : 'No round available'
 
   return (
     <section className="double-page">
@@ -267,8 +273,8 @@ export default function DoubleGame() {
 
       <div className="double-times" aria-label="Daily draw times">
         {TIMES.map((time) => (
-          <span key={time} className={currentRound && String(currentRound.round_time).slice(0, 5) === time ? 'selected' : ''}>
-            {time} <small>IST</small>
+          <span key={time.value} className={currentRound && String(currentRound.round_time).slice(0, 5) === time.value ? 'selected' : ''}>
+            {time.label}
           </span>
         ))}
       </div>
