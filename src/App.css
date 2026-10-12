@@ -3067,3 +3067,10 @@ body[data-round-theme] .main-menu button:not(.active) {
 .view-back-button{border:1px solid #13c9df55;border-radius:9px;padding:10px 12px;background:#061b26;color:#37d9ec;font-size:12px;font-weight:800;white-space:nowrap;cursor:pointer}
 .view-navigation>span{overflow:hidden;color:#a9bfd0;font-size:12px;text-overflow:ellipsis;white-space:nowrap}
 .app-brand-home{border:0}
+
+.home-double-card{align-items:flex-start}
+.home-double-card .home-game-icon{margin-top:2px}
+.home-double-card .home-game-copy{gap:7px}
+.home-double-card .home-game-copy .home-status{align-self:flex-start;padding:5px 8px}
+.home-double-latest{display:block;color:#f5d58b;font-size:10px;font-weight:800;line-height:1.45}
+.home-double-card .home-arrow{padding-top:12px}
