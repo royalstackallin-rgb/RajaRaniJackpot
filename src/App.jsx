@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { supabase } from './lib/supabase'
 import TicketLobby from './components/TicketLobby'
 import HomeDashboard from './components/HomeDashboard'
@@ -20,6 +20,8 @@ function App() {
   const [session, setSession] = useState(null)
   const [isWalletAdmin, setIsWalletAdmin] = useState(false)
   const [view, setView] = useState('home')
+  const viewRef = useRef('home')
+  const ignoreNextViewPush = useRef(false)
   const [resultsGame, setResultsGame] = useState(null)
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false)
   const [showAppMenu, setShowAppMenu] = useState(false)
@@ -43,6 +45,39 @@ function App() {
 
     return () => subscription.unsubscribe()
   }, [])
+
+  // Android/browser Back follows the app's in-app screen history.
+  useEffect(() => {
+    viewRef.current = view
+  }, [view])
+
+  useEffect(() => {
+    window.history.replaceState({ ...(window.history.state || {}), appView: viewRef.current }, '', window.location.href)
+
+    const handleAppBack = (event) => {
+      const targetView = event.state?.appView
+      if (targetView && targetView !== viewRef.current) {
+        ignoreNextViewPush.current = true
+        viewRef.current = targetView
+        setView(targetView)
+      } else if (viewRef.current !== 'home') {
+        ignoreNextViewPush.current = true
+        viewRef.current = 'home'
+        setView('home')
+      }
+    }
+
+    window.addEventListener('popstate', handleAppBack)
+    return () => window.removeEventListener('popstate', handleAppBack)
+  }, [])
+
+  useEffect(() => {
+    if (ignoreNextViewPush.current) {
+      ignoreNextViewPush.current = false
+      return
+    }
+    window.history.pushState({ ...(window.history.state || {}), appView: view }, '', window.location.href)
+  }, [view])
 
   useEffect(() => {
     let cancelled = false
