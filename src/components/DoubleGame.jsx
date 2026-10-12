@@ -3,10 +3,14 @@ import { supabase } from '../lib/supabase'
 import './DoubleGame.css'
 
 const TIMES = [
+  { value: '00:00', label: '12:00 AM' },
+  { value: '03:00', label: '3:00 AM' },
+  { value: '06:00', label: '6:00 AM' },
   { value: '09:00', label: '9:00 AM' },
   { value: '12:00', label: '12:00 PM' },
   { value: '15:00', label: '3:00 PM' },
   { value: '18:00', label: '6:00 PM' },
+  { value: '21:00', label: '9:00 PM' },
 ]
 const NUMBERS = Array.from({ length: 100 }, (_, i) => String(i).padStart(2, '0'))
 
@@ -258,7 +262,7 @@ export default function DoubleGame({ historyOnly = false }) {
     return slips.sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0))
   }, [bookings])
 
-  const displayTime = (time) => ({ '09:00': '9:00 AM', '12:00': '12:00 PM', '15:00': '3:00 PM', '18:00': '6:00 PM' }[String(time).slice(0, 5)] || String(time).slice(0, 5))
+  const displayTime = (time) => ({ '00:00': '12:00 AM', '03:00': '3:00 AM', '06:00': '6:00 AM', '09:00': '9:00 AM', '12:00': '12:00 PM', '15:00': '3:00 PM', '18:00': '6:00 PM', '21:00': '9:00 PM' }[String(time).slice(0, 5)] || String(time).slice(0, 5))
   const roundLabel = (round) =>
     round ? `${round.game_date} · ${displayTime(round.round_time)}` : 'No round available'
   const latestDoubleResult = [...rounds].reverse().find((round) => ['drawn', 'settled'].includes(round.status) && round.winning_number !== null && round.winning_number !== undefined) || null
