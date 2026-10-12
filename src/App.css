@@ -3155,3 +3155,33 @@ body[data-round-theme] .main-menu button:not(.active) {
 .booking-game-arrow{display:grid;place-items:center;flex:0 0 30px;height:30px;border:1px solid #ffffff16;border-radius:50%;color:#f1cf87;font-size:20px}
 .booking-game-choice-double .booking-game-arrow{color:#f08b9b}
 @media(max-width:420px){.booking-game-choice{gap:11px;padding:15px 12px;min-height:104px}.booking-game-mark{flex-basis:50px;height:50px;font-size:12px}.booking-game-copy strong{font-size:17px}.booking-game-copy small{font-size:11px}}
+
+
+/* TARGETORSTAKE stake-art hero */
+.home-hero-art {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid rgba(255, 190, 72, 0.42);
+  border-radius: 18px;
+  background: #12070c;
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.32), 0 0 24px rgba(199, 22, 43, 0.12);
+  isolation: isolate;
+}
+.home-hero-art img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1200 / 520;
+  object-fit: cover;
+}
+@media (max-width: 420px) {
+  .home-hero-art {
+    border-radius: 14px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-hero-art {
+    scroll-behavior: auto;
+  }
+}
