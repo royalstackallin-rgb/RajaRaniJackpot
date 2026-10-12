@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520" role="img" aria-labelledby="title desc">
+<title id="title">TargetorStake — stake and target artwork</title>
+<desc id="desc">A cinematic red and gold target with a dart in the bullseye, stacked coins, and numbered balls.</desc>
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#390812"/><stop offset=".48" stop-color="#12070c"/><stop offset="1" stop-color="#03060b"/></linearGradient>
+  <radialGradient id="flare"><stop stop-color="#ff6b24" stop-opacity=".72"/><stop offset="1" stop-color="#d20c2c" stop-opacity="0"/></radialGradient>
+  <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff3ad"/><stop offset=".28" stop-color="#ffca42"/><stop offset=".62" stop-color="#b66a0b"/><stop offset=".82" stop-color="#ffe27b"/><stop offset="1" stop-color="#8e4506"/></linearGradient>
+  <linearGradient id="red" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ff4657"/><stop offset=".5" stop-color="#b50828"/><stop offset="1" stop-color="#520719"/></linearGradient>
+  <linearGradient id="coin" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ffe990"/><stop offset=".45" stop-color="#d9951b"/><stop offset="1" stop-color="#6b3107"/></linearGradient>
+  <filter id="glow"><feGaussianBlur stdDeviation="15"/></filter>
+  <filter id="shadow"><feGaussianBlur stdDeviation="9"/></filter>
+  <pattern id="grain" width="90" height="90" patternUnits="userSpaceOnUse"><circle cx="13" cy="22" r="1.5" fill="#ffdb76" opacity=".55"/><circle cx="70" cy="64" r="1" fill="#ff6548" opacity=".65"/><path d="M35 5v7M31 8.5h8" stroke="#ffc44e" opacity=".4"/></pattern>
+</defs>
+<rect width="1200" height="520" rx="28" fill="url(#bg)"/>
+<ellipse cx="790" cy="255" rx="420" ry="300" fill="url(#flare)"/>
+<rect width="1200" height="520" rx="28" fill="url(#grain)" opacity=".7"/>
+<g opacity=".38" stroke="#ff572d" stroke-width="3" fill="none"><path d="M0 430Q240 280 450 400T900 350T1200 390"/><path d="M0 458Q240 308 450 428T900 378T1200 418"/></g>
+<g transform="translate(780 250)">
+  <circle r="190" fill="#ff3a23" opacity=".25" filter="url(#glow)"/>
+  <circle r="174" fill="#08090d" stroke="url(#gold)" stroke-width="10"/>
+  <circle r="154" fill="url(#red)" stroke="#ffdc69" stroke-width="5"/>
+  <circle r="119" fill="#f9d35c" stroke="#7d210e" stroke-width="8"/>
+  <circle r="94" fill="#b70b28" stroke="#fff0a0" stroke-width="5"/>
+  <circle r="62" fill="#ffe8a0" stroke="#a85c0b" stroke-width="8"/>
+  <circle r="34" fill="#d20d2a" stroke="#fff4c1" stroke-width="5"/>
+  <circle r="13" fill="#fff5cb"/>
+  <path d="M-170 -36A174 174 0 0 1 -42 -169" fill="none" stroke="#fff1b5" stroke-width="6" stroke-linecap="round" opacity=".7"/>
+</g>
+<g transform="translate(780 250) rotate(-37)">
+  <path d="M0 -18L-5 -250L5 -250Z" fill="#d9e3ed"/>
+  <path d="M0 -250L-30 -296L0 -282L30 -296Z" fill="url(#red)" stroke="#ffd66b" stroke-width="4"/>
+  <path d="M-5 -235L0 -255L5 -235" fill="#fff4c8"/>
+</g>
+<g transform="translate(270 380)">
+  <ellipse cx="0" cy="90" rx="205" ry="28" fill="#000" opacity=".65" filter="url(#shadow)"/>
+  <g fill="url(#coin)" stroke="#ffe58a" stroke-width="3">
+    <ellipse cx="-80" cy="45" rx="92" ry="23"/><path d="M-172 20v24c0 13 41 24 92 24s92-11 92-24V20" fill="url(#coin)"/><ellipse cx="-80" cy="20" rx="92" ry="23"/>
+    <ellipse cx="80" cy="55" rx="92" ry="23"/><path d="M-12 30v24c0 13 41 24 92 24s92-11 92-24V30" fill="url(#coin)"/><ellipse cx="80" cy="30" rx="92" ry="23"/>
+    <ellipse cx="5" cy="0" rx="80" ry="21"/><path d="M-75 -26v25c0 12 36 22 80 22S85 11 85-1v-25" fill="url(#coin)"/><ellipse cx="5" cy="-26" rx="80" ry="21"/>
+  </g>
+  <g fill="none" stroke="#7a4009" stroke-width="3" opacity=".75"><ellipse cx="-80" cy="20" rx="66" ry="13"/><ellipse cx="80" cy="30" rx="66" ry="13"/><ellipse cx="5" cy="-26" rx="56" ry="12"/></g>
+</g>
+<g>
+  <circle cx="1040" cy="392" r="67" fill="#090a0f" stroke="url(#gold)" stroke-width="8"/>
+  <circle cx="1040" cy="392" r="56" fill="url(#coin)" stroke="#fff0a1" stroke-width="3"/>
+  <text x="1040" y="405" text-anchor="middle" font-family="Arial,sans-serif" font-weight="900" font-size="40" fill="#170a09">24</text>
+  <circle cx="965" cy="125" r="48" fill="#10090b" stroke="#ffb934" stroke-width="7"/>
+  <circle cx="965" cy="125" r="39" fill="url(#red)" stroke="#ffe17a" stroke-width="3"/>
+  <text x="965" y="138" text-anchor="middle" font-family="Arial,sans-serif" font-weight="900" font-size="31" fill="#fff1c1">07</text>
+  <circle cx="1102" cy="245" r="41" fill="#10090b" stroke="#ffb934" stroke-width="6"/>
+  <circle cx="1102" cy="245" r="33" fill="url(#red)" stroke="#ffe17a" stroke-width="3"/>
+  <text x="1102" y="256" text-anchor="middle" font-family="Arial,sans-serif" font-weight="900" font-size="25" fill="#fff1c1">18</text>
+</g>
+<g fill="#fff0bd" font-family="Arial,sans-serif">
+  <text x="62" y="100" font-size="24" letter-spacing="8" opacity=".88">SMALL STAKES</text>
+  <text x="58" y="162" font-size="49" font-weight="900" letter-spacing="3">BIGGER</text>
+  <text x="58" y="218" font-size="49" font-weight="900" letter-spacing="3" fill="#ffd04f">THRILLS</text>
+  <path d="M62 244H290" stroke="#ffd04f" stroke-width="5" stroke-linecap="round"/>
+  <text x="62" y="290" font-size="19" letter-spacing="3" opacity=".9">PICK YOUR NUMBERS</text>
+  <text x="62" y="320" font-size="19" letter-spacing="3" opacity=".9">PLACE YOUR STAKE</text>
+</g>
+<rect x="2" y="2" width="1196" height="516" rx="27" fill="none" stroke="#ffbd48" stroke-opacity=".45" stroke-width="3"/>
+</svg>
