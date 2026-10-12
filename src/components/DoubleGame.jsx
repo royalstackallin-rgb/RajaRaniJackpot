@@ -187,6 +187,61 @@ export default function DoubleGame() {
     }
   }
 
+  const groupedBookings = useMemo(() => {
+    const byPattern = new Map()
+    const singles = []
+    for (const booking of bookings) {
+      const number = String(booking.number).padStart(2, '0')
+      const patterns = [
+        { kind: 'Starting', digit: number[0], matches: NUMBERS.filter((item) => item.startsWith(number[0])) },
+        { kind: 'Ending', digit: number[1], matches: NUMBERS.filter((item) => item.endsWith(number[1])) },
+      ]
+      const pattern = patterns.find((candidate) =>
+        candidate.matches.length === 10 &&
+        bookings.filter((item) =>
+          item.round_id === booking.round_id &&
+          Number(item.stake) === Number(booking.stake) &&
+          item.status === booking.status &&
+          candidate.matches.includes(String(item.number).padStart(2, '0'))
+        ).length >= 10
+      )
+      if (!pattern) {
+        singles.push({ type: 'single', key: booking.id, booking })
+        continue
+      }
+      const key = [booking.round_id, booking.stake, booking.status, pattern.kind, pattern.digit].join('|')
+      if (!byPattern.has(key)) {
+        byPattern.set(key, {
+          type: 'group',
+          key,
+          round_id: booking.round_id,
+          stake: Number(booking.stake),
+          status: booking.status,
+          kind: pattern.kind,
+          digit: pattern.digit,
+          numbers: pattern.matches,
+          bookings: bookings.filter((item) =>
+            item.round_id === booking.round_id &&
+            Number(item.stake) === Number(booking.stake) &&
+            item.status === booking.status &&
+            pattern.matches.includes(String(item.number).padStart(2, '0'))
+          ),
+          created_at: booking.created_at,
+        })
+      }
+    }
+    const groups = [...byPattern.values()].map((group) => ({
+      ...group,
+      bookings: group.bookings.slice(0, 10),
+      totalStake: group.stake * 10,
+      payoutPerWinningNumber: group.stake * 80,
+    }))
+    return [...groups, ...singles].sort((a, b) =>
+      new Date((b.created_at || b.booking?.created_at) || 0) -
+      new Date((a.created_at || a.booking?.created_at) || 0)
+    )
+  }, [bookings])
+
   const roundLabel = (round) =>
     round ? `${round.game_date} · ${String(round.round_time).slice(0, 5)} IST` : 'No round available'
 
@@ -317,8 +372,24 @@ export default function DoubleGame() {
           <p className="double-empty">Your Double bookings will appear here.</p>
         ) : (
           <div className="double-history-list">
-            {bookings.map((booking) => {
-              const round = rounds.find((item) => item.id === booking.round_id)
+            {groupedBookings.map((item) => {
+              if (item.type === 'group') {
+                const round = rounds.find((candidate) => candidate.id === item.round_id)
+                return (
+                  <div className="double-history-item" key={item.key}>
+                    <div className="double-history-number">{item.digit}</div>
+                    <div className="double-history-details">
+                      <strong>{item.kind} {item.digit} · {roundLabel(round)}</strong>
+                      <span>Stake ₹{formatMoney(item.stake)} each · Total ₹{formatMoney(item.totalStake)} · Potential payout ₹{formatMoney(item.payoutPerWinningNumber)} per winning number</span>
+                    </div>
+                    <span className={`double-status ${item.status === 'win' ? 'won' : item.status === 'loss' ? 'lost' : ''}`}>
+                      {item.status.toUpperCase()}
+                    </span>
+                  </div>
+                )
+              }
+              const booking = item.booking
+              const round = rounds.find((candidate) => candidate.id === booking.round_id)
               return (
                 <div className="double-history-item" key={booking.id}>
                   <div className="double-history-number">{booking.number}</div>
