@@ -135,8 +135,8 @@ function MyBookings() {
         <div className="history-heading">
           
           <span className="history-eyebrow">YOUR ACTIVITY</span>
-          <h2>Targetor Double Bookings</h2>
-          <p>Your Targetor Double number bookings and results.</p>
+          <h2>Twin Fortune Bookings</h2>
+          <p>Your Twin Fortune number bookings and results.</p>
         </div>
         <DoubleGame historyOnly />
       </section>
@@ -156,7 +156,7 @@ function MyBookings() {
             <span className="booking-game-mark">A–G</span>
             <span className="booking-game-copy">
               <span className="booking-game-kicker">SEVEN-ROW DRAW</span>
-              <strong>StakeClassic</strong>
+              <strong>Crown 24</strong>
               <small>Tickets, results and payouts</small>
             </span>
             <span className="booking-game-arrow">→</span>
@@ -165,7 +165,7 @@ function MyBookings() {
             <span className="booking-game-mark">00–99</span>
             <span className="booking-game-copy">
               <span className="booking-game-kicker">NUMBER DRAW</span>
-              <strong>Targetor Double</strong>
+              <strong>Twin Fortune</strong>
               <small>Starting, Ending and number bets</small>
             </span>
             <span className="booking-game-arrow">→</span>
@@ -180,7 +180,7 @@ function MyBookings() {
       <div className="history-heading">
         
         <span className="history-eyebrow">YOUR ACTIVITY</span>
-        <h2>StakeClassic Bookings</h2>
+        <h2>Crown 24 Bookings</h2>
         <p>Your current and previous ticket bookings.</p>
       </div>
       {loading && <p className="history-message">Loading your bookings…</p>}
