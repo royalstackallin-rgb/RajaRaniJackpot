@@ -178,7 +178,7 @@ export default function HomeDashboard({ onOpenGame, onOpenBookings, onOpenResult
       <article className="home-latest-card home-center-result">
         <div className="home-section-heading">
           <div><span className="home-eyebrow">MOST RECENT COMPLETED ROUND</span><h2>Latest StakeClassic result</h2></div>
-          <button type="button" onClick={onOpenResults}>All results →</button>
+          <button type="button" onClick={() => onOpenResults('classic')}>All results →</button>
         </div>
         {latestRound ? (
           <>
@@ -226,7 +226,7 @@ export default function HomeDashboard({ onOpenGame, onOpenBookings, onOpenResult
       <article className="home-latest-card home-double-result">
         <div className="home-section-heading">
           <div><span className="home-eyebrow">MOST RECENT COMPLETED ROUND</span><h2>Latest Targetor Double result</h2></div>
-          <button type="button" onClick={onOpenResults}>All results →</button>
+          <button type="button" onClick={() => onOpenResults('double')}>All results →</button>
         </div>
         {latestDoubleRound ? (
           <>
