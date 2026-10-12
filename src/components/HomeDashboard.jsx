@@ -6,6 +6,18 @@ function todayLocal() {
   return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
 }
 
+function todayIST(date = new Date()) {
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Kolkata', year: 'numeric', month: '2-digit', day: '2-digit',
+  }).formatToParts(date)
+  const values = Object.fromEntries(parts.map((part) => [part.type, part.value]))
+  return `${values.year}-${values.month}-${values.day}`
+}
+
+function roundTimestamp(round) {
+  return new Date(`${round.game_date}T${String(round.round_time).slice(0, 8)}+05:30`).getTime()
+}
+
 function formatTime(value) {
   const [hours, minutes] = String(value || '').slice(0, 5).split(':').map(Number)
   if (!Number.isFinite(hours) || !Number.isFinite(minutes)) return 'Time pending'
@@ -53,11 +65,12 @@ export default function HomeDashboard({ onOpenGame, onOpenBookings, onOpenResult
       setLoadError('')
       try {
         const today = todayLocal()
+        const todayClassic = todayIST()
         const [nextResult, latestResult, nextDoubleResult, latestDoubleResult] = await Promise.all([
           supabase
             .from('game_rounds')
             .select('id, round_code, game_date, round_time, status')
-            .gte('game_date', today)
+            .gte('game_date', todayClassic)
             .eq('status', 'open')
             .order('game_date', { ascending: true })
             .order('round_time', { ascending: true })
@@ -110,7 +123,7 @@ export default function HomeDashboard({ onOpenGame, onOpenBookings, onOpenResult
     }
   }, [])
 
-  const nextDrawAt = nextRound ? new Date(`${nextRound.game_date}T${nextRound.round_time}`) : null
+  const nextDrawAt = nextRound ? new Date(roundTimestamp(nextRound)) : null
   const cutoffAt = nextDrawAt ? new Date(nextDrawAt.getTime() - 5 * 60 * 1000) : null
   const bookingOpen = Boolean(cutoffAt && now < cutoffAt && now >= new Date(nextDrawAt.getTime() - 60 * 60 * 1000))
   const bookingClosed = Boolean(nextDrawAt && cutoffAt && now >= cutoffAt && now < nextDrawAt)
