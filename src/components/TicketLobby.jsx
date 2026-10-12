@@ -61,7 +61,6 @@ function getRoundName(round) {
 
 function TicketLobby() {
   const [tickets, setTickets] = useState({})
-  const [bookedRows, setBookedRows] = useState({})
   const [bookingRow, setBookingRow] = useState(null)
   const [message, setMessage] = useState('')
   const [rowMessages, setRowMessages] = useState({})
@@ -342,11 +341,6 @@ function TicketLobby() {
         throw error
       }
 
-      setBookedRows((current) => ({
-        ...current,
-        [row.letter]: true,
-      }))
-
       setBalance(data.balance)
       setMessage('')
       setRowMessages((current) => ({
@@ -490,7 +484,7 @@ function TicketLobby() {
       <div className="ticket-board">
         {ROWS.map((row) => {
           const total = rowTotals[row.letter]
-          const isBooked = bookedRows[row.letter]
+          const isBooked = false
           const isBooking = bookingRow === row.letter
 
           return (
@@ -523,7 +517,7 @@ function TicketLobby() {
                         step="1"
                         inputMode="numeric"
                         value={quantity || ''}
-                        disabled={isBooked || !bookingOpen}
+                        disabled={isBooking || !bookingOpen}
                         onChange={(event) =>
                           updateTickets(
                             row.letter,
@@ -577,15 +571,14 @@ function TicketLobby() {
                 disabled={
                   total.tickets === 0 ||
                   isBooking ||
-                  isBooked ||
                   !bookingOpen
                 }
                 onClick={() => bookRow(row)}
               >
                 {isBooking
                   ? 'BOOKING...'
-                  : isBooked
-                    ? 'BOOKED'
+                  : rowMessages[row.letter] === 'Tickets booked successfully!'
+                    ? `BOOK MORE ${row.letter} TICKETS`
                     : `BOOK ${row.letter} TICKETS`}
               </button>
 
