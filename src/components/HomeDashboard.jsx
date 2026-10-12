@@ -174,6 +174,14 @@ export default function HomeDashboard({ onOpenGame, onOpenBookings, onOpenResult
         <p>Your next draw, booking status and latest result — all in one place.</p>
       </div>
 
+      <div className="home-hero-art">
+        <img
+          src="/targetorstake-hero-art.svg"
+          alt="TargetorStake stake artwork with a red and gold target, dart, stacked coins and numbered balls"
+          fetchPriority="high"
+        />
+      </div>
+
       <button type="button" className="home-wallet-strip" onClick={onOpenWallet}>
         <span className="home-wallet-icon">₹</span>
         <span className="home-wallet-copy"><small>WALLET BALANCE</small><strong>{walletBalance === null ? 'Loading balance…' : new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(Number(walletBalance))}</strong></span>
