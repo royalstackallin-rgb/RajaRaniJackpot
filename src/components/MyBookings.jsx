@@ -151,14 +151,24 @@ function MyBookings() {
           <h2>My Bookings</h2>
           <p>Choose a game to view your booking history.</p>
         </div>
-        <div className="booking-list">
-          <button type="button" className="history-empty" style={{ display: "block", width: "100%", textAlign: "left", cursor: "pointer" }} onClick={() => setSelectedGame('classic')}>
-            <h3>StakeClassic</h3>
-            <p>View your ticket bookings, results, and payouts.</p>
+        <div className="booking-game-choices">
+          <button type="button" className="booking-game-choice booking-game-choice-classic" onClick={() => setSelectedGame('classic')}>
+            <span className="booking-game-mark">A–G</span>
+            <span className="booking-game-copy">
+              <span className="booking-game-kicker">SEVEN-ROW DRAW</span>
+              <strong>StakeClassic</strong>
+              <small>Tickets, results and payouts</small>
+            </span>
+            <span className="booking-game-arrow">→</span>
           </button>
-          <button type="button" className="history-empty" style={{ display: "block", width: "100%", textAlign: "left", cursor: "pointer" }} onClick={() => setSelectedGame('double')}>
-            <h3>Targetor Double</h3>
-            <p>View your Starting, Ending, and individual number bookings.</p>
+          <button type="button" className="booking-game-choice booking-game-choice-double" onClick={() => setSelectedGame('double')}>
+            <span className="booking-game-mark">00–99</span>
+            <span className="booking-game-copy">
+              <span className="booking-game-kicker">NUMBER DRAW</span>
+              <strong>Targetor Double</strong>
+              <small>Starting, Ending and number bets</small>
+            </span>
+            <span className="booking-game-arrow">→</span>
           </button>
         </div>
       </section>
