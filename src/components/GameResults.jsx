@@ -125,11 +125,11 @@ function GameResults({ initialGame = null }) {
         </div>
         <div className="booking-list">
           <button type="button" className="history-empty" style={{ display: 'block', width: '100%', textAlign: 'left', cursor: 'pointer' }} onClick={() => setSelectedGame('classic')}>
-            <h3>StakeClassic</h3>
+            <h3>Crown 24</h3>
             <p>View A–G winning numbers for completed rounds.</p>
           </button>
           <button type="button" className="history-empty" style={{ display: 'block', width: '100%', textAlign: 'left', cursor: 'pointer' }} onClick={() => setSelectedGame('double')}>
-            <h3>Targetor Double</h3>
+            <h3>Twin Fortune</h3>
             <p>View completed rounds and Double winning numbers.</p>
           </button>
         </div>
