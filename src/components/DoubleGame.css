@@ -230,3 +230,58 @@
     font-size: 12px;
   }
 }
+
+/* Final sizing: match the compact reference inputs; only add ₹ inside each box. */
+.double-page .double-number-grid {
+  gap: 14px 5px;
+}
+.double-page .double-number-tile {
+  grid-template-rows: 20px 32px;
+  gap: 5px;
+}
+.double-page .double-number-label,
+.double-page .double-number-label.chosen {
+  min-height: 20px;
+  font-size: 12px;
+}
+.double-page .double-tile-stake,
+.double-page .double-tile-stake input {
+  height: 32px;
+  min-height: 32px;
+}
+.double-page .double-tile-stake input {
+  padding: 3px 2px 3px 17px;
+  border-radius: 9px;
+  font-size: 12px;
+  text-align: center;
+}
+.double-page .double-tile-stake > span {
+  left: 5px;
+  font-size: 10px;
+}
+.double-page .double-tile-stake input::placeholder {
+  font-size: 11px;
+}
+@media (max-width: 560px) {
+  .double-page .double-number-grid {
+    gap: 14px 5px;
+  }
+  .double-page .double-number-tile {
+    grid-template-rows: 20px 32px;
+    gap: 5px;
+  }
+  .double-page .double-number-label,
+  .double-page .double-number-label.chosen {
+    min-height: 20px;
+    font-size: 12px;
+  }
+  .double-page .double-tile-stake,
+  .double-page .double-tile-stake input {
+    height: 32px;
+    min-height: 32px;
+  }
+  .double-page .double-tile-stake input {
+    padding-left: 16px;
+    font-size: 12px;
+  }
+}
