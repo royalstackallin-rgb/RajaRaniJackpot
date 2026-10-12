@@ -3185,3 +3185,73 @@ body[data-round-theme] .main-menu button:not(.active) {
     scroll-behavior: auto;
   }
 }
+
+
+/* Premium compact brand header: preserve the approved wordmark, remove the framed look. */
+.app-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  justify-content: initial;
+  gap: 14px;
+  min-height: 62px;
+  margin-bottom: 22px;
+  padding: 8px 2px 14px;
+  overflow: visible;
+  border: 0;
+  border-bottom: 1px solid rgba(255, 225, 190, 0.14);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.app-brand.app-brand-home {
+  grid-column: 1;
+  justify-self: start;
+  justify-content: flex-start;
+  width: auto;
+  max-width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+.app-brand-home img {
+  width: clamp(205px, 63vw, 310px) !important;
+  max-width: 100%;
+  filter: none;
+}
+.app-menu-wrap {
+  grid-column: 2;
+  justify-self: end;
+}
+.app-menu-trigger {
+  width: 42px;
+  height: 42px;
+  gap: 5px;
+  border: 1px solid rgba(255, 197, 72, 0.32);
+  border-radius: 9px;
+  background: rgba(8, 7, 10, 0.42);
+  box-shadow: none;
+}
+.app-menu-trigger span {
+  width: 18px;
+  height: 2px;
+}
+.app-menu-trigger.is-open {
+  background: rgba(255, 197, 72, 0.08);
+  box-shadow: none;
+}
+@media (max-width: 420px) {
+  .app-header {
+    gap: 9px;
+    min-height: 56px;
+    margin-bottom: 18px;
+    padding: 6px 0 12px;
+  }
+  .app-brand-home img {
+    width: clamp(190px, 61vw, 260px) !important;
+  }
+  .app-menu-trigger {
+    width: 38px;
+    height: 38px;
+  }
+}
