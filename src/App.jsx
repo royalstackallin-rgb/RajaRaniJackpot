@@ -5,7 +5,6 @@ import HomeDashboard from './components/HomeDashboard'
 import MyBookings from './components/MyBookings'
 import GameResults from './components/GameResults'
 import DoubleGame from './components/DoubleGame'
-import SlotGame from './components/SlotGame'
 import Wallet from './components/Wallet'
 import Withdraw from './components/Withdraw'
 import DepositAdmin from './components/DepositAdmin'
@@ -111,7 +110,7 @@ function App() {
     setMessage('')
   }
 
-  if (session && ['home', 'tickets', 'bookings', 'results', 'double', 'slot', 'wallet', 'withdraw', 'deposit-admin'].includes(view)) {
+  if (session && ['home', 'tickets', 'bookings', 'results', 'double', 'wallet', 'withdraw', 'deposit-admin'].includes(view)) {
     return (
       <main className={`app-page app-view-${view}`}>
         <div className="app-shell">
@@ -187,7 +186,6 @@ function App() {
           {view === 'bookings' && <MyBookings />}
           {view === 'results' && <GameResults initialGame={resultsGame} />}
           {view === 'double' && <DoubleGame />}
-          {view === 'slot' && <SlotGame />}
           {view === 'wallet' && <Wallet />}
           {view === 'withdraw' && <Withdraw />}
           {view === 'deposit-admin' && isWalletAdmin && <DepositAdmin />}
