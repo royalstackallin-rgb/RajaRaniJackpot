@@ -105,7 +105,7 @@ export default function HomeDashboard({ onOpenGame, onOpenBookings, onOpenResult
           supabase
             .from('double_rounds')
             .select('id, round_code, game_date, round_time, status, winning_number, drawn_at')
-            .gte('game_date', today)
+            .gte('game_date', todayClassic)
             .eq('status', 'open')
             .order('game_date', { ascending: true })
             .order('round_time', { ascending: true })
