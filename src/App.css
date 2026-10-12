@@ -3131,3 +3131,10 @@ body[data-round-theme] .main-menu button:not(.active) {
 .home-wallet-copy small{color:#c6aab0;font-size:9px;font-weight:900;letter-spacing:.1em}
 .home-wallet-copy strong{color:#fff1c7;font-size:20px}
 .home-wallet-add{display:grid;place-items:center;width:38px;height:38px;border-radius:10px;background:#00dc83;color:#032315;font-size:27px;font-weight:700}
+
+.home-bookings-shortcut{display:flex;align-items:center;gap:12px;width:100%;padding:13px 14px;border:1px solid #ffffff20;border-radius:14px;background:linear-gradient(100deg,#101b2b,#080d17);color:#edf3ff;text-align:left;cursor:pointer}
+.home-bookings-icon{display:grid;place-items:center;flex:0 0 40px;height:40px;border:1px solid #e7c77955;border-radius:10px;background:#e7c77912;color:#f5d58b;font-size:23px}
+.home-bookings-shortcut>span:nth-child(2){display:grid;gap:4px;flex:1;min-width:0}
+.home-bookings-shortcut strong{font-size:14px}
+.home-bookings-shortcut small{color:#9eafc6;font-size:11px;line-height:1.4}
+.home-bookings-shortcut .home-arrow{color:#f5d58b}
