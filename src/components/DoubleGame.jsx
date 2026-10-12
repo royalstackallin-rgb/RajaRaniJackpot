@@ -65,7 +65,7 @@ export default function DoubleGame() {
         .select('id, round_id, number, stake, payout, status, created_at')
         .eq('user_id', user.id)
         .order('created_at', { ascending: false })
-        .limit(20),
+        .limit(200),
     ])
 
     if (!roundResponse.error) setRounds(roundResponse.data || [])
