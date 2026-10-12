@@ -156,7 +156,22 @@ export default function HomeDashboard({ onOpenGame, onOpenBookings, onOpenResult
         <button type="button" className="home-primary-button" onClick={() => onOpenGame('tickets')}>Enter StakeClassic Lobby <span>→</span></button>
       </article>
 
-      <div className="home-game-grid">
+      <article className="home-latest-card home-center-result">
+        <div className="home-section-heading">
+          <div><span className="home-eyebrow">MOST RECENT COMPLETED ROUND</span><h2>Latest StakeClassic result</h2></div>
+          <button type="button" onClick={onOpenResults}>All results →</button>
+        </div>
+        {latestRound ? (
+          <>
+            <div className="home-result-meta">{latestRound.game_date} <span>·</span> {formatTime(latestRound.round_time)}</div>
+            <div className="home-result-grid">
+              {resultRows.map((item) => <div className="home-result-number" key={item.letter}><span>{item.letter}</span><strong>{item.number ?? '—'}</strong></div>)}
+            </div>
+          </>
+        ) : <p className="home-loading">The latest StakeClassic result will appear here.</p>}
+      </article>
+
+      <div className="home-game-grid home-game-grid-bottom">
         <button type="button" className="home-game-card" onClick={() => onOpenGame('tickets')}>
           <span className="home-game-icon">A–G</span>
           <span className="home-game-copy"><strong>StakeClassic Lobby</strong><small>Next draw, seven rows and ticket booking</small><em>ENTER LOBBY</em></span>
@@ -169,7 +184,18 @@ export default function HomeDashboard({ onOpenGame, onOpenBookings, onOpenResult
         </button>
       </div>
 
-      <article className="home-latest-card">
+      <article className="home-latest-card home-double-result">
+        <div className="home-section-heading">
+          <div><span className="home-eyebrow">MOST RECENT COMPLETED ROUND</span><h2>Latest Targetor Double result</h2></div>
+          <button type="button" onClick={onOpenResults}>All results →</button>
+        </div>
+        {latestDoubleRound ? (
+          <>
+            <div className="home-result-meta">{latestDoubleRound.game_date} <span>·</span> {formatTime(latestDoubleRound.round_time)}</div>
+            <div className="home-double-result-number"><span>WINNING NUMBER</span><strong>{String(latestDoubleRound.winning_number).padStart(2, '0')}</strong></div>
+          </>
+        ) : <p className="home-loading">The latest Targetor Double result will appear here.</p>}
+      </article>
         <div className="home-section-heading">
           <div><span className="home-eyebrow">MOST RECENT COMPLETED ROUND</span><h2>Latest result</h2></div>
           <button type="button" onClick={onOpenResults}>All results →</button>
