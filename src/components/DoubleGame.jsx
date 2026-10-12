@@ -198,7 +198,7 @@ export default function DoubleGame() {
             <strong>{roundLabel(currentRound)}</strong>
           </div>
           <span className={currentRound?.status === 'open' ? 'double-status open' : 'double-status'}>
-            {currentRound && ['drawn', 'settled'].includes(currentRound.status) ? 'RESULT' : currentRound && currentRound.status === 'open' && now.getTime() >= currentRoundTime ? 'DRAWING' : currentRound ? currentRound.status.toUpperCase() : 'WAITING'}
+            {currentRound && ['drawn', 'settled'].includes(currentRound.status) ? 'RESULT' : currentRound && currentRound.status === 'open' && now.getTime() >= currentRoundTime ? 'DRAWING' : currentRound && currentRound.status === 'open' && now.getTime() >= currentRoundTime - 5 * 60 * 1000 ? 'BOOKING CLOSED' : currentRound ? currentRound.status.toUpperCase() : 'WAITING'}
           </span>
         </div>
         {currentRound?.winning_number && (
@@ -256,7 +256,7 @@ export default function DoubleGame() {
             {busy ? 'Booking…' : canBook ? `Book ${selectedNumbers.length || ''} Number${selectedNumbers.length === 1 ? '' : 's'}` : 'Booking Closed'}
           </button>
         </div>
-        {!canBook && currentRound?.status === 'open' && (
+        {!canBook && currentRound?.status === 'open' && now.getTime() < currentRoundTime && (
           <p className="double-hint">Bookings stay open until 5 minutes before the draw. The result is shown for 5 minutes, then bookings open for the next round.</p>
         )}
         {message && <p className="double-message" role="status">{message}</p>}
