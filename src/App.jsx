@@ -180,7 +180,7 @@ function App() {
         </div>
       )}
 
-          {view === 'home' && <HomeDashboard onOpenGame={setView} onOpenBookings={() => setView('bookings')} onOpenResults={() => setView('results')} />}
+          {view === 'home' && <HomeDashboard onOpenGame={setView} onOpenBookings={() => setView('bookings')} onOpenResults={() => setView('results')} onOpenWallet={() => setView('wallet')} />}
           {view === 'tickets' && <TicketLobby />}
           {view === 'bookings' && <MyBookings />}
           {view === 'results' && <GameResults />}
