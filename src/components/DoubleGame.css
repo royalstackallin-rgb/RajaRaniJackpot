@@ -320,3 +320,86 @@
 .double-page .double-tile-stake input:placeholder-shown {
   color: #788195;
 }
+
+/* Easy booking controls for starting/ending digits */
+.double-page .double-quick-booking {
+  margin: 18px 0 20px;
+  padding: 14px;
+  border: 1px solid #29384d;
+  border-radius: 12px;
+  background: #0b1424;
+}
+.double-page .double-quick-booking h3 {
+  margin: 0 0 6px;
+  color: #f1d48d;
+  font-size: 17px;
+  font-weight: 600;
+}
+.double-page .double-quick-booking p {
+  margin: 0 0 12px;
+  color: #a8b6cc;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.double-page .double-quick-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  align-items: end;
+}
+.double-page .double-quick-fields label {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+  color: #c5d0e1;
+  font-size: 12px;
+}
+.double-page .double-quick-fields input,
+.double-page .double-quick-fields select {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  height: 38px;
+  padding: 0 10px;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  background: #030914;
+  color: #f8fafc;
+  font-size: 14px;
+}
+.double-page .double-quick-button {
+  width: 100%;
+  min-height: 38px;
+  padding: 7px 8px;
+  border: 1px solid #a98a4d;
+  border-radius: 8px;
+  background: #b38a3e18;
+  color: #f1d48d;
+  font-size: 12px;
+  font-weight: 600;
+}
+.double-page .double-quick-booking .double-quick-example {
+  margin: 12px 0 0;
+  font-size: 11px;
+}
+@media (max-width: 560px) {
+  .double-page .double-quick-booking {
+    padding: 11px;
+  }
+  .double-page .double-quick-fields {
+    gap: 8px;
+  }
+  .double-page .double-quick-fields label {
+    font-size: 11px;
+  }
+  .double-page .double-quick-fields input,
+  .double-page .double-quick-fields select {
+    height: 36px;
+    font-size: 13px;
+  }
+  .double-page .double-quick-button {
+    min-height: 36px;
+    font-size: 11px;
+  }
+}
