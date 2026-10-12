@@ -312,7 +312,7 @@ export default function DoubleGame() {
             </label>
             <button type="button" className="double-quick-button" onClick={() => applyQuickBooking(quickKind)}>Select 10 Numbers</button>
           </div>
-          <p className="double-quick-example">{quickDigit === '' ? 'Choose a digit to see the 10 matching numbers.' : quickKind === 'ending' ? `Ending ${quickDigit}: ${NUMBERS.filter((n) => n.endsWith(quickDigit)).join(', ')}` : `Starting ${quickDigit}: ${NUMBERS.filter((n) => n.startsWith(quickDigit)).join(', ')`}. Total stake: ₹{formatMoney((Number(quickStake) || 0) * 10)} for 10 numbers.</p>
+          <p className="double-quick-example">{quickDigit === '' ? 'Choose a digit to see the 10 matching numbers.' : quickKind === 'ending' ? `Ending ${quickDigit}: ${NUMBERS.filter((n) => n.endsWith(quickDigit)).join(', ')}` : `Starting ${quickDigit}: ${NUMBERS.filter((n) => n.startsWith(quickDigit)).join(', ')}`}. Total stake: ₹{formatMoney((Number(quickStake) || 0) * 10)} for 10 numbers.</p>
         </div>
         <div className="double-number-grid" aria-label="Choose numbers and enter individual stakes">
           {NUMBERS.map((number) => (
