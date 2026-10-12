@@ -147,6 +147,12 @@ export default function HomeDashboard({ onOpenGame, onOpenBookings, onOpenResult
         <span className="home-wallet-add">+</span>
       </button>
 
+      <button type="button" className="home-bookings-shortcut" onClick={onOpenBookings}>
+        <span className="home-bookings-icon">▤</span>
+        <span><strong>My Bookings</strong><small>StakeClassic + Targetor Double · View both histories</small></span>
+        <span className="home-arrow">→</span>
+      </button>
+
       <article className="home-next-draw">
         <div className="home-card-topline">
           <span className="home-eyebrow">NEXT STAKECLASSIC DRAW</span>
