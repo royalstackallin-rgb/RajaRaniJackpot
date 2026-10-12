@@ -3,8 +3,11 @@ import DoubleResults from './DoubleResults'
 import { supabase } from '../lib/supabase'
 
 function localDateString() {
-  const now = new Date()
-  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Kolkata', year: 'numeric', month: '2-digit', day: '2-digit',
+  }).formatToParts(new Date())
+  const values = Object.fromEntries(parts.map((part) => [part.type, part.value]))
+  return `${values.year}-${values.month}-${values.day}`
 }
 
 function formatRoundTime(value) {
@@ -15,6 +18,13 @@ function formatRoundTime(value) {
 }
 
 const ROUND_NAMES = {
+  '00:00': 'MIDNIGHT',
+  '01:00': 'AFTER MIDNIGHT',
+  '02:00': 'QUIET HOUR',
+  '03:00': 'NIGHT WATCH',
+  '04:00': 'EARLY DAWN',
+  '05:00': 'FIRST LIGHT',
+  '06:00': 'DAWN',
   '07:00': 'SUBHA',
   '08:00': 'SUNRISE',
   '09:00': 'GOLDEN HOUR',
@@ -27,6 +37,11 @@ const ROUND_NAMES = {
   '16:00': 'GODHULI',
   '17:00': 'ROYAL NIGHT',
   '18:00': 'SHAHI',
+  '19:00': 'GOLDEN NIGHT',
+  '20:00': 'MOONLIGHT',
+  '21:00': 'NIGHT STAR',
+  '22:00': 'LATE NIGHT',
+  '23:00': 'MIDNIGHT RUN',
 }
 
 function getRoundName(round) {
