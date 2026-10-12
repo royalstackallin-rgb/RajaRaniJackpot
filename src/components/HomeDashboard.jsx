@@ -283,11 +283,6 @@ export default function HomeDashboard({ onOpenGame, onOpenBookings, onOpenResult
         </button>
       </div>
 
-      <button type="button" className="home-slot-entry" onClick={() => onOpenGame('slot')}>
-        <span className="home-slot-emblem">🎰</span>
-        <span className="home-slot-copy"><small>NEW · PRACTICE ARCADE</small><strong>Royal Reels</strong><span>Spin the reels with free practice credits</span></span>
-        <span className="home-slot-arrow">→</span>
-      </button>
     </section>
   )
 }
