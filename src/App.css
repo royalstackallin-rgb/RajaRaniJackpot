@@ -2762,7 +2762,7 @@ body[data-round-theme] .main-menu button:not(.active) {
 .double-wallet{min-width:125px;padding:12px 14px;border:1px solid #ffffff22;border-radius:14px;background:#0f172acc;text-align:right}
 .double-wallet span,.double-potential span{display:block;color:#9baecb;font-size:9px;font-weight:800;letter-spacing:.1em}
 .double-wallet strong{display:block;margin-top:5px;font-size:19px}
-.double-times{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
+.double-times{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:14px}
 .double-times>span{padding:10px 4px;border:1px solid #ffffff20;border-radius:10px;background:#0f172aa6;text-align:center;font-weight:800;font-size:13px}
 .double-times>span.selected{border-color:#d7b56d;background:#a67c2d26;color:#f5d58b}
 .double-times small{font-size:9px;opacity:.65}
