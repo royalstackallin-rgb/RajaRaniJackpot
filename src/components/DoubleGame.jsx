@@ -425,7 +425,7 @@ export default function DoubleGame({ historyOnly = false }) {
                         <strong>{title}</strong>
                         <span>{isPattern
                           ? `Stake ₹${formatMoney(item.stake)} each · Total ₹${formatMoney(item.totalStake)} · Potential payout ₹${formatMoney(item.potentialPayout)} per winning number`
-                          : `Total stake ₹${formatMoney(item.totalStake)} · Potential payout up to ₹${formatMoney(item.potentialPayout)}`}</span>
+                          : `Total stake ₹${formatMoney(item.totalStake)} · Payout if one number wins: ₹${formatMoney(Number(item.bookings.find((booking) => Number(booking.stake) === Math.max(...item.bookings.map((entry) => Number(entry.stake || 0)))?.stake || 0) * 80)} per winning number`}</span>
                       </span>
                       <span className={`double-status ${item.status === 'win' ? 'won' : item.status === 'loss' ? 'lost' : ''}`}>{item.status.toUpperCase()}</span>
                       <span className="double-history-chevron">{expanded ? '−' : '+'}</span>
