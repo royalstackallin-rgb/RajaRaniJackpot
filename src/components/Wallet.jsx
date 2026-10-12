@@ -3,7 +3,7 @@ import { supabase } from '../lib/supabase'
 
 const money = (value) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(Number(value || 0))
 
-export default function Wallet() {
+export default function Wallet({ onOpenWithdraw = () => {} }) {
   const [balance, setBalance] = useState(null)
   const [amount, setAmount] = useState('500')
   const [reference, setReference] = useState('')
@@ -89,8 +89,16 @@ export default function Wallet() {
 
   return <section className="wallet-page">
     <div className="wallet-heading"><div><p className="wallet-eyebrow">TARGETORSTAKE ACCOUNT</p><h1>Wallet / Buy In</h1><p className="wallet-subtitle">Choose an amount, pay the randomly assigned UPI account, then submit your reference and screenshot for host review.</p></div><button type="button" className="wallet-refresh" onClick={refresh} disabled={refreshing}>Refresh</button></div>
-    <div className="wallet-balance-card"><span>AVAILABLE BALANCE</span><strong>{refreshing && balance === null ? 'Loading…' : money(balance)}</strong><small>Pending requests are not included in your balance.</small></div>
-    <div className="wallet-deposit-card"><h2>Step 1 · Pay by UPI</h2><label htmlFor="wallet-deposit-amount">Deposit amount (₹)</label><input id="wallet-deposit-amount" type="number" inputMode="numeric" min="10" max="50000" step="1" value={amount} onChange={e => { setAmount(e.target.value); setAssigned(null) }} required /><div className="wallet-quick-amounts">{[100,500,1000,2000].map(v => <button key={v} type="button" className={Number(amount) === v ? 'selected' : ''} onClick={() => { setAmount(String(v)); setAssigned(null) }}>₹{v.toLocaleString('en-IN')}</button>)}</div><button className="wallet-buy-button" type="button" onClick={startPayment} disabled={loading}>{loading ? 'Preparing payment…' : 'Pay with UPI'}</button>{assigned && <div className="wallet-upi-id"><span>Assigned receiving account</span><strong>{assigned.label}</strong><strong>{assigned.upi_id}</strong><p>Pay exactly {money(amount)} to this account. If you cancel the payment, do not submit a deposit request.</p><button type="button" onClick={() => { navigator.clipboard?.writeText(assigned.upi_id); setMessage('UPI ID copied if clipboard permission is available.') }}>Copy UPI ID</button></div>}<p className="wallet-secure-note">Opening a UPI app does not confirm payment. Verify the recipient in your UPI app. Never enter your UPI PIN on this website.</p></div>
+    <div className="wallet-balance-card" id="wallet-balance">
+      <span>AVAILABLE BALANCE</span>
+      <strong>{refreshing && balance === null ? 'Loading…' : money(balance)}</strong>
+      <small>Pending requests are not included in your balance.</small>
+      <div className="wallet-action-buttons">
+        <button type="button" className="wallet-add-money" onClick={() => document.getElementById('wallet-add-money')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}>＋ Add Money</button>
+        <button type="button" className="wallet-withdraw-button" onClick={onOpenWithdraw}>↗ Withdraw</button>
+      </div>
+    </div>
+    <div className="wallet-deposit-card" id="wallet-add-money"><h2>Step 1 · Pay by UPI</h2><label htmlFor="wallet-deposit-amount">Deposit amount (₹)</label><input id="wallet-deposit-amount" type="number" inputMode="numeric" min="10" max="50000" step="1" value={amount} onChange={e => { setAmount(e.target.value); setAssigned(null) }} required /><div className="wallet-quick-amounts">{[100,500,1000,2000].map(v => <button key={v} type="button" className={Number(amount) === v ? 'selected' : ''} onClick={() => { setAmount(String(v)); setAssigned(null) }}>₹{v.toLocaleString('en-IN')}</button>)}</div><button className="wallet-buy-button" type="button" onClick={startPayment} disabled={loading}>{loading ? 'Preparing payment…' : 'Pay with UPI'}</button>{assigned && <div className="wallet-upi-id"><span>Assigned receiving account</span><strong>{assigned.label}</strong><strong>{assigned.upi_id}</strong><p>Pay exactly {money(amount)} to this account. If you cancel the payment, do not submit a deposit request.</p><button type="button" onClick={() => { navigator.clipboard?.writeText(assigned.upi_id); setMessage('UPI ID copied if clipboard permission is available.') }}>Copy UPI ID</button></div>}<p className="wallet-secure-note">Opening a UPI app does not confirm payment. Verify the recipient in your UPI app. Never enter your UPI PIN on this website.</p></div>
     <form className="wallet-deposit-card" onSubmit={submitRequest}>
       <h2>Step 2 · Submit payment request</h2><p>Only submit this after completing the payment. Cancelled payments should not be submitted.</p>
       <label htmlFor="wallet-upi-reference">UPI transaction reference / UTR</label><input id="wallet-upi-reference" value={reference} onChange={e => setReference(e.target.value)} maxLength={100} placeholder="Enter transaction reference" required />
