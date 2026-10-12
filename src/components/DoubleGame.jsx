@@ -373,49 +373,52 @@ export default function DoubleGame({ historyOnly = false }) {
       </div>
 
       </>)}
-      <div className="double-panel">
-        <div className="double-history-heading">
-          <h2>My Double Bookings</h2>
-          <button type="button" onClick={loadData}>Refresh</button>
-        </div>
-        {bookings.length === 0 ? (
-          <p className="double-empty">Your Double bookings will appear here.</p>
-        ) : (
-          <div className="double-history-list">
-            {groupedBookings.map((item) => {
-              if (item.type === 'group') {
-                const round = rounds.find((candidate) => candidate.id === item.round_id)
-                return (
-                  <div className="double-history-item" key={item.key}>
-                    <div className="double-history-number">{item.digit}</div>
-                    <div className="double-history-details">
-                      <strong>{item.kind} {item.digit} · {roundLabel(round)}</strong>
-                      <span>Stake ₹{formatMoney(item.stake)} each · Total ₹{formatMoney(item.totalStake)} · Potential payout ₹{formatMoney(item.payoutPerWinningNumber)} per winning number</span>
+      {historyOnly && (
+        <div className="double-panel">
+          <div className="double-history-heading">
+            <h2>My Double Bookings</h2>
+            <button type="button" onClick={loadData}>Refresh</button>
+          </div>
+          {bookings.length === 0 ? (
+            <p className="double-empty">Your Double bookings will appear here.</p>
+          ) : (
+            <div className="double-history-list">
+              {groupedBookings.map((item) => {
+                if (item.type === 'group') {
+                  const round = rounds.find((candidate) => candidate.id === item.round_id)
+                  return (
+                    <div className="double-history-item" key={item.key}>
+                      <div className="double-history-number">{item.digit}</div>
+                      <div className="double-history-details">
+                        <strong>{item.kind} {item.digit} · {roundLabel(round)}</strong>
+                        <span>Stake ₹{formatMoney(item.stake)} each · Total ₹{formatMoney(item.totalStake)} · Potential payout ₹{formatMoney(item.payoutPerWinningNumber)} per winning number</span>
+                      </div>
+                      <span className={`double-status ${item.status === 'win' ? 'won' : item.status === 'loss' ? 'lost' : ''}`}>
+                        {item.status.toUpperCase()}
+                      </span>
                     </div>
-                    <span className={`double-status ${item.status === 'win' ? 'won' : item.status === 'loss' ? 'lost' : ''}`}>
-                      {item.status.toUpperCase()}
+                  )
+                }
+                const booking = item.booking
+                const round = rounds.find((candidate) => candidate.id === booking.round_id)
+                return (
+                  <div className="double-history-item" key={booking.id}>
+                    <div className="double-history-number">{booking.number}</div>
+                    <div className="double-history-details">
+                      <strong>{roundLabel(round)}</strong>
+                      <span>Stake ₹{formatMoney(booking.stake)} · Potential winning ₹{formatMoney(Number(booking.stake) * 80)}</span>
+                    </div>
+                    <span className={`double-status ${booking.status === 'win' ? 'won' : booking.status === 'loss' ? 'lost' : ''}`}>
+                      {booking.status.toUpperCase()}
                     </span>
                   </div>
                 )
-              }
-              const booking = item.booking
-              const round = rounds.find((candidate) => candidate.id === booking.round_id)
-              return (
-                <div className="double-history-item" key={booking.id}>
-                  <div className="double-history-number">{booking.number}</div>
-                  <div className="double-history-details">
-                    <strong>{roundLabel(round)}</strong>
-                    <span>Stake ₹{formatMoney(booking.stake)} · Potential winning ₹{formatMoney(Number(booking.stake) * 80)}</span>
-                  </div>
-                  <span className={`double-status ${booking.status === 'win' ? 'won' : booking.status === 'loss' ? 'lost' : ''}`}>
-                    {booking.status.toUpperCase()}
-                  </span>
-                </div>
-              )
-            })}
-          </div>
-        )}
-      </div>
+              })}
+            </div>
+          )}
+        </div>
+  
+      )}
       {!historyOnly && <p className="double-disclaimer">Virtual credits only. No cash value. Results and payouts are processed by the game server.</p>}
     </section>
   )
