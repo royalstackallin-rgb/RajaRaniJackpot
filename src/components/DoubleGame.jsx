@@ -87,6 +87,14 @@ export default function DoubleGame() {
     })
     if (recentResult) return recentResult
 
+    // Keep the next round closed while the scheduled draw is being processed.
+    const pendingDraw = [...rounds].reverse().find((round) =>
+      round.status === 'open' &&
+      timestamp >= roundTimestamp(round) &&
+      timestamp - roundTimestamp(round) < 5 * 60 * 1000
+    )
+    if (pendingDraw) return pendingDraw
+
     return rounds.find((round) =>
       round.status === 'open' && roundTimestamp(round) > timestamp
     ) || null
@@ -190,7 +198,7 @@ export default function DoubleGame() {
             <strong>{roundLabel(currentRound)}</strong>
           </div>
           <span className={currentRound?.status === 'open' ? 'double-status open' : 'double-status'}>
-            {currentRound && ['drawn', 'settled'].includes(currentRound.status) ? 'RESULT' : currentRound ? currentRound.status.toUpperCase() : 'WAITING'}
+            {currentRound && ['drawn', 'settled'].includes(currentRound.status) ? 'RESULT' : currentRound && currentRound.status === 'open' && now.getTime() >= currentRoundTime ? 'DRAWING' : currentRound ? currentRound.status.toUpperCase() : 'WAITING'}
           </span>
         </div>
         {currentRound?.winning_number && (
