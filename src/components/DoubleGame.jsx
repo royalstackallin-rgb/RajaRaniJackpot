@@ -118,7 +118,9 @@ export default function DoubleGame({ historyOnly = false }) {
   )
   const stakeFor = (number) => stakes[number] ?? ''
   const totalStake = selectedNumbers.reduce((sum, number) => sum + (Number(stakeFor(number)) || 0), 0)
-  const potentialPayout = selectedNumbers.reduce((sum, number) => sum + (Number(stakeFor(number)) || 0) * 80, 0)
+  const selectedStakes = selectedNumbers.map((number) => Number(stakeFor(number)) || 0)
+  const sameSelectedStake = selectedStakes.length > 0 && selectedStakes.every((amount) => amount === selectedStakes[0])
+  const potentialPayout = sameSelectedStake ? selectedStakes[0] * 80 : null
   const applyQuickBooking = (kind) => {
     const digit = quickDigit
     const amount = Number(quickStake)
@@ -126,8 +128,8 @@ export default function DoubleGame({ historyOnly = false }) {
       setMessage(`Choose a ${kind} digit from 0 to 9.`)
       return
     }
-    if (!Number.isSafeInteger(amount) || amount < 1 || amount > 1000000) {
-      setMessage('Enter a whole-number amount from ₹1 to ₹10,00,000 per number.')
+    if (!Number.isSafeInteger(amount) || amount < 5 || amount > 1000000) {
+      setMessage('Enter a whole-number amount from ₹5 to ₹10,00,000 per number.')
       return
     }
     const matchingNumbers = NUMBERS.filter((number) =>
@@ -154,10 +156,10 @@ export default function DoubleGame({ historyOnly = false }) {
     }
     const invalidNumber = selectedNumbers.find((number) => {
       const amount = Number(stakeFor(number))
-      return !Number.isSafeInteger(amount) || amount < 1 || amount > 1000000
+      return !Number.isSafeInteger(amount) || amount < 5 || amount > 1000000
     })
     if (invalidNumber) {
-      setMessage(`Enter a whole-number stake from ₹1 to ₹10,00,000 for ${invalidNumber}.`)
+      setMessage(`Enter a whole-number stake from ₹5 to ₹10,00,000 for ${invalidNumber}.`)
       return
     }
     if (!Number.isSafeInteger(totalStake)) {
@@ -182,7 +184,7 @@ export default function DoubleGame({ historyOnly = false }) {
         if (error) throw new Error(`${number} failed: ${error.message}`)
         confirmed.push(number)
       }
-      setMessage(`Booked ${confirmed.join(', ')}. Total stake: ₹${formatMoney(totalStake)}; combined potential payout: ₹${formatMoney(potentialPayout)}.`)
+      setMessage(`Booked ${confirmed.join(', ')}. Total stake: ₹${formatMoney(totalStake)}. Each winning number pays 80× its own stake; only the drawn number can win.`)
       setBalance((current) => current === null ? current : Number(current) - totalStake)
       setSelectedNumbers([])
       await loadData()
@@ -334,7 +336,7 @@ export default function DoubleGame({ historyOnly = false }) {
             </label>
             <label>
               <span>Stake per number (₹)</span>
-              <input type="number" inputMode="numeric" min="1" max="1000000" step="1" value={quickStake} onChange={(event) => setQuickStake(event.target.value)} />
+              <input type="number" inputMode="numeric" min="5" max="1000000" step="1" value={quickStake} onChange={(event) => setQuickStake(event.target.value)} />
             </label>
             <button type="button" className="double-quick-button" onClick={() => applyQuickBooking(quickKind)}>Select 10 Numbers</button>
           </div>
@@ -351,7 +353,7 @@ export default function DoubleGame({ historyOnly = false }) {
                 <input
                   type="number"
                   inputMode="numeric"
-                  min="1"
+                  min="5"
                   max="1000000"
                   step="1"
                   placeholder="0"
@@ -378,8 +380,8 @@ export default function DoubleGame({ historyOnly = false }) {
             <strong>₹{formatMoney(totalStake)}</strong>
           </div>
           <div className="double-potential">
-            <span>COMBINED POTENTIAL PAYOUT</span>
-            <strong>₹{selectedNumbers.length && selectedNumbers.every((number) => Number.isSafeInteger(Number(stakeFor(number))) && Number(stakeFor(number)) > 0 && Number(stakeFor(number)) <= 1000000) ? formatMoney(potentialPayout) : '—'}</strong>
+            <span>PAYOUT PER WINNING NUMBER</span>
+            <strong>₹{selectedNumbers.length && selectedNumbers.every((number) => Number.isSafeInteger(Number(stakeFor(number))) && Number(stakeFor(number)) >= 5 && Number(stakeFor(number)) <= 1000000) ? (sameSelectedStake ? `₹${formatMoney(potentialPayout)}` : 'Varies by number') : '—'}</strong>
           </div>
           <button type="button" className="double-submit" disabled={busy || !canBook || !selectedNumbers.length} onClick={placeBooking}>
             {busy ? 'Booking…' : canBook ? `Book ${selectedNumbers.length || ''} Number${selectedNumbers.length === 1 ? '' : 's'}` : 'Booking Closed'}
