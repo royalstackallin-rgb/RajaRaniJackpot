@@ -3138,3 +3138,20 @@ body[data-round-theme] .main-menu button:not(.active) {
 .home-bookings-shortcut strong{font-size:14px}
 .home-bookings-shortcut small{color:#9eafc6;font-size:11px;line-height:1.4}
 .home-bookings-shortcut .home-arrow{color:#f5d58b}
+
+/* My Bookings game picker */
+.booking-game-choices{display:grid;gap:14px;margin:30px 0 22px}
+.booking-game-choice{position:relative;display:flex;align-items:center;gap:14px;width:100%;min-height:112px;padding:18px 16px;border:1px solid #303747;border-radius:19px;background:linear-gradient(135deg,#121b2a,#080d17 78%);color:#f3f5fb;text-align:left;cursor:pointer;transition:transform .16s ease,border-color .16s ease}
+.booking-game-choice:active{transform:scale(.99)}
+.booking-game-choice-classic{border-color:#66502a;background:radial-gradient(ellipse at 100% 0%,#c99b3b14,transparent 58%),linear-gradient(135deg,#151b26,#080d17 78%)}
+.booking-game-choice-double{border-color:#632334;background:radial-gradient(ellipse at 100% 0%,#b8243a1c,transparent 58%),linear-gradient(135deg,#1c0d13,#09080c 78%)}
+.booking-game-mark{display:grid;place-items:center;flex:0 0 58px;height:58px;border:1px solid #9b783e;border-radius:15px;background:#b98b2919;color:#f2d28d;font-size:14px;font-weight:800;letter-spacing:-.04em}
+.booking-game-choice-double .booking-game-mark{border-color:#a62a43;background:linear-gradient(145deg,#851b30,#350d18);color:#ffe2d0}
+.booking-game-copy{display:grid;gap:5px;flex:1;min-width:0}
+.booking-game-kicker{color:#c8a65f;font-size:9px;font-weight:800;letter-spacing:.15em}
+.booking-game-choice-double .booking-game-kicker{color:#df7d8d}
+.booking-game-copy strong{font-size:19px;line-height:1.2;font-weight:750}
+.booking-game-copy small{color:#a6b2c4;font-size:12px;line-height:1.45}
+.booking-game-arrow{display:grid;place-items:center;flex:0 0 30px;height:30px;border:1px solid #ffffff16;border-radius:50%;color:#f1cf87;font-size:20px}
+.booking-game-choice-double .booking-game-arrow{color:#f08b9b}
+@media(max-width:420px){.booking-game-choice{gap:11px;padding:15px 12px;min-height:104px}.booking-game-mark{flex-basis:50px;height:50px;font-size:12px}.booking-game-copy strong{font-size:17px}.booking-game-copy small{font-size:11px}}
