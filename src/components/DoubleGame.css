@@ -311,3 +311,12 @@
     font-size: 12px;
   }
 }
+
+/* Make entered stake amounts bright and easy to read; keep empty/default zeros muted. */
+.double-page .double-tile-stake input {
+  color: #f5d58b;
+  caret-color: #f5d58b;
+}
+.double-page .double-tile-stake input:placeholder-shown {
+  color: #788195;
+}
