@@ -3155,3 +3155,80 @@ body[data-round-theme] .main-menu button:not(.active) {
 .booking-game-arrow{display:grid;place-items:center;flex:0 0 30px;height:30px;border:1px solid #ffffff16;border-radius:50%;color:#f1cf87;font-size:20px}
 .booking-game-choice-double .booking-game-arrow{color:#f08b9b}
 @media(max-width:420px){.booking-game-choice{gap:11px;padding:15px 12px;min-height:104px}.booking-game-mark{flex-basis:50px;height:50px;font-size:12px}.booking-game-copy strong{font-size:17px}.booking-game-copy small{font-size:11px}}
+
+
+/* Wallet redesign: balance actions */
+.wallet-balance-card {
+  position: relative;
+  overflow: hidden;
+  gap: 10px;
+  padding: 24px;
+  border: 1px solid rgba(230, 194, 112, 0.32);
+  border-radius: 22px;
+  background: radial-gradient(ellipse at top right, #34435a 0%, transparent 58%), linear-gradient(145deg, #19283d, #080e1a 78%);
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.22);
+}
+
+.wallet-balance-card > span {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+}
+
+.wallet-balance-card > strong {
+  font-size: clamp(34px, 8vw, 44px);
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+.wallet-action-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.wallet-action-buttons button {
+  min-height: 48px;
+  padding: 12px 10px;
+  border-radius: 12px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 850;
+  cursor: pointer;
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.wallet-action-buttons button:active {
+  transform: scale(0.98);
+}
+
+.wallet-add-money {
+  border: 1px solid #f1d28b;
+  background: linear-gradient(135deg, #f3d994, #c59a49);
+  color: #17130a;
+}
+
+.wallet-withdraw-button {
+  border: 1px solid #52647f;
+  background: #101c2e;
+  color: #f0f4fb;
+}
+
+#wallet-add-money {
+  scroll-margin-top: 20px;
+}
+
+@media (max-width: 380px) {
+  .wallet-balance-card {
+    padding: 18px;
+  }
+
+  .wallet-action-buttons {
+    gap: 7px;
+  }
+
+  .wallet-action-buttons button {
+    padding: 10px 5px;
+    font-size: 13px;
+  }
+}
