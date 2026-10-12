@@ -3281,3 +3281,48 @@ body[data-round-theme] .main-menu button:not(.active) {
 .how-to-play-twin .how-to-play-example{border-color:#f5224644;background:#f522460d}
 .how-to-play-twin .how-to-play-example strong{color:#ff9aab}
 @media(max-width:420px){.how-to-play summary{gap:9px;padding:11px}.how-to-play-content{padding:0 12px 13px}.how-to-play-content ol{font-size:11px;gap:9px}}
+
+
+/* Royal Reels: standalone practice-only slot game */
+.home-slot-entry{display:flex;align-items:center;gap:14px;width:100%;margin:18px 0 8px;padding:17px 15px;border:1px solid #8b2939;border-radius:17px;background:radial-gradient(ellipse at 100% 0%,#c51e3824,transparent 55%),linear-gradient(135deg,#1b0b12,#09090e 78%);color:#f6f1ed;text-align:left;cursor:pointer}
+.home-slot-emblem{display:grid;place-items:center;flex:0 0 54px;height:54px;border:1px solid #d4a34377;border-radius:15px;background:#d4a34313;font-size:28px}
+.home-slot-copy{display:grid;gap:4px;flex:1;min-width:0}
+.home-slot-copy small{color:#e7b94f;font-size:9px;font-weight:800;letter-spacing:.13em}
+.home-slot-copy strong{font-size:18px}
+.home-slot-copy span{color:#aab4c4;font-size:12px;line-height:1.4}
+.home-slot-arrow{color:#f1c75a;font-size:23px}
+.slot-page{display:grid;gap:18px;max-width:560px;margin:0 auto;padding:8px 0 24px;color:#f7f1e6}
+.slot-heading{text-align:center;padding:8px 8px 2px}
+.slot-kicker{color:#f4c85d;font-size:10px;font-weight:800;letter-spacing:.18em}
+.slot-heading h1{margin:8px 0;font-size:clamp(30px,8vw,42px);letter-spacing:-.04em}
+.slot-heading p{margin:0 auto;color:#aeb8c8;font-size:13px;line-height:1.6;max-width:340px}
+.slot-machine{position:relative;overflow:hidden;padding:17px 15px 18px;border:1px solid #d7a83f;border-radius:22px;background:radial-gradient(ellipse at 50% 0%,#8e192b55,transparent 54%),linear-gradient(160deg,#260b13,#0a080d 75%);box-shadow:0 15px 35px #0005,inset 0 0 0 4px #f7cb4a0a}
+.slot-machine-top{display:flex;align-items:center;justify-content:space-between;gap:8px;color:#ffdc78;font-size:11px;font-weight:900;letter-spacing:.14em}
+.slot-jackpot-tag{padding:6px 8px;border:1px solid #e8bb4c55;border-radius:7px;color:#e9b94c;font-size:8px;letter-spacing:.08em}
+.slot-reels{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:18px 0 10px;padding:12px;border:2px solid #d9a33a;border-radius:15px;background:linear-gradient(180deg,#050609,#191018 50%,#050609);box-shadow:inset 0 0 18px #000,0 0 18px #e0a52a14}
+.slot-reel{display:grid;place-items:center;min-height:106px;border:1px solid #e8c76b;border-radius:10px;background:linear-gradient(180deg,#fff4d2,#e9d9b4 18%,#fff9e6 52%,#d6bd83);box-shadow:inset 0 0 0 3px #7d581b22;color:#170d10}
+.slot-reel span{font-size:clamp(42px,12vw,60px);line-height:1}
+.slot-reel.is-spinning span{filter:blur(1px);transform:translateY(2px)}
+.slot-machine-lights{display:flex;justify-content:space-around;margin:12px 3px 15px}
+.slot-machine-lights span{width:6px;height:6px;border-radius:50%;background:#ffcf53;box-shadow:0 0 8px #ffbc37}
+.slot-message{min-height:38px;display:grid;place-items:center;text-align:center;color:#f2dba5;font-size:12px;line-height:1.5}
+.slot-credit-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:13px 0;padding:13px 12px;border:1px solid #ffffff18;border-radius:12px;background:#ffffff05}
+.slot-credit-row div{display:grid;gap:6px}
+.slot-credit-row div+div{padding-left:12px;border-left:1px solid #ffffff19}
+.slot-credit-row span,.slot-bet-label{color:#aeb8c8;font-size:9px;font-weight:800;letter-spacing:.12em}
+.slot-credit-row strong{color:#ffdb70;font-size:23px;font-variant-numeric:tabular-nums}
+.slot-bet-label{text-align:center;margin:17px 0 10px}
+.slot-bet-options{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.slot-bet-options button{min-height:43px;border:1px solid #66502e;border-radius:10px;background:#120d10;color:#f7e7c2;font-size:14px;font-weight:800}
+.slot-bet-options button.selected{border-color:#ffcf53;background:linear-gradient(135deg,#ffdb6d,#d78a05);color:#1a0c08;box-shadow:0 4px 16px #f4b82c20}
+.slot-bet-options button:disabled{opacity:.45}
+.slot-spin-button{width:100%;min-height:54px;margin-top:14px;border:0;border-radius:12px;background:linear-gradient(110deg,#ffdf67,#f6a900 70%,#e28b00);color:#1b0c05;font-size:15px;font-weight:950;letter-spacing:.1em;box-shadow:0 6px 20px #e9a20c22}
+.slot-spin-button:disabled{opacity:.55}
+.slot-reset-button{display:block;margin:10px auto 0;padding:8px 12px;border:0;background:transparent;color:#aab4c4;font-size:11px;text-decoration:underline}
+.slot-paytable{padding:16px;border:1px solid #ffffff19;border-radius:16px;background:linear-gradient(145deg,#10131b,#09090e)}
+.slot-paytable h2{margin:0 0 6px;font-size:17px}
+.slot-paytable p{margin:0 0 13px;color:#aab4c4;font-size:11px;line-height:1.5}
+.slot-paytable div{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #ffffff10;font-size:12px}
+.slot-paytable div strong{color:#ffda72;white-space:nowrap}
+.slot-paytable small{display:block;margin-top:13px;color:#9aa7ba;font-size:10px;line-height:1.6}
+@media(max-width:380px){.slot-machine{padding:13px 10px}.slot-reels{gap:6px;padding:8px}.slot-reel{min-height:86px}.slot-credit-row strong{font-size:20px}.home-slot-entry{gap:10px;padding:14px 11px}}
