@@ -94,9 +94,7 @@ function GameResults({ initialGame = null }) {
   if (selectedGame === 'double') {
     return (
       <section className="history-page">
-        <div style={{ marginBottom: 18 }}>
-          <button type="button" className="secondary-button" onClick={() => setSelectedGame(null)}>← Back to games</button>
-        </div>
+
         <DoubleResults />
       </section>
     )
@@ -126,9 +124,7 @@ function GameResults({ initialGame = null }) {
 
   return (
     <section className="history-page">
-      <div style={{ marginBottom: 18 }}>
-        <button type="button" className="secondary-button" onClick={() => setSelectedGame(null)}>← Back to games</button>
-      </div>
+
       <div className="history-heading">
         <span className="history-eyebrow">OFFICIAL HISTORY</span>
         <h2>Game Results</h2>
