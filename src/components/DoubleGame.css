@@ -445,3 +445,92 @@
 .double-page.double-history-only .double-panel:last-of-type {
   margin-top: 0;
 }
+
+
+/* Compact expandable booking slips in My Bookings > Targetor Double */
+.double-history-item-expandable {
+  display: block;
+  padding: 0;
+  overflow: hidden;
+}
+.double-history-summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-width: 0;
+  padding: 12px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.double-history-summary .double-history-number {
+  flex-shrink: 0;
+}
+.double-history-summary .double-history-details {
+  flex: 1;
+  min-width: 0;
+}
+.double-history-summary .double-history-details strong,
+.double-history-summary .double-history-details span {
+  display: block;
+  overflow-wrap: anywhere;
+}
+.double-history-summary .double-status {
+  flex-shrink: 0;
+  font-size: 10px;
+}
+.double-history-chevron {
+  flex-shrink: 0;
+  color: #f1d48d;
+  font-size: 21px;
+  line-height: 1;
+}
+.double-history-expanded {
+  padding: 0 12px 12px;
+  border-top: 1px solid rgba(148, 163, 184, .18);
+}
+.double-history-number-row {
+  display: grid;
+  grid-template-columns: 44px 1fr 1fr;
+  gap: 8px;
+  align-items: center;
+  padding: 9px 4px;
+  border-bottom: 1px solid rgba(148, 163, 184, .12);
+  color: #b8c5d7;
+  font-size: 12px;
+}
+.double-history-number-row span:first-child {
+  color: #f1d48d;
+  font-weight: 700;
+}
+.double-history-number-row span:last-child {
+  text-align: right;
+}
+@media (max-width: 560px) {
+  .double-history-summary {
+    gap: 7px;
+    padding: 10px 8px;
+  }
+  .double-history-summary .double-history-details strong {
+    font-size: 12px;
+  }
+  .double-history-summary .double-history-details span {
+    font-size: 10px;
+    line-height: 1.4;
+  }
+  .double-history-summary .double-status {
+    padding: 6px;
+    font-size: 8px;
+  }
+  .double-history-chevron {
+    font-size: 18px;
+  }
+  .double-history-number-row {
+    grid-template-columns: 34px 1fr 1fr;
+    gap: 5px;
+    font-size: 11px;
+  }
+}
