@@ -13,7 +13,26 @@ const ROWS = [
 
 const NUMBERS = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09']
 
+function istDateString(date = new Date()) {
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Kolkata', year: 'numeric', month: '2-digit', day: '2-digit',
+  }).formatToParts(date)
+  const values = Object.fromEntries(parts.map((part) => [part.type, part.value]))
+  return `${values.year}-${values.month}-${values.day}`
+}
+
+function roundTimestamp(round) {
+  return new Date(`${round.game_date}T${String(round.round_time).slice(0, 8)}+05:30`).getTime()
+}
+
 const ROUND_NAMES = {
+  '00:00': 'MIDNIGHT',
+  '01:00': 'AFTER MIDNIGHT',
+  '02:00': 'QUIET HOUR',
+  '03:00': 'NIGHT WATCH',
+  '04:00': 'EARLY DAWN',
+  '05:00': 'FIRST LIGHT',
+  '06:00': 'DAWN',
   '07:00': 'SUBHA',
   '08:00': 'SUNRISE',
   '09:00': 'GOLDEN HOUR',
@@ -26,6 +45,11 @@ const ROUND_NAMES = {
   '16:00': 'GODHULI',
   '17:00': 'ROYAL NIGHT',
   '18:00': 'SHAHI',
+  '19:00': 'GOLDEN NIGHT',
+  '20:00': 'MOONLIGHT',
+  '21:00': 'NIGHT STAR',
+  '22:00': 'LATE NIGHT',
+  '23:00': 'MIDNIGHT RUN',
 }
 
 function getRoundName(round) {
@@ -60,11 +84,7 @@ function TicketLobby() {
     const loadRound = async () => {
       const now = new Date()
 
-      const localDate =
-        `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
-
-      const localTime =
-        `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:00`
+      const localDate = istDateString(now)
 
       const { data, error } = await supabase
         .from('game_rounds')
@@ -81,9 +101,7 @@ function TicketLobby() {
       const liveRound = data.find((round) => {
         if (round.status !== 'drawn' && round.status !== 'settled') return false
 
-        const roundTime = new Date(
-          `${round.game_date}T${round.round_time.slice(0, 8)}`,
-        ).getTime()
+        const roundTime = roundTimestamp(round)
 
         return (
           roundTime <= currentTime &&
@@ -92,15 +110,13 @@ function TicketLobby() {
       })
 
       const nextOpenRound = [...data].sort((a, b) => {
-        const aTime = new Date(`${a.game_date}T${a.round_time.slice(0, 8)}`).getTime()
-        const bTime = new Date(`${b.game_date}T${b.round_time.slice(0, 8)}`).getTime()
+        const aTime = roundTimestamp(a)
+        const bTime = roundTimestamp(b)
         return aTime - bTime
       }).find((round) => {
         if (round.status !== 'open') return false
 
-        const roundTime = new Date(
-          `${round.game_date}T${round.round_time.slice(0, 8)}`,
-        ).getTime()
+        const roundTime = roundTimestamp(round)
 
         return roundTime >= currentTime
       })
@@ -362,11 +378,7 @@ function TicketLobby() {
     }
   }
 
-  const roundDateTime = currentRound
-    ? new Date(
-        `${currentRound.game_date}T${currentRound.round_time}`,
-      )
-    : null
+  const roundDateTime = currentRound ? new Date(roundTimestamp(currentRound)) : null
 
   const cutoffDateTime = roundDateTime
     ? new Date(roundDateTime.getTime() - 5 * 60 * 1000)
