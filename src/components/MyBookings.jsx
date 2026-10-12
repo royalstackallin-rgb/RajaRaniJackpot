@@ -37,6 +37,7 @@ function MyBookings() {
   const [selectedGame, setSelectedGame] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [expandedBookings, setExpandedBookings] = useState({})
 
   useEffect(() => {
     let active = true
@@ -196,73 +197,47 @@ function MyBookings() {
           const entries = asArray(booking.game_entries)
 
           return (
-            <article className={`booking-card round-theme-${String(round?.round_time || '').slice(0, 5).replace(':', '-')}`} key={booking.id}>
-              <div className="booking-card-top">
-                <div>
-                  <span className="booking-row-label">
-                    ROW {booking.ticket_row || '—'}
-                  </span>
-                  <h3>{getRoundName(round)}</h3>
-                  <p className="booking-time">{round?.round_code || 'Game round'}</p>
-                </div>
-                <span
-                  className={`booking-status ${outcome.label.toLowerCase()}`}
-                >
-                  {outcome.label}
+            <article className={`booking-card booking-card-compact round-theme-${String(round?.round_time || '').slice(0, 5).replace(':', '-')}`} key={booking.id}>
+              <button
+                type="button"
+                className="booking-compact-summary"
+                aria-expanded={Boolean(expandedBookings[booking.id])}
+                onClick={() => setExpandedBookings((current) => ({ ...current, [booking.id]: !current[booking.id] }))}
+              >
+                <span className="booking-compact-main">
+                  <span className="booking-compact-title">ROW {booking.ticket_row || '—'} · {getRoundName(round)}</span>
+                  <span className="booking-compact-date">{round?.game_date || 'Date unavailable'}{round?.round_time ? ` · ${String(round.round_time).slice(0, 5)}` : ''}</span>
+                  <span className="booking-compact-meta">{booking.total_tickets} tickets · ₹{Number(booking.total_amount).toLocaleString('en-IN')} cost · ₹{outcome.payout.toLocaleString('en-IN')} payout</span>
                 </span>
-              </div>
-
-              <p className="booking-time">
-                {round?.game_date || 'Date unavailable'}
-                {round?.round_time
-                  ? ` · ${String(round.round_time).slice(0, 5)}`
-                  : ''}
-              </p>
-
-              <div className="booking-details">
-                <div>
-                  <span>Tickets</span>
-                  <strong>{booking.total_tickets}</strong>
+                <span className="booking-compact-right">
+                  <span className={`booking-status ${outcome.label.toLowerCase()}`}>{outcome.label}</span>
+                  <span className="booking-compact-chevron">{expandedBookings[booking.id] ? '−' : '+'}</span>
+                </span>
+              </button>
+              {expandedBookings[booking.id] && (
+                <div className="booking-compact-expanded">
+                  <p className="booking-time">{round?.round_code || 'Game round'}</p>
+                  <div className="booking-details">
+                    <div><span>Tickets</span><strong>{booking.total_tickets}</strong></div>
+                    <div><span>Cost</span><strong>₹{Number(booking.total_amount).toLocaleString('en-IN')}</strong></div>
+                    <div><span>Payout</span><strong>₹{outcome.payout.toLocaleString('en-IN')}</strong></div>
+                  </div>
+                  <div className="booking-entries">
+                    {entries.map((entry) => {
+                      const payout = getEntryResults(entry).reduce((total, result) => total + Number(result?.payout || 0), 0)
+                      const won = payout > 0
+                      return (
+                        <div className="booking-entry" key={entry.id} style={won ? { border: '2px solid #22c55e', backgroundColor: 'rgba(22, 101, 52, 0.28)' } : undefined}>
+                          <span className="booking-number">{won ? '✓ ' : ''}{entry.number}</span>
+                          <span>Qty: {entry.quantity}</span>
+                          <span style={won ? { color: '#86efac', fontWeight: 800 } : undefined}>{won ? 'WON · ' : ''}₹{Number(entry.amount).toLocaleString('en-IN')}</span>
+                        </div>
+                      )
+                    })}
+                  </div>
+                  <p className="booking-created">Booked {new Date(booking.created_at).toLocaleString('en-IN')}</p>
                 </div>
-                <div>
-                  <span>Cost</span>
-                  <strong>₹{Number(booking.total_amount).toLocaleString('en-IN')}</strong>
-                </div>
-                <div>
-                  <span>Payout</span>
-                  <strong>₹{outcome.payout.toLocaleString('en-IN')}</strong>
-                </div>
-              </div>
-
-              <div className="booking-entries">
-                {entries.map((entry) => {
-                  const payout = getEntryResults(entry).reduce(
-                    (total, result) => total + Number(result?.payout || 0),
-                    0,
-                  )
-                  const won = payout > 0
-
-                  return (
-                    <div
-                      className="booking-entry"
-                      key={entry.id}
-                      style={won ? { border: '2px solid #22c55e', backgroundColor: 'rgba(22, 101, 52, 0.28)' } : undefined}
-                    >
-                      <span className="booking-number">
-                        {won ? '✓ ' : ''}{entry.number}
-                      </span>
-                      <span>Qty: {entry.quantity}</span>
-                      <span style={won ? { color: '#86efac', fontWeight: 800 } : undefined}>
-                        {won ? 'WON · ' : ''}₹{Number(entry.amount).toLocaleString('en-IN')}
-                      </span>
-                    </div>
-                  )
-                })}
-              </div>
-
-              <p className="booking-created">
-                Booked {new Date(booking.created_at).toLocaleString('en-IN')}
-              </p>
+              )}
             </article>
           )
         })}
