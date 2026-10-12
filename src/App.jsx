@@ -140,43 +140,7 @@ function App() {
             </div>
           </header>
 
-          <nav className="main-menu" aria-label="Main menu">
-            <button
-              type="button"
-              className={view === 'home' ? 'active' : ''}
-              onClick={() => setView('home')}
-            >
-              Home
-            </button>
-            <button
-              type="button"
-              className={view === 'tickets' ? 'active' : ''}
-              onClick={() => setView('tickets')}
-            >
-              Lobby
-            </button>
-            <button
-              type="button"
-              className={view === 'bookings' ? 'active' : ''}
-              onClick={() => setView('bookings')}
-            >
-              My Bookings
-            </button>
-            <button
-              type="button"
-              className={view === 'results' ? 'active' : ''}
-              onClick={() => setView('results')}
-            >
-              Game Results
-            </button>
-            <button
-              type="button"
-              className={view === 'double' ? 'active' : ''}
-              onClick={() => setView('double')}
-            >
-              Targetor Double
-            </button>
-          </nav>
+    </nav>
 
       {showLogoutConfirm && (
         <div className="logout-modal-backdrop">
