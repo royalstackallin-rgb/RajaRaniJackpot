@@ -157,7 +157,7 @@ export default function HomeDashboard({ onOpenGame, onOpenBookings, onOpenResult
   const statusClass = bookingOpen ? 'is-open' : bookingClosed ? 'is-closed' : 'is-waiting'
   const doubleDrawAt = nextDoubleRound ? new Date(`${nextDoubleRound.game_date}T${String(nextDoubleRound.round_time).slice(0, 8)}+05:30`) : null
   const doubleCutoffAt = doubleDrawAt ? new Date(doubleDrawAt.getTime() - 5 * 60 * 1000) : null
-  const doubleBookingOpen = Boolean(doubleCutoffAt && now < doubleCutoffAt && now >= new Date(doubleDrawAt.getTime() - 60 * 60 * 1000))
+  const doubleBookingOpen = Boolean(nextDoubleRound?.status === 'open' && doubleCutoffAt && now < doubleCutoffAt && now < doubleDrawAt)
   const doubleBookingClosed = Boolean(doubleDrawAt && doubleCutoffAt && now >= doubleCutoffAt && now < doubleDrawAt)
   const doubleBookingStatus = !nextDoubleRound ? 'Schedule updating' : doubleBookingOpen ? 'Bookings open' : doubleBookingClosed ? 'Bookings closed' : 'Opening soon'
   const doubleStatusClass = doubleBookingOpen ? 'is-open' : doubleBookingClosed ? 'is-closed' : 'is-waiting'
@@ -241,8 +241,7 @@ export default function HomeDashboard({ onOpenGame, onOpenBookings, onOpenResult
         <div className="home-double-title-row">
           <span className="home-double-emblem">00<br />99</span>
           <div className="home-double-title">
-            <span className="home-eyebrow">YOUR SECOND GAME</span>
-            <h2>TARGETOR DOUBLE</h2>
+              <h2>TARGETOR DOUBLE</h2>
             <p>00–99 · Single numbers</p>
           </div>
           <span className={`home-status ${doubleStatusClass}`}>{doubleBookingStatus}</span>
