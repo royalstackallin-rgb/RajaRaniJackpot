@@ -133,7 +133,7 @@ function MyBookings() {
     return (
       <section className="history-page">
         <div className="history-heading">
-          <div style={{ marginBottom: 18 }}><button type="button" className="secondary-button" onClick={() => setSelectedGame(null)}>← Back to games</button></div>
+          
           <span className="history-eyebrow">YOUR ACTIVITY</span>
           <h2>Targetor Double Bookings</h2>
           <p>Your Targetor Double number bookings and results.</p>
@@ -168,7 +168,7 @@ function MyBookings() {
   return (
     <section className="history-page">
       <div className="history-heading">
-        <div style={{ marginBottom: 18 }}><button type="button" className="secondary-button" onClick={() => setSelectedGame(null)}>← Back to games</button></div>
+        
         <span className="history-eyebrow">YOUR ACTIVITY</span>
         <h2>StakeClassic Bookings</h2>
         <p>Your current and previous ticket bookings.</p>
