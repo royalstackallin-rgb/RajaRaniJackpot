@@ -37,7 +37,7 @@ function formatMoney(value) {
   return Number(value || 0).toLocaleString('en-IN')
 }
 
-export default function DoubleGame() {
+export default function DoubleGame({ historyOnly = false }) {
   const [rounds, setRounds] = useState([])
   const [selectedNumbers, setSelectedNumbers] = useState([])
   const [stakes, setStakes] = useState({})
@@ -258,7 +258,7 @@ export default function DoubleGame() {
     round ? `${round.game_date} · ${displayTime(round.round_time)}` : 'No round available'
 
   return (
-    <section className="double-page">
+    <section className={`double-page ${historyOnly ? 'double-history-only' : ''}`}>
       <div className="double-heading">
         <div>
           <p className="double-eyebrow">A SEPARATE GAME</p>
