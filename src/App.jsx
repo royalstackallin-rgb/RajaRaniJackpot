@@ -20,6 +20,7 @@ function App() {
   const [session, setSession] = useState(null)
   const [isWalletAdmin, setIsWalletAdmin] = useState(false)
   const [view, setView] = useState('home')
+  const [resultsGame, setResultsGame] = useState(null)
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false)
   const [showAppMenu, setShowAppMenu] = useState(false)
 
@@ -180,10 +181,10 @@ function App() {
         </div>
       )}
 
-          {view === 'home' && <HomeDashboard onOpenGame={setView} onOpenBookings={() => setView('bookings')} onOpenResults={() => setView('results')} onOpenWallet={() => setView('wallet')} />}
+          {view === 'home' && <HomeDashboard onOpenGame={setView} onOpenBookings={() => setView('bookings')} onOpenResults={(game) => { setResultsGame(game); setView('results') }} onOpenWallet={() => setView('wallet')} />}
           {view === 'tickets' && <TicketLobby />}
           {view === 'bookings' && <MyBookings />}
-          {view === 'results' && <GameResults />}
+          {view === 'results' && <GameResults initialGame={resultsGame} />}
           {view === 'double' && <DoubleGame />}
           {view === 'wallet' && <Wallet />}
           {view === 'withdraw' && <Withdraw />}
