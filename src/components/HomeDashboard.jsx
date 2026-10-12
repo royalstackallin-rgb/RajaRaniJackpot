@@ -20,11 +20,12 @@ function formatCountdown(milliseconds) {
   return [hours, minutes, remainder].map((part) => String(part).padStart(2, '0')).join(':')
 }
 
-export default function HomeDashboard({ onOpenGame, onOpenBookings, onOpenResults }) {
+export default function HomeDashboard({ onOpenGame, onOpenBookings, onOpenResults, onOpenWallet }) {
   const [nextRound, setNextRound] = useState(null)
   const [latestRound, setLatestRound] = useState(null)
   const [nextDoubleRound, setNextDoubleRound] = useState(null)
   const [latestDoubleRound, setLatestDoubleRound] = useState(null)
+  const [walletBalance, setWalletBalance] = useState(null)
   const [now, setNow] = useState(new Date())
   const [loading, setLoading] = useState(true)
   const [loadError, setLoadError] = useState('')
@@ -32,6 +33,18 @@ export default function HomeDashboard({ onOpenGame, onOpenBookings, onOpenResult
   useEffect(() => {
     const timer = setInterval(() => setNow(new Date()), 1000)
     return () => clearInterval(timer)
+  }, [])
+
+  useEffect(() => {
+    let cancelled = false
+    async function loadWalletBalance() {
+      const { data: { user }, error: userError } = await supabase.auth.getUser()
+      if (userError || !user) return
+      const { data, error } = await supabase.from('wallets').select('balance').eq('user_id', user.id).maybeSingle()
+      if (!cancelled && !error) setWalletBalance(data?.balance ?? 0)
+    }
+    loadWalletBalance()
+    return () => { cancelled = true }
   }, [])
 
   useEffect(() => {
@@ -127,6 +140,12 @@ export default function HomeDashboard({ onOpenGame, onOpenBookings, onOpenResult
         <h1>Every draw, at a glance.</h1>
         <p>Your next draw, booking status and latest result — all in one place.</p>
       </div>
+
+      <button type="button" className="home-wallet-strip" onClick={onOpenWallet}>
+        <span className="home-wallet-icon">₹</span>
+        <span className="home-wallet-copy"><small>WALLET BALANCE</small><strong>{walletBalance === null ? 'Loading balance…' : new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(Number(walletBalance))}</strong></span>
+        <span className="home-wallet-add">+</span>
+      </button>
 
       <article className="home-next-draw">
         <div className="home-card-topline">
