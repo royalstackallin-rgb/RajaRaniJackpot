@@ -110,12 +110,6 @@ export default function DoubleGame() {
   const stakeFor = (number) => stakes[number] ?? ''
   const totalStake = selectedNumbers.reduce((sum, number) => sum + (Number(stakeFor(number)) || 0), 0)
   const potentialPayout = selectedNumbers.reduce((sum, number) => sum + (Number(stakeFor(number)) || 0) * 80, 0)
-  const toggleNumber = (number) => {
-    setSelectedNumbers((current) => current.includes(number)
-      ? current.filter((item) => item !== number)
-      : [...current, number].sort((a, b) => Number(a) - Number(b)))
-  }
-
   const placeBooking = async () => {
     setMessage('')
     if (!currentRound || !canBook) {
@@ -213,14 +207,9 @@ export default function DoubleGame() {
         <div className="double-number-grid" aria-label="Choose numbers and enter individual stakes">
           {NUMBERS.map((number) => (
             <div className={`double-number-tile ${selectedNumbers.includes(number) ? 'selected' : ''}`} key={number}>
-              <button
-                type="button"
-                className={selectedNumbers.includes(number) ? 'chosen' : ''}
-                onClick={() => toggleNumber(number)}
-                aria-pressed={selectedNumbers.includes(number)}
-              >
+              <span className={selectedNumbers.includes(number) ? 'double-number-label chosen' : 'double-number-label'}>
                 {number}
-              </button>
+              </span>
               <label className="double-tile-stake">
                 <span>₹</span>
                 <input
@@ -234,9 +223,12 @@ export default function DoubleGame() {
                   onChange={(event) => {
                     const value = event.target.value
                     setStakes((current) => ({ ...current, [number]: value }))
-                    if (value !== '' && Number(value) > 0) {
-                      setSelectedNumbers((current) => current.includes(number) ? current : [...current, number].sort((a, b) => Number(a) - Number(b)))
-                    }
+                    setSelectedNumbers((current) => {
+                      if (value !== '' && Number(value) > 0) {
+                        return current.includes(number) ? current : [...current, number].sort((a, b) => Number(a) - Number(b))
+                      }
+                      return current.filter((item) => item !== number)
+                    })
                   }}
                   aria-label={`Stake amount for number ${number}`}
                 />
