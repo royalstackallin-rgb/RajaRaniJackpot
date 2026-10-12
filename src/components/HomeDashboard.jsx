@@ -23,6 +23,8 @@ function formatCountdown(milliseconds) {
 export default function HomeDashboard({ onOpenGame, onOpenBookings, onOpenResults }) {
   const [nextRound, setNextRound] = useState(null)
   const [latestRound, setLatestRound] = useState(null)
+  const [nextDoubleRound, setNextDoubleRound] = useState(null)
+  const [latestDoubleRound, setLatestDoubleRound] = useState(null)
   const [now, setNow] = useState(new Date())
   const [loading, setLoading] = useState(true)
   const [loadError, setLoadError] = useState('')
@@ -38,7 +40,7 @@ export default function HomeDashboard({ onOpenGame, onOpenBookings, onOpenResult
       setLoadError('')
       try {
         const today = todayLocal()
-        const [nextResult, latestResult] = await Promise.all([
+        const [nextResult, latestResult, nextDoubleResult, latestDoubleResult] = await Promise.all([
           supabase
             .from('game_rounds')
             .select('id, round_code, game_date, round_time, status')
@@ -54,12 +56,32 @@ export default function HomeDashboard({ onOpenGame, onOpenBookings, onOpenResult
             .order('game_date', { ascending: false })
             .order('round_time', { ascending: false })
             .limit(1),
+          supabase
+            .from('double_rounds')
+            .select('id, round_code, game_date, round_time, status, winning_number, drawn_at')
+            .gte('game_date', today)
+            .eq('status', 'open')
+            .order('game_date', { ascending: true })
+            .order('round_time', { ascending: true })
+            .limit(1),
+          supabase
+            .from('double_rounds')
+            .select('id, round_code, game_date, round_time, status, winning_number, drawn_at')
+            .in('status', ['drawn', 'settled'])
+            .not('winning_number', 'is', null)
+            .order('game_date', { ascending: false })
+            .order('round_time', { ascending: false })
+            .limit(1),
         ])
         if (nextResult.error) throw nextResult.error
         if (latestResult.error) throw latestResult.error
+        if (nextDoubleResult.error) throw nextDoubleResult.error
+        if (latestDoubleResult.error) throw latestDoubleResult.error
         if (!cancelled) {
           setNextRound(nextResult.data?.[0] || null)
           setLatestRound(latestResult.data?.[0] || null)
+          setNextDoubleRound(nextDoubleResult.data?.[0] || null)
+          setLatestDoubleRound(latestDoubleResult.data?.[0] || null)
         }
       } catch (error) {
         if (!cancelled) setLoadError(error.message || 'Could not load draw information.')
@@ -87,6 +109,12 @@ export default function HomeDashboard({ onOpenGame, onOpenBookings, onOpenResult
         ? 'Bookings closed'
         : 'Opening soon'
   const statusClass = bookingOpen ? 'is-open' : bookingClosed ? 'is-closed' : 'is-waiting'
+  const doubleDrawAt = nextDoubleRound ? new Date(`${nextDoubleRound.game_date}T${String(nextDoubleRound.round_time).slice(0, 8)}+05:30`) : null
+  const doubleCutoffAt = doubleDrawAt ? new Date(doubleDrawAt.getTime() - 5 * 60 * 1000) : null
+  const doubleBookingOpen = Boolean(doubleCutoffAt && now < doubleCutoffAt && now >= new Date(doubleDrawAt.getTime() - 60 * 60 * 1000))
+  const doubleBookingClosed = Boolean(doubleDrawAt && doubleCutoffAt && now >= doubleCutoffAt && now < doubleDrawAt)
+  const doubleBookingStatus = !nextDoubleRound ? 'Schedule updating' : doubleBookingOpen ? 'Bookings open' : doubleBookingClosed ? 'Bookings closed' : 'Opening soon'
+  const doubleStatusClass = doubleBookingOpen ? 'is-open' : doubleBookingClosed ? 'is-closed' : 'is-waiting'
   const resultRows = ['A', 'B', 'C', 'D', 'E', 'F', 'G'].map((letter) => ({
     letter,
     number: latestRound?.game_round_results?.find((item) => item.ticket_row === letter)?.winning_number,
@@ -134,9 +162,9 @@ export default function HomeDashboard({ onOpenGame, onOpenBookings, onOpenResult
           <span className="home-game-copy"><strong>StakeClassic Lobby</strong><small>Next draw, seven rows and ticket booking</small><em>ENTER LOBBY</em></span>
           <span className="home-arrow">→</span>
         </button>
-        <button type="button" className="home-game-card" onClick={() => onOpenGame('double')}>
+        <button type="button" className="home-game-card home-double-card" onClick={() => onOpenGame('double')}>
           <span className="home-game-icon home-game-icon-double">00–99</span>
-          <span className="home-game-copy"><strong>Targetor Double Lobby</strong><small>Next Double draw and numbers 00–99</small><em>ENTER LOBBY</em></span>
+          <span className="home-game-copy"><strong>Targetor Double Lobby</strong><small>Next draw: {nextDoubleRound ? formatTime(nextDoubleRound.round_time) : 'Schedule updating'} · {nextDoubleRound?.game_date || '—'}</small><span className={`home-status ${doubleStatusClass}`}>{doubleBookingStatus}</span><small>{doubleBookingOpen ? 'Booking closes in' : 'Draw countdown'} · {doubleDrawAt ? formatCountdown(doubleDrawAt - now - (doubleBookingOpen ? 5 * 60 * 1000 : 0)) : '—'}</small><span className="home-double-latest">{latestDoubleRound ? `Latest result: ${String(latestDoubleRound.winning_number).padStart(2, '0')} · ${formatTime(latestDoubleRound.round_time)}` : 'Latest result: waiting for first draw'}</span><em>ENTER LOBBY</em></span>
           <span className="home-arrow">→</span>
         </button>
       </div>
