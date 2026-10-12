@@ -285,3 +285,29 @@
     font-size: 12px;
   }
 }
+
+/* Match reference: plain amount boxes, no rupee prefix, compact muted zero text. */
+.double-page .double-tile-stake > span {
+  display: none;
+}
+.double-page .double-tile-stake input {
+  padding: 3px 2px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 400;
+  color: #788195;
+}
+.double-page .double-tile-stake input::placeholder {
+  color: #788195;
+  font-size: 12px;
+  opacity: 1;
+}
+@media (max-width: 560px) {
+  .double-page .double-tile-stake input {
+    padding: 3px 2px;
+    font-size: 12px;
+  }
+  .double-page .double-tile-stake input::placeholder {
+    font-size: 12px;
+  }
+}
