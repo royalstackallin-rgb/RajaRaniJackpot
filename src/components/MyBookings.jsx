@@ -132,12 +132,12 @@ function MyBookings() {
     return (
       <section className="history-page">
         <div className="history-heading">
-          <button type="button" className="secondary-button" onClick={() => setSelectedGame(null)}>← Back to games</button>
+          <div style={{ marginBottom: 18 }}><button type="button" className="secondary-button" onClick={() => setSelectedGame(null)}>← Back to games</button></div>
           <span className="history-eyebrow">YOUR ACTIVITY</span>
           <h2>Targetor Double Bookings</h2>
           <p>Your Targetor Double number bookings and results.</p>
         </div>
-        <DoubleGame />
+        <DoubleGame historyOnly />
       </section>
     )
   }
@@ -151,11 +151,11 @@ function MyBookings() {
           <p>Choose a game to view your booking history.</p>
         </div>
         <div className="booking-list">
-          <button type="button" className="history-empty" onClick={() => setSelectedGame('classic')}>
+          <button type="button" className="history-empty" style={{ display: "block", width: "100%", textAlign: "left", cursor: "pointer" }} onClick={() => setSelectedGame('classic')}>
             <h3>StakeClassic</h3>
             <p>View your ticket bookings, results, and payouts.</p>
           </button>
-          <button type="button" className="history-empty" onClick={() => setSelectedGame('double')}>
+          <button type="button" className="history-empty" style={{ display: "block", width: "100%", textAlign: "left", cursor: "pointer" }} onClick={() => setSelectedGame('double')}>
             <h3>Targetor Double</h3>
             <p>View your Starting, Ending, and individual number bookings.</p>
           </button>
@@ -167,7 +167,7 @@ function MyBookings() {
   return (
     <section className="history-page">
       <div className="history-heading">
-        <button type="button" className="secondary-button" onClick={() => setSelectedGame(null)}>← Back to games</button>
+        <div style={{ marginBottom: 18 }}><button type="button" className="secondary-button" onClick={() => setSelectedGame(null)}>← Back to games</button></div>
         <span className="history-eyebrow">YOUR ACTIVITY</span>
         <h2>StakeClassic Bookings</h2>
         <p>Your current and previous ticket bookings.</p>
