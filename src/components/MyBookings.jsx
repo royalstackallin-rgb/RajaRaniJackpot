@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
+import DoubleGame from './DoubleGame'
 
 const ROUND_NAMES = {
   '07:00': 'SUBHA',
@@ -33,6 +34,7 @@ function getEntryResults(entry) {
 
 function MyBookings() {
   const [bookings, setBookings] = useState([])
+  const [selectedGame, setSelectedGame] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
@@ -126,14 +128,50 @@ function MyBookings() {
     }
   }
 
+  if (selectedGame === 'double') {
+    return (
+      <section className="history-page">
+        <div className="history-heading">
+          <button type="button" className="secondary-button" onClick={() => setSelectedGame(null)}>← Back to games</button>
+          <span className="history-eyebrow">YOUR ACTIVITY</span>
+          <h2>Targetor Double Bookings</h2>
+          <p>Your Targetor Double number bookings and results.</p>
+        </div>
+        <DoubleGame />
+      </section>
+    )
+  }
+
+  if (selectedGame === null) {
+    return (
+      <section className="history-page">
+        <div className="history-heading">
+          <span className="history-eyebrow">YOUR ACTIVITY</span>
+          <h2>My Bookings</h2>
+          <p>Choose a game to view your booking history.</p>
+        </div>
+        <div className="booking-list">
+          <button type="button" className="history-empty" onClick={() => setSelectedGame('classic')}>
+            <h3>StakeClassic</h3>
+            <p>View your ticket bookings, results, and payouts.</p>
+          </button>
+          <button type="button" className="history-empty" onClick={() => setSelectedGame('double')}>
+            <h3>Targetor Double</h3>
+            <p>View your Starting, Ending, and individual number bookings.</p>
+          </button>
+        </div>
+      </section>
+    )
+  }
+
   return (
     <section className="history-page">
       <div className="history-heading">
+        <button type="button" className="secondary-button" onClick={() => setSelectedGame(null)}>← Back to games</button>
         <span className="history-eyebrow">YOUR ACTIVITY</span>
-        <h2>My Bookings</h2>
+        <h2>StakeClassic Bookings</h2>
         <p>Your current and previous ticket bookings.</p>
       </div>
-
       {loading && <p className="history-message">Loading your bookings…</p>}
 
       {error && (
