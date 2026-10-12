@@ -259,6 +259,10 @@ export default function DoubleGame({ historyOnly = false }) {
   const displayTime = (time) => ({ '09:00': '9:00 AM', '12:00': '12:00 PM', '15:00': '3:00 PM', '18:00': '6:00 PM' }[String(time).slice(0, 5)] || String(time).slice(0, 5))
   const roundLabel = (round) =>
     round ? `${round.game_date} · ${displayTime(round.round_time)}` : 'No round available'
+  const latestDoubleResult = [...rounds].reverse().find((round) => ['drawn', 'settled'].includes(round.status) && round.winning_number !== null && round.winning_number !== undefined) || null
+  const bookingCountdownTarget = canBook ? currentRoundTime - 5 * 60 * 1000 : currentRoundTime
+  const countdownSeconds = Math.max(0, Math.floor((bookingCountdownTarget - now.getTime()) / 1000))
+  const countdownText = [Math.floor(countdownSeconds / 3600), Math.floor((countdownSeconds % 3600) / 60), countdownSeconds % 60].map((part) => String(part).padStart(2, '0')).join(':')
 
   return (
     <section className={`double-page ${historyOnly ? 'double-history-only' : ''}`}>
@@ -282,6 +286,18 @@ export default function DoubleGame({ historyOnly = false }) {
           </span>
         ))}
       </div>
+
+      <section className="double-lobby-summary" aria-label="Targetor Double draw summary">
+        <div className="double-lobby-summary-top">
+          <div><span className="double-label">NEXT TARGETOR DOUBLE DRAW</span><strong>{currentRound ? displayTime(currentRound.round_time) : 'Schedule updating'}</strong><small>{currentRound?.game_date || 'Check again shortly'}</small></div>
+          <span className={canBook ? 'double-status open' : 'double-status'}>{canBook ? 'BOOKINGS OPEN' : currentRound && now.getTime() >= currentRoundTime - 5 * 60 * 1000 && now.getTime() < currentRoundTime ? 'BOOKINGS CLOSED' : currentRound && ['drawn', 'settled'].includes(currentRound.status) ? 'RESULT POSTED' : 'WAITING FOR DRAW'}</span>
+        </div>
+        {currentRound && <div className="double-lobby-countdown"><span>{canBook ? 'BOOKING CLOSES IN' : 'DRAW TIME / STATUS'}</span><strong>{countdownText}</strong></div>}
+        <div className="double-lobby-latest">
+          <span className="double-label">LATEST COMPLETED RESULT</span>
+          {latestDoubleResult ? <div className="double-lobby-latest-row"><strong>{String(latestDoubleResult.winning_number).padStart(2, '0')}</strong><span>{latestDoubleResult.game_date} · {displayTime(latestDoubleResult.round_time)}</span></div> : <p>No completed Double result yet.</p>}
+        </div>
+      </section>
 
       <div className="double-panel">
         <div className="double-round-row">
