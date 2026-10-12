@@ -269,9 +269,9 @@ export default function DoubleGame({ historyOnly = false }) {
       {!historyOnly && (<>
       <div className="double-heading">
         <div>
-          <p className="double-eyebrow">A SEPARATE GAME</p>
+          <p className="double-eyebrow">YOUR DOUBLE LOBBY · 00–99</p>
           <h1>Targetor Double</h1>
-          <p>Select multiple numbers from 00–99; stake applies to each selected number.</p>
+          <p>Track the next draw, booking deadline and latest winning number before choosing your numbers.</p>
         </div>
         <div className="double-wallet">
           <span>WALLET BALANCE</span>
