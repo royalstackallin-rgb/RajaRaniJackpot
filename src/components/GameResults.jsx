@@ -35,8 +35,8 @@ function getRoundName(round) {
   return ROUND_NAMES[time] || 'RAJARANI JACKPOT'
 }
 
-function GameResults() {
-  const [selectedGame, setSelectedGame] = useState(null)
+function GameResults({ initialGame = null }) {
+  const [selectedGame, setSelectedGame] = useState(initialGame)
   const [date, setDate] = useState(localDateString())
   const [time, setTime] = useState('')
   const [rounds, setRounds] = useState([])
