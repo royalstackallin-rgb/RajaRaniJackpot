@@ -3062,3 +3062,8 @@ body[data-round-theme] .main-menu button:not(.active) {
 .home-game-card{min-height:104px}
 .home-game-copy em{display:inline-flex;align-self:flex-start;margin-top:3px;padding:5px 7px;border:1px solid #e7c77955;border-radius:6px;color:#f5d58b;font-size:9px;font-style:normal;font-weight:900;letter-spacing:.08em}
 @media(max-width:420px){.home-game-card{min-height:94px}}
+
+.view-navigation{display:flex;align-items:center;gap:12px;margin:0 0 16px;padding:0 2px}
+.view-back-button{border:1px solid #13c9df55;border-radius:9px;padding:10px 12px;background:#061b26;color:#37d9ec;font-size:12px;font-weight:800;white-space:nowrap;cursor:pointer}
+.view-navigation>span{overflow:hidden;color:#a9bfd0;font-size:12px;text-overflow:ellipsis;white-space:nowrap}
+.app-brand-home{border:0}
