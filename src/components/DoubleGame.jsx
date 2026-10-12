@@ -259,6 +259,7 @@ export default function DoubleGame({ historyOnly = false }) {
 
   return (
     <section className={`double-page ${historyOnly ? 'double-history-only' : ''}`}>
+      {!historyOnly && (<>
       <div className="double-heading">
         <div>
           <p className="double-eyebrow">A SEPARATE GAME</p>
@@ -371,6 +372,7 @@ export default function DoubleGame({ historyOnly = false }) {
         {message && <p className="double-message" role="status">{message}</p>}
       </div>
 
+      </>)}
       <div className="double-panel">
         <div className="double-history-heading">
           <h2>My Double Bookings</h2>
