@@ -3255,3 +3255,29 @@ body[data-round-theme] .main-menu button:not(.active) {
     height: 38px;
   }
 }
+
+
+/* In-lobby How to Play guides */
+.how-to-play{overflow:hidden;margin:0 0 14px;border:1px solid #e7ad2b55;border-radius:14px;background:linear-gradient(145deg,#160e0b,#080b11);color:#f4f5f8}
+.how-to-play summary{display:flex;align-items:center;gap:11px;min-height:64px;padding:12px 14px;list-style:none;cursor:pointer}
+.how-to-play summary::-webkit-details-marker{display:none}
+.how-to-play-icon{display:grid;place-items:center;flex:0 0 34px;height:34px;border:1px solid #e7ad2b88;border-radius:10px;background:#e7ad2b18;color:#ffd45d;font-size:19px;font-weight:900}
+.how-to-play summary>span:nth-child(2){display:grid;gap:4px;flex:1;min-width:0}
+.how-to-play summary strong{font-size:14px}
+.how-to-play summary small{color:#aab8c8;font-size:11px;line-height:1.4}
+.how-to-play-chevron{color:#ffd45d;font-size:21px;transition:transform .18s ease}
+.how-to-play[open] .how-to-play-chevron{transform:rotate(45deg)}
+.how-to-play-content{padding:0 16px 15px;border-top:1px solid #ffffff16}
+.how-to-play-content ol{display:grid;gap:10px;padding-left:21px;margin:14px 0;color:#cbd5e1;font-size:12px;line-height:1.6}
+.how-to-play-content li{padding-left:2px}
+.how-to-play-content li strong{color:#fff0c0}
+.how-to-play-example{margin:12px 0;padding:11px;border:1px solid #e7ad2b33;border-radius:9px;background:#e7ad2b0d;color:#e5d7b2;font-size:12px;line-height:1.6}
+.how-to-play-example strong{color:#ffd45d}
+.how-to-play-note{margin:10px 0 0;color:#9eafc6;font-size:11px;line-height:1.5}
+.how-to-play-twin{border-color:#f5224666;background:linear-gradient(145deg,#200811,#09080e)}
+.how-to-play-twin .how-to-play-icon{border-color:#ff315488;background:#ff315418;color:#ff9aab}
+.how-to-play-twin .how-to-play-chevron{color:#ff8ca0}
+.how-to-play-twin .how-to-play-content li strong{color:#ffd6de}
+.how-to-play-twin .how-to-play-example{border-color:#f5224644;background:#f522460d}
+.how-to-play-twin .how-to-play-example strong{color:#ff9aab}
+@media(max-width:420px){.how-to-play summary{gap:9px;padding:11px}.how-to-play-content{padding:0 12px 13px}.how-to-play-content ol{font-size:11px;gap:9px}}
