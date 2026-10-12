@@ -59,7 +59,7 @@ export default function SlotGame() {
     setMessage('Reels spinning…')
     window.setTimeout(() => {
       setReels(next)
-      setCredits((current) => current - bet + payout)
+      setCredits((current) => current + payout)
       setLastPayout(payout)
       setSpins((current) => current + 1)
       setMessage(payout > 0 ? `You matched! ${payout} practice credits returned.` : 'No match this time. Try another spin.')
