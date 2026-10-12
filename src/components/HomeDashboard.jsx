@@ -24,6 +24,26 @@ function formatTime(value) {
   return `${hours % 12 || 12}:${String(minutes).padStart(2, '0')} ${hours >= 12 ? 'PM' : 'AM'}`
 }
 
+const ROUND_NAMES = {
+  '00:00': 'MIDNIGHT JACKPOT',
+  '01:00': 'SILVER STAR',
+  '02:00': 'LUCKY MOON',
+  '03:00': 'DIAMOND NIGHT',
+  '04:00': 'ROYAL DAWN',
+  '05:00': 'FIRST LIGHT',
+  '06:00': 'MORNING GLORY',
+  '19:00': 'RAJARANI',
+  '20:00': 'MOONLIGHT',
+  '21:00': 'MIDNIGHT STAR',
+  '22:00': 'NIGHT DIAMOND',
+  '23:00': 'ROYAL DREAM',
+}
+
+function getRoundName(round) {
+  if (!round?.round_time) return 'RAJARANI JACKPOT'
+  return ROUND_NAMES[String(round.round_time).slice(0, 5)] || 'RAJARANI JACKPOT'
+}
+
 function formatCountdown(milliseconds) {
   const seconds = Math.max(0, Math.floor(milliseconds / 1000))
   const hours = Math.floor(seconds / 3600)
@@ -185,7 +205,7 @@ export default function HomeDashboard({ onOpenGame, onOpenBookings, onOpenResult
                 <strong>{formatCountdown(nextDrawAt - now - (bookingOpen ? 5 * 60 * 1000 : 0))}</strong>
               </div>
             </div>
-            <p className="home-round-code">{nextRound.round_code || 'Upcoming round'}</p>
+            <p className="home-round-code">{getRoundName(nextRound)} · {nextRound.round_code || 'Upcoming round'}</p>
           </>
         ) : (
           <p className="home-loading">No upcoming round is available right now. Please check again shortly.</p>
@@ -201,7 +221,7 @@ export default function HomeDashboard({ onOpenGame, onOpenBookings, onOpenResult
         </div>
         {latestRound ? (
           <>
-            <div className="home-result-meta">{latestRound.game_date} <span>·</span> {formatTime(latestRound.round_time)}</div>
+            <div className="home-result-meta">{getRoundName(latestRound)} <span>·</span> {latestRound.game_date} <span>·</span> {formatTime(latestRound.round_time)}</div>
             <div className="home-result-grid">
               {resultRows.map((item) => <div className="home-result-number" key={item.letter}><span>{item.letter}</span><strong>{item.number ?? '—'}</strong></div>)}
             </div>

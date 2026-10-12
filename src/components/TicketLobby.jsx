@@ -26,13 +26,13 @@ function roundTimestamp(round) {
 }
 
 const ROUND_NAMES = {
-  '00:00': 'MIDNIGHT',
-  '01:00': 'AFTER MIDNIGHT',
-  '02:00': 'QUIET HOUR',
-  '03:00': 'NIGHT WATCH',
-  '04:00': 'EARLY DAWN',
+  '00:00': 'MIDNIGHT JACKPOT',
+  '01:00': 'SILVER STAR',
+  '02:00': 'LUCKY MOON',
+  '03:00': 'DIAMOND NIGHT',
+  '04:00': 'ROYAL DAWN',
   '05:00': 'FIRST LIGHT',
-  '06:00': 'DAWN',
+  '06:00': 'MORNING GLORY',
   '07:00': 'SUBHA',
   '08:00': 'SUNRISE',
   '09:00': 'GOLDEN HOUR',
@@ -45,11 +45,11 @@ const ROUND_NAMES = {
   '16:00': 'GODHULI',
   '17:00': 'ROYAL NIGHT',
   '18:00': 'SHAHI',
-  '19:00': 'GOLDEN NIGHT',
+  '19:00': 'RAJARANI',
   '20:00': 'MOONLIGHT',
-  '21:00': 'NIGHT STAR',
-  '22:00': 'LATE NIGHT',
-  '23:00': 'MIDNIGHT RUN',
+  '21:00': 'MIDNIGHT STAR',
+  '22:00': 'NIGHT DIAMOND',
+  '23:00': 'ROYAL DREAM',
 }
 
 function getRoundName(round) {
