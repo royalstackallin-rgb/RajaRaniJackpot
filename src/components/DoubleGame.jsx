@@ -188,57 +188,61 @@ export default function DoubleGame() {
   }
 
   const groupedBookings = useMemo(() => {
-    const byPattern = new Map()
-    const singles = []
-    for (const booking of bookings) {
-      const number = String(booking.number).padStart(2, '0')
-      const patterns = [
-        { kind: 'Starting', digit: number[0], matches: NUMBERS.filter((item) => item.startsWith(number[0])) },
-        { kind: 'Ending', digit: number[1], matches: NUMBERS.filter((item) => item.endsWith(number[1])) },
-      ]
-      const pattern = patterns.find((candidate) =>
-        candidate.matches.length === 10 &&
-        bookings.filter((item) =>
+    const normalized = bookings.map((booking) => ({
+      ...booking,
+      number: String(booking.number).padStart(2, '0'),
+    }))
+    const groups = new Map()
+    const groupedIds = new Set()
+
+    for (const booking of normalized) {
+      for (const pattern of [
+        { kind: 'Starting', digit: booking.number[0], matches: NUMBERS.filter((n) => n.startsWith(booking.number[0])) },
+        { kind: 'Ending', digit: booking.number[1], matches: NUMBERS.filter((n) => n.endsWith(booking.number[1])) },
+      ]) {
+        const members = normalized.filter((item) =>
           item.round_id === booking.round_id &&
           Number(item.stake) === Number(booking.stake) &&
           item.status === booking.status &&
-          candidate.matches.includes(String(item.number).padStart(2, '0'))
-        ).length >= 10
-      )
-      if (!pattern) {
-        singles.push({ type: 'single', key: booking.id, booking })
-        continue
-      }
-      const key = [booking.round_id, booking.stake, booking.status, pattern.kind, pattern.digit].join('|')
-      if (!byPattern.has(key)) {
-        byPattern.set(key, {
-          type: 'group',
-          key,
-          round_id: booking.round_id,
-          stake: Number(booking.stake),
-          status: booking.status,
-          kind: pattern.kind,
-          digit: pattern.digit,
-          numbers: pattern.matches,
-          bookings: bookings.filter((item) =>
-            item.round_id === booking.round_id &&
-            Number(item.stake) === Number(booking.stake) &&
-            item.status === booking.status &&
-            pattern.matches.includes(String(item.number).padStart(2, '0'))
-          ),
-          created_at: booking.created_at,
-        })
+          pattern.matches.includes(item.number)
+        )
+        if (members.length !== 10 || !pattern.matches.every((n) => members.some((item) => item.number === n))) continue
+
+        const key = [booking.round_id, booking.stake, booking.status, pattern.kind, pattern.digit].join('|')
+        if (!groups.has(key)) {
+          groups.set(key, {
+            type: 'group',
+            key,
+            round_id: booking.round_id,
+            stake: Number(booking.stake),
+            status: booking.status,
+            kind: pattern.kind,
+            digit: pattern.digit,
+            numbers: pattern.matches,
+            bookings: members,
+            created_at: members.reduce((latest, item) =>
+              new Date(item.created_at) > new Date(latest) ? item.created_at : latest,
+              members[0].created_at
+            ),
+          })
+          members.forEach((item) => groupedIds.add(item.id))
+        }
+        break
       }
     }
-    const groups = [...byPattern.values()].map((group) => ({
+
+    const groupedItems = [...groups.values()].map((group) => ({
       ...group,
-      bookings: group.bookings.slice(0, 10),
       totalStake: group.stake * 10,
       payoutPerWinningNumber: group.stake * 80,
     }))
-    return [...groups, ...singles].sort((a, b) =>
-      new Date((b.created_at || b.booking?.created_at) || 0) -
-      new Date((a.created_at || a.booking?.created_at) || 0)
+    const singles = normalized
+      .filter((booking) => !groupedIds.has(booking.id))
+      .map((booking) => ({ type: 'single', key: booking.id, booking, created_at: booking.created_at }))
+
+    return [...groupedItems, ...singles].sort((a, b) =>
+      new Date(b.created_at || b.booking?.created_at || 0) -
+      new Date(a.created_at || a.booking?.created_at || 0)
     )
   }, [bookings])
 
