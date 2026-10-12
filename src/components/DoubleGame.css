@@ -138,3 +138,95 @@
     font-size: 11px;
   }
 }
+
+/* Match the reference grid: plain number labels and one compact input per number. */
+.double-page .double-number-grid {
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+  gap: 15px 5px;
+}
+.double-page .double-number-tile {
+  display: grid;
+  grid-template-rows: 22px 42px;
+  gap: 7px;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+.double-page .double-number-label,
+.double-page .double-number-label.chosen {
+  display: grid;
+  place-items: center;
+  min-height: 22px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: #f1d48d;
+  font-size: 12px;
+  font-weight: 500;
+}
+.double-page .double-tile-stake {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 42px;
+  min-width: 0;
+}
+.double-page .double-tile-stake > span {
+  left: 8px;
+  top: 50%;
+  font-size: 11px;
+}
+.double-page .double-tile-stake input {
+  width: 100%;
+  height: 42px;
+  min-height: 42px;
+  padding: 4px 4px 4px 22px;
+  border: 1px solid #334155;
+  border-radius: 10px;
+  background: #030914;
+  color: #f8fafc;
+  text-align: center;
+  font-size: 14px;
+}
+.double-page .double-tile-stake input::placeholder {
+  color: #77839a;
+  font-size: 13px;
+}
+.double-page .double-number-tile.selected {
+  border: 0;
+  background: transparent;
+}
+@media (max-width: 560px) {
+  .double-page .double-number-grid {
+    gap: 14px 5px;
+  }
+  .double-page .double-number-tile {
+    grid-template-rows: 22px 42px;
+    gap: 6px;
+  }
+  .double-page .double-number-label,
+  .double-page .double-number-label.chosen {
+    min-height: 22px;
+    font-size: 12px;
+  }
+  .double-page .double-tile-stake {
+    height: 42px;
+  }
+  .double-page .double-tile-stake > span {
+    left: 6px;
+    font-size: 10px;
+  }
+  .double-page .double-tile-stake input {
+    height: 42px;
+    min-height: 42px;
+    padding-left: 18px;
+    font-size: 13px;
+    text-align: center;
+  }
+  .double-page .double-tile-stake input::placeholder {
+    font-size: 12px;
+  }
+}
