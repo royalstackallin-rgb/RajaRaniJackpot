@@ -131,12 +131,12 @@ export default function HomeDashboard({ onOpenGame, onOpenBookings, onOpenResult
       <div className="home-game-grid">
         <button type="button" className="home-game-card" onClick={() => onOpenGame('tickets')}>
           <span className="home-game-icon">A–G</span>
-          <span className="home-game-copy"><strong>StakeClassic</strong><small>Choose numbers across seven rows</small></span>
+          <span className="home-game-copy"><strong>StakeClassic Lobby</strong><small>Next draw, seven rows and ticket booking</small><em>ENTER LOBBY</em></span>
           <span className="home-arrow">→</span>
         </button>
         <button type="button" className="home-game-card" onClick={() => onOpenGame('double')}>
           <span className="home-game-icon home-game-icon-double">00–99</span>
-          <span className="home-game-copy"><strong>Targetor Double</strong><small>Pick numbers from 00 to 99</small></span>
+          <span className="home-game-copy"><strong>Targetor Double Lobby</strong><small>Next Double draw and numbers 00–99</small><em>ENTER LOBBY</em></span>
           <span className="home-arrow">→</span>
         </button>
       </div>
@@ -158,10 +158,7 @@ export default function HomeDashboard({ onOpenGame, onOpenBookings, onOpenResult
         )}
       </article>
 
-      <div className="home-shortcuts">
-        <button type="button" onClick={onOpenBookings}>My Bookings <span>→</span></button>
-        <button type="button" onClick={onOpenResults}>Game Results <span>→</span></button>
-      </div>
+</div>
     </section>
   )
 }
