@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { supabase } from '../lib/supabase'
+import './DoubleGame.css'
 
 const TIMES = ['09:00', '12:00', '15:00', '18:00']
 const NUMBERS = Array.from({ length: 100 }, (_, i) => String(i).padStart(2, '0'))
@@ -228,7 +229,7 @@ export default function DoubleGame() {
                   min="1"
                   max="1000000"
                   step="1"
-                  placeholder="Amount"
+                  placeholder="0"
                   value={stakeFor(number)}
                   onChange={(event) => {
                     const value = event.target.value
