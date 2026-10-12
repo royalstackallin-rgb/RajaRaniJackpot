@@ -297,7 +297,7 @@ export default function DoubleGame({ historyOnly = false }) {
         <summary><span className="how-to-play-icon">?</span><span><strong>How to Play Twin Fortune</strong><small>Numbers, stakes and payouts explained</small></span><span className="how-to-play-chevron">＋</span></summary>
         <div className="how-to-play-content">
           <ol>
-            <li><strong>Choose a round.</strong> Twin Fortune has rounds every 3 hours, 24 hours a day. Booking closes 5 minutes before the draw.</li>
+            <li><strong>Choose a round.</strong> Twin Fortune has four daily rounds: 9 AM, 12 PM, 3 PM and 6 PM. Booking closes 5 minutes before the draw.</li>
             <li><strong>Choose numbers from 00 to 99.</strong> Enter a stake for each number you want. The minimum stake is ₹5 per number.</li>
             <li><strong>Or use Easy Booking.</strong> Choose a starting digit or ending digit and the digit from 0–9. This selects 10 matching numbers, and the stake you enter applies to each one.</li>
             <li><strong>Check your total.</strong> Your total stake is the sum of the stakes on all selected numbers. For Easy Booking, multiply the stake per number by 10.</li>
