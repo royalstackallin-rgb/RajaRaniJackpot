@@ -140,7 +140,6 @@ function App() {
             </div>
           </header>
 
-    </nav>
 
       {showLogoutConfirm && (
         <div className="logout-modal-backdrop">
