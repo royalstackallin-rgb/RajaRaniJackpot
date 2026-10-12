@@ -416,7 +416,7 @@ export default function DoubleGame({ historyOnly = false }) {
           </div>
         )}
       </div>
-      <p className="double-disclaimer">Virtual credits only. No cash value. Results and payouts are processed by the game server.</p>
+      {!historyOnly && <p className="double-disclaimer">Virtual credits only. No cash value. Results and payouts are processed by the game server.</p>}
     </section>
   )
 }
