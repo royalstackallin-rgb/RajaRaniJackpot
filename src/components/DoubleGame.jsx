@@ -293,6 +293,23 @@ export default function DoubleGame({ historyOnly = false }) {
         ))}
       </div>
 
+
+      <details className="how-to-play how-to-play-twin">
+        <summary><span className="how-to-play-icon">?</span><span><strong>How to Play Twin Fortune</strong><small>Numbers, stakes and payouts explained</small></span><span className="how-to-play-chevron">＋</span></summary>
+        <div className="how-to-play-content">
+          <ol>
+            <li><strong>Choose a round.</strong> Twin Fortune has rounds every 3 hours, 24 hours a day. Booking closes 5 minutes before the draw.</li>
+            <li><strong>Choose numbers from 00 to 99.</strong> Enter a stake for each number you want. The minimum stake is ₹5 per number.</li>
+            <li><strong>Or use Easy Booking.</strong> Choose a starting digit or ending digit and the digit from 0–9. This selects 10 matching numbers, and the stake you enter applies to each one.</li>
+            <li><strong>Check your total.</strong> Your total stake is the sum of the stakes on all selected numbers. For Easy Booking, multiply the stake per number by 10.</li>
+            <li><strong>Book before the deadline.</strong> Tap Book Numbers while booking is open. Only the drawn winning number can win.</li>
+            <li><strong>Understand the payout.</strong> A winning number pays 80 times the stake placed on that number. Other selected numbers do not win that round.</li>
+          </ol>
+          <p className="how-to-play-example"><strong>Example:</strong> A ₹10 stake on number 27 has a potential payout of ₹800 if 27 is the winning number. Selecting 10 numbers at ₹10 each costs ₹100 in total.</p>
+          <p className="how-to-play-note">Bookings require enough wallet credits. Credits are virtual and have no cash value.</p>
+        </div>
+      </details>
+
       <section className="double-lobby-summary" aria-label="Twin Fortune draw summary">
         <div className="double-lobby-summary-top">
           <div><span className="double-label">NEXT TWIN FORTUNE DRAW</span><strong>{currentRound ? displayTime(currentRound.round_time) : 'Schedule updating'}</strong><small>{currentRound?.game_date || 'Check again shortly'}</small></div>
