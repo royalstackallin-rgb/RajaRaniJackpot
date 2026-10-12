@@ -3012,3 +3012,48 @@ body[data-round-theme] .main-menu button:not(.active) {
     padding: 0 10px 12px;
   }
 }
+
+
+/* HOME / LOBBY DASHBOARD */
+.home-dashboard{display:grid;gap:14px;padding:4px 0 28px;color:#edf3ff}
+.home-welcome{padding:16px 4px 8px}
+.home-eyebrow{display:block;color:#e7c779;font-size:10px;font-weight:900;letter-spacing:.14em}
+.home-welcome h1{margin:9px 0 7px;font-size:clamp(27px,6vw,38px);line-height:1.08;letter-spacing:-.045em}
+.home-welcome p{max-width:540px;margin:0;color:#aab8d0;font-size:13px;line-height:1.6}
+.home-next-draw,.home-latest-card{padding:clamp(15px,3.5vw,22px);border:1px solid #ffffff20;border-radius:18px;background:linear-gradient(145deg,#17243a,#080e1a);box-shadow:0 12px 35px #0003}
+.home-card-topline,.home-section-heading{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.home-status{display:inline-flex;align-items:center;padding:7px 9px;border-radius:99px;font-size:9px;font-weight:900;white-space:nowrap}
+.home-status.is-open{background:#22c55e20;color:#86efac}
+.home-status.is-closed{background:#f8717120;color:#fca5a5}
+.home-status.is-waiting{background:#fbbf2420;color:#fcd34d}
+.home-draw-main{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin:22px 0 10px}
+.home-draw-main>div:first-child{display:grid;gap:5px}
+.home-draw-time{font-size:clamp(32px,8vw,46px);line-height:1;color:#f5d58b;letter-spacing:-.04em}
+.home-draw-date{color:#aab8d0;font-size:12px}
+.home-countdown{display:grid;gap:6px;text-align:right}
+.home-countdown span{color:#aab8d0;font-size:9px;font-weight:900;letter-spacing:.08em}
+.home-countdown strong{font-size:clamp(17px,4vw,23px);font-variant-numeric:tabular-nums;letter-spacing:.03em}
+.home-round-code{margin:0 0 16px;color:#8191ab;font-size:11px}
+.home-primary-button{display:flex;align-items:center;justify-content:space-between;width:100%;min-height:48px;padding:12px 15px;border:0;border-radius:11px;background:linear-gradient(135deg,#e8c879,#b38a3e);color:#17130a;font-weight:900;cursor:pointer}
+.home-primary-button span,.home-shortcuts span{font-size:18px}
+.home-game-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.home-game-card{display:flex;align-items:center;gap:10px;min-width:0;padding:13px 10px;border:1px solid #ffffff20;border-radius:14px;background:#0b1424;color:#edf3ff;text-align:left;cursor:pointer}
+.home-game-icon{display:grid;place-items:center;flex:0 0 45px;height:45px;border-radius:11px;background:#e7c77918;color:#f5d58b;font-size:13px;font-weight:900}
+.home-game-icon-double{font-size:11px}
+.home-game-copy{display:grid;gap:5px;flex:1;min-width:0}
+.home-game-copy strong{font-size:13px}
+.home-game-copy small{color:#98a9c3;font-size:10px;line-height:1.4}
+.home-arrow{color:#f5d58b;font-size:18px}
+.home-section-heading{align-items:flex-start;margin-bottom:15px}
+.home-section-heading h2{margin:6px 0 0;font-size:21px}
+.home-section-heading button{padding:8px 0;border:0;background:transparent;color:#f5d58b;font-size:11px;font-weight:800;white-space:nowrap;cursor:pointer}
+.home-result-meta{margin-bottom:12px;color:#aab8d0;font-size:12px}
+.home-result-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+.home-result-number{display:grid;gap:7px;min-width:0;padding:10px 2px;border:1px solid #ffffff17;border-radius:9px;background:#050b16;text-align:center}
+.home-result-number span{color:#9baecb;font-size:10px;font-weight:900}
+.home-result-number strong{color:#f5d58b;font-size:clamp(16px,4vw,22px)}
+.home-loading,.home-error{color:#aab8d0;font-size:12px;line-height:1.6}
+.home-error{color:#fca5a5}
+.home-shortcuts{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.home-shortcuts button{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:13px;border:1px solid #ffffff20;border-radius:11px;background:#0b1424;color:#dce6f8;font-size:12px;font-weight:800;text-align:left;cursor:pointer}
+@media(max-width:420px){.home-game-grid{grid-template-columns:1fr}.home-game-card{padding:12px}.home-draw-main{align-items:flex-start;flex-direction:column}.home-countdown{text-align:left}.home-result-grid{gap:3px}.home-result-number{padding:9px 1px}.home-result-number span{font-size:9px}.home-result-number strong{font-size:15px}}
