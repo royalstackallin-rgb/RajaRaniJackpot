@@ -36,8 +36,8 @@ export default function DoubleGame() {
   const [rounds, setRounds] = useState([])
   const [selectedNumbers, setSelectedNumbers] = useState([])
   const [stakes, setStakes] = useState({})
-  const [endingDigit, setEndingDigit] = useState('')
-  const [startingDigit, setStartingDigit] = useState('')
+  const [quickKind, setQuickKind] = useState('ending')
+  const [quickDigit, setQuickDigit] = useState('')
   const [quickStake, setQuickStake] = useState('10')
   const [balance, setBalance] = useState(null)
   const [bookings, setBookings] = useState([])
@@ -114,7 +114,7 @@ export default function DoubleGame() {
   const totalStake = selectedNumbers.reduce((sum, number) => sum + (Number(stakeFor(number)) || 0), 0)
   const potentialPayout = selectedNumbers.reduce((sum, number) => sum + (Number(stakeFor(number)) || 0) * 80, 0)
   const applyQuickBooking = (kind) => {
-    const digit = kind === 'ending' ? endingDigit : startingDigit
+    const digit = quickDigit
     const amount = Number(quickStake)
     if (!/^[0-9]$/.test(digit)) {
       setMessage(`Choose a ${kind} digit from 0 to 9.`)
@@ -294,29 +294,25 @@ export default function DoubleGame() {
         <div className="double-quick-booking">
           <h3>Easy Booking</h3>
           <p>Choose a starting or ending digit. The amount is applied to all 10 matching numbers.</p>
+          <div className="double-quick-mode" role="group" aria-label="Booking type">
+            <button type="button" className={quickKind === 'ending' ? 'active' : ''} onClick={() => setQuickKind('ending')}>Ending</button>
+            <button type="button" className={quickKind === 'starting' ? 'active' : ''} onClick={() => setQuickKind('starting')}>Starting</button>
+          </div>
           <div className="double-quick-fields">
             <label>
-              <span>Amount per number (₹)</span>
+              <span>{quickKind === 'ending' ? 'Last digit (0–9)' : 'First digit (0–9)'}</span>
+              <select value={quickDigit} onChange={(event) => setQuickDigit(event.target.value)}>
+                <option value="">Choose digit</option>
+                {Array.from({ length: 10 }, (_, i) => <option key={i} value={String(i)}>{i}</option>)}
+              </select>
+            </label>
+            <label>
+              <span>Stake per number (₹)</span>
               <input type="number" inputMode="numeric" min="1" max="1000000" step="1" value={quickStake} onChange={(event) => setQuickStake(event.target.value)} />
             </label>
-            <label>
-              <span>Ending digit (0–9)</span>
-              <select value={endingDigit} onChange={(event) => setEndingDigit(event.target.value)}>
-                <option value="">Choose</option>
-                {Array.from({ length: 10 }, (_, i) => <option key={i} value={String(i)}>{i}</option>)}
-              </select>
-            </label>
-            <button type="button" className="double-quick-button" onClick={() => applyQuickBooking('ending')}>Select Ending</button>
-            <label>
-              <span>Starting digit (0–9)</span>
-              <select value={startingDigit} onChange={(event) => setStartingDigit(event.target.value)}>
-                <option value="">Choose</option>
-                {Array.from({ length: 10 }, (_, i) => <option key={i} value={String(i)}>{i}</option>)}
-              </select>
-            </label>
-            <button type="button" className="double-quick-button" onClick={() => applyQuickBooking('starting')}>Select Starting</button>
+            <button type="button" className="double-quick-button" onClick={() => applyQuickBooking(quickKind)}>Select 10 Numbers</button>
           </div>
-          <p className="double-quick-example">Example: ending 2 selects 02, 12, 22 … 92. Starting 2 selects 20–29. ₹10 each = ₹100 total per group.</p>
+          <p className="double-quick-example">{quickDigit === '' ? 'Choose a digit to see the 10 matching numbers.' : quickKind === 'ending' ? `Ending ${quickDigit}: ${NUMBERS.filter((n) => n.endsWith(quickDigit)).join(', ')}` : `Starting ${quickDigit}: ${NUMBERS.filter((n) => n.startsWith(quickDigit)).join(', ')`}. Total stake: ₹{formatMoney((Number(quickStake) || 0) * 10)} for 10 numbers.</p>
         </div>
         <div className="double-number-grid" aria-label="Choose numbers and enter individual stakes">
           {NUMBERS.map((number) => (
