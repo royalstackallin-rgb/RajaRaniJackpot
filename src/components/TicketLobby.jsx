@@ -461,6 +461,22 @@ function TicketLobby() {
         </div>
       </div>
 
+
+      <details className="how-to-play">
+        <summary><span className="how-to-play-icon">?</span><span><strong>How to Play Crown 24</strong><small>Read the rules before booking</small></span><span className="how-to-play-chevron">＋</span></summary>
+        <div className="how-to-play-content">
+          <ol>
+            <li><strong>Choose a round.</strong> Crown 24 runs every hour, 24 hours a day. Booking opens 1 hour before the draw and closes 5 minutes before it.</li>
+            <li><strong>Choose a row and number.</strong> Every row (A–G) has numbers 00–09. Enter how many tickets you want for each number.</li>
+            <li><strong>Check the cost.</strong> One ticket costs ₹10 in row A, ₹20 in B, ₹30 in C, ₹40 in D, ₹50 in E, ₹60 in F, and ₹70 in G.</li>
+            <li><strong>Book each row.</strong> Check the row total and tap its Book button. You can book more tickets in the same row while booking is open.</li>
+            <li><strong>Check results.</strong> Each row has its own winning number. A winning ticket pays ₹80 in A, ₹160 in B, ₹240 in C, ₹320 in D, ₹400 in E, ₹480 in F, or ₹560 in G.</li>
+          </ol>
+          <p className="how-to-play-example"><strong>Example:</strong> Two tickets on number 03 in row A cost ₹20. If 03 wins row A, the payout is ₹160 for those two winning tickets.</p>
+          <p className="how-to-play-note">Bookings require enough wallet credits. Credits are virtual and have no cash value.</p>
+        </div>
+      </details>
+
       {message && (
         <div className="ticket-message" role="status">
           {message}
