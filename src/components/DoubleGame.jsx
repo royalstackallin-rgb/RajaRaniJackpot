@@ -381,7 +381,7 @@ export default function DoubleGame({ historyOnly = false }) {
           </div>
           <div className="double-potential">
             <span>PAYOUT PER WINNING NUMBER</span>
-            <strong>₹{selectedNumbers.length && selectedNumbers.every((number) => Number.isSafeInteger(Number(stakeFor(number))) && Number(stakeFor(number)) >= 5 && Number(stakeFor(number)) <= 1000000) ? (sameSelectedStake ? `₹${formatMoney(potentialPayout)}` : 'Varies by number') : '—'}</strong>
+            <strong>{selectedNumbers.length && selectedNumbers.every((number) => Number.isSafeInteger(Number(stakeFor(number))) && Number(stakeFor(number)) >= 5 && Number(stakeFor(number)) <= 1000000) ? (sameSelectedStake ? `₹${formatMoney(potentialPayout)}` : 'Varies by number') : '—'}</strong>
           </div>
           <button type="button" className="double-submit" disabled={busy || !canBook || !selectedNumbers.length} onClick={placeBooking}>
             {busy ? 'Booking…' : canBook ? `Book ${selectedNumbers.length || ''} Number${selectedNumbers.length === 1 ? '' : 's'}` : 'Booking Closed'}
