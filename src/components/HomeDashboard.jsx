@@ -176,16 +176,6 @@ export default function HomeDashboard({ onOpenGame, onOpenBookings, onOpenResult
         <p>Your next draw, booking status and latest result — all in one place.</p>
       </div>
 
-      <div className="home-trading-art-grid" aria-label="Choose a game">
-        <button type="button" className="home-trading-art-card" onClick={() => onOpenGame('tickets')} aria-label="Enter Crown 24 lobby">
-          <img src={crown24Artwork} alt="Crown 24 artwork" loading="eager" />
-        </button>
-        <button type="button" className="home-trading-art-card" onClick={() => onOpenGame('double')} aria-label="Enter Twin Fortune lobby">
-          <img src={twinFortuneArtwork} alt="Twin Fortune artwork" loading="eager" />
-        </button>
-      </div>
-
-
       <button type="button" className="home-wallet-strip" onClick={onOpenWallet}>
         <span className="home-wallet-icon">₹</span>
         <span className="home-wallet-copy"><small>WALLET BALANCE</small><strong>{walletBalance === null ? 'Loading balance…' : new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(Number(walletBalance))}</strong></span>
@@ -199,6 +189,7 @@ export default function HomeDashboard({ onOpenGame, onOpenBookings, onOpenResult
       </button>
 
       <article className="home-next-draw">
+        <img className="home-game-artwork home-game-artwork-crown" src={crown24Artwork} alt="Crown 24 — Predict, Play, Win" loading="eager" />
         <div className="home-card-topline">
           <span className="home-eyebrow">NEXT CROWN 24 DRAW</span>
           <span className={`home-status ${statusClass}`}>{bookingStatus}</span>
@@ -250,6 +241,7 @@ export default function HomeDashboard({ onOpenGame, onOpenBookings, onOpenResult
       </div>
 
       <article className="home-double-draw-card">
+        <img className="home-game-artwork home-game-artwork-twin" src={twinFortuneArtwork} alt="Twin Fortune — Predict Both Ways" loading="eager" />
         <div className="home-double-title-row">
           <span className="home-double-emblem">00<br />99</span>
           <div className="home-double-title">
