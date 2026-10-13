@@ -174,6 +174,15 @@ export default function HomeDashboard({ onOpenGame, onOpenBookings, onOpenResult
         <p>Your next draw, booking status and latest result — all in one place.</p>
       </div>
 
+      <div className="home-trading-art-grid" aria-label="Choose a game">
+        <button type="button" className="home-trading-art-card" onClick={() => onOpenGame('tickets')} aria-label="Enter Crown 24 lobby">
+          <img src="/images/crown24-trading-card.webp" alt="Crown 24 artwork: golden bull, rising market chart, crown and Play Now design" loading="eager" />
+        </button>
+        <button type="button" className="home-trading-art-card" onClick={() => onOpenGame('double')} aria-label="Enter Twin Fortune lobby">
+          <img src="/images/twin-fortune-trading-card.webp" alt="Twin Fortune artwork: green bull and red bear facing each other over trading charts, with Play Now design" loading="eager" />
+        </button>
+      </div>
+
 
       <button type="button" className="home-wallet-strip" onClick={onOpenWallet}>
         <span className="home-wallet-icon">₹</span>

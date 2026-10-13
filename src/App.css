@@ -3281,3 +3281,15 @@ body[data-round-theme] .main-menu button:not(.active) {
 .how-to-play-twin .how-to-play-example{border-color:#f5224644;background:#f522460d}
 .how-to-play-twin .how-to-play-example strong{color:#ff9aab}
 @media(max-width:420px){.how-to-play summary{gap:9px;padding:11px}.how-to-play-content{padding:0 12px 13px}.how-to-play-content ol{font-size:11px;gap:9px}}
+
+/* TARGETORSTAKE trading-inspired game artwork cards */
+.home-trading-art-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:2px 0 20px;align-items:start}
+.home-trading-art-card{display:block;width:100%;min-width:0;padding:0;overflow:hidden;border:1px solid #6d2730;border-radius:15px;background:#09070a;line-height:0;cursor:pointer;box-shadow:0 9px 25px #0005;transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease}
+.home-trading-art-card img{display:block;width:100%;height:auto;aspect-ratio:280/320;object-fit:cover}
+.home-trading-art-card:first-child{border-color:#a64030}
+.home-trading-art-card:last-child{border-color:#6e2b45}
+.home-trading-art-card:focus-visible{outline:3px solid #f4c45b;outline-offset:3px}
+@media(hover:hover){.home-trading-art-card:hover{transform:translateY(-2px);border-color:#e7b64f;box-shadow:0 12px 30px #0008}}
+@media(max-width:520px){.home-trading-art-grid{grid-template-columns:minmax(0,1fr);gap:13px;margin-bottom:18px}.home-trading-art-card{max-width:430px;margin-inline:auto}.home-trading-art-card img{aspect-ratio:280/320}}
+@media(prefers-reduced-motion:reduce){.home-trading-art-card{transition:none}}
+
