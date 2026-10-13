@@ -309,7 +309,7 @@ export default function DoubleGame({ historyOnly = false, onOpenBookings, onOpen
             <li><strong>Understand the payout.</strong> A winning number pays 80 times the stake placed on that number. Other selected numbers do not win that round.</li>
           </ol>
           <p className="how-to-play-example"><strong>Example:</strong> A ₹10 stake on number 27 has a potential payout of ₹800 if 27 is the winning number. Selecting 10 numbers at ₹10 each costs ₹100 in total.</p>
-          <p className="how-to-play-note">Bookings require enough wallet credits. Credits are virtual and have no cash value.</p>
+
         </div>
       </details>
 
@@ -473,7 +473,7 @@ export default function DoubleGame({ historyOnly = false, onOpenBookings, onOpen
         </div>
   
       )}
-      {!historyOnly && <p className="double-disclaimer">Virtual credits only. No cash value. Results and payouts are processed by the game server.</p>}
+
     </section>
   )
 }
