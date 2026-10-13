@@ -130,7 +130,7 @@ function GameResults({ initialGame = null }) {
           </button>
           <button type="button" className="history-empty" style={{ display: 'block', width: '100%', textAlign: 'left', cursor: 'pointer' }} onClick={() => setSelectedGame('double')}>
             <h3>Twin Fortune</h3>
-            <p>View completed rounds and Double winning numbers.</p>
+            <p>View completed Twin Fortune rounds and winning numbers.</p>
           </button>
         </div>
       </section>
