@@ -476,7 +476,6 @@ function TicketLobby({ onOpenBookings, onOpenResults }) {
             <li><strong>Check results.</strong> Each row has its own winning number. A winning ticket pays ₹80 in A, ₹160 in B, ₹240 in C, ₹320 in D, ₹400 in E, ₹480 in F, or ₹560 in G.</li>
           </ol>
           <p className="how-to-play-example"><strong>Example:</strong> Two tickets on number 03 in row A cost ₹20. If 03 wins row A, the payout is ₹160 for those two winning tickets.</p>
-          <p className="how-to-play-note">Bookings require enough wallet credits. Credits are virtual and have no cash value.</p>
         </div>
       </details>
 
