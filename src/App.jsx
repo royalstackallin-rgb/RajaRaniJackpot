@@ -106,12 +106,25 @@ function App() {
 
     try {
       if (mode === 'signup') {
+        const cleanUsername = username.trim()
+        const { data: existingUsername, error: usernameCheckError } = await supabase
+          .from('profiles')
+          .select('username')
+          .eq('username', cleanUsername)
+          .maybeSingle()
+
+        if (usernameCheckError) throw usernameCheckError
+        if (existingUsername) {
+          setMessage('That username is already taken. Please try another username.')
+          return
+        }
+
         const { error } = await supabase.auth.signUp({
           email,
           password,
           options: {
             data: {
-              username,
+              username: cleanUsername,
             },
           },
         })
@@ -132,7 +145,14 @@ function App() {
         setMessage('Login successful.')
       }
     } catch (error) {
-      setMessage(error.message)
+      const errorText = String(error?.message || '')
+      if (mode === 'signup' && /username|duplicate key|profiles_username_key/i.test(errorText)) {
+        setMessage('That username is already taken. Please try another username.')
+      } else if (mode === 'signup' && /Database error saving new user/i.test(errorText)) {
+        setMessage('We could not create your account. Try a different username. If this continues, please contact support.')
+      } else {
+        setMessage(error.message)
+      }
     } finally {
       setLoading(false)
     }
