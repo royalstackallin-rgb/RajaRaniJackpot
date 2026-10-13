@@ -39,6 +39,8 @@ export default function RubyRush() {
   const potentialReturn = round?.status === 'playing'
     ? Math.floor(bet * multiplier)
     : 0
+  const displayedMultiplier = round?.safePicks ? multiplier : 1
+  const roundStatus = !round ? 'READY TO PLAY' : round.status === 'playing' ? 'VAULT OPEN' : round.status === 'lost' ? 'MINE TRIGGERED' : 'VAULT SECURED'
 
   const startRound = () => {
     if (round?.status === 'playing') return
@@ -87,7 +89,7 @@ export default function RubyRush() {
     if (!round || round.status !== 'playing' || round.safePicks === 0) return
     const payout = Math.floor(bet * multiplier)
     setCredits((value) => value + payout)
-    setRound({ ...round, status: 'cashed', outcome: 'cashout' })
+    setRound({ ...round, status: 'cashed', outcome: 'cashout', payout })
     setHistory((items) => [{ result: 'Cashed out', amount: payout - bet }, ...items].slice(0, 5))
     setMessage(`Vault secured! ${formatCredits(payout)} practice credits returned to your balance.`)
   }
@@ -100,14 +102,14 @@ export default function RubyRush() {
   }
 
   const tileLabel = (index) => {
-    if (!round?.revealed.has(index) && round?.status !== 'lost') return '◆'
+    if (!round || (round.status === 'playing' && !round.revealed.has(index))) return '◆'
     if (round?.mines.has(index)) return '✹'
     if (round?.relics.has(index)) return '✦'
     return '♦'
   }
 
   const tileClass = (index) => {
-    if (!round?.revealed.has(index) && round?.status !== 'lost') return 'ruby-tile'
+    if (!round || (round.status === 'playing' && !round.revealed.has(index))) return 'ruby-tile'
     if (round?.mines.has(index)) return 'ruby-tile is-mine'
     if (round?.relics.has(index)) return 'ruby-tile is-relic'
     return 'ruby-tile is-gem'
@@ -125,15 +127,15 @@ export default function RubyRush() {
       </div>
 
       <div className="ruby-balance-row">
-        <div><span>PRACTICE CREDITS</span><strong>{formatCredits(credits)}</strong></div>
-        <button type="button" onClick={resetCredits} disabled={round?.status === 'playing'}>Reset demo</button>
+        <div className="ruby-balance-copy"><span>PRACTICE CREDITS</span><strong>{formatCredits(credits)}</strong></div>
+        <div className="ruby-balance-actions"><span className={`ruby-round-status ${round?.status || 'ready'}`}><i />{roundStatus}</span><button type="button" onClick={resetCredits} disabled={round?.status === 'playing'}>Reset demo</button></div>
       </div>
 
       <div className="ruby-layout">
         <div className="ruby-board-panel">
           <div className="ruby-board-top">
-            <div><span className="ruby-label">VAULT MULTIPLIER</span><strong className="ruby-multiplier">{round?.status === 'playing' ? `${multiplier.toFixed(2)}×` : '1.00×'}</strong></div>
-            <div className="ruby-board-stat"><span>SAFE PICKS</span><strong>{round?.safePicks || 0}/${TILE_COUNT - mineCount}</strong></div>
+            <div><span className="ruby-label">VAULT MULTIPLIER</span><strong className={`ruby-multiplier ${round?.status === 'playing' ? 'is-live' : ''}`}>{displayedMultiplier.toFixed(2)}×</strong><span className="ruby-board-caption">{round?.status === 'cashed' ? `Final return: ${formatCredits(round.payout)} credits` : round?.status === 'lost' ? 'Run ended — vault revealed' : round?.status === 'playing' ? 'Cash out to secure your return' : 'Find a safe tile to begin'}</span></div>
+            <div className="ruby-board-stat"><span>SAFE PICKS</span><strong>{round?.safePicks || 0}<small> / {TILE_COUNT - mineCount}</small></strong><div className="ruby-progress-track"><span style={{ width: `${((round?.safePicks || 0) / (TILE_COUNT - mineCount)) * 100}%` }} /></div></div>
           </div>
           <div className="ruby-grid" aria-label="Ruby Rush 5 by 5 vault grid">
             {Array.from({ length: TILE_COUNT }, (_, index) => (
@@ -143,11 +145,11 @@ export default function RubyRush() {
                 className={tileClass(index)}
                 onClick={() => revealTile(index)}
                 disabled={round?.status !== 'playing' || round.revealed.has(index)}
-                aria-label={round?.revealed.has(index) || round?.status === 'lost' ? `Tile ${index + 1}: ${round?.mines.has(index) ? 'mine' : round?.relics.has(index) ? 'relic' : 'gem'}` : `Reveal tile ${index + 1}`}
+                aria-label={!round || (round.status === 'playing' && !round.revealed.has(index)) ? `Reveal tile ${index + 1}` : `Tile ${index + 1}: ${round?.mines.has(index) ? 'mine' : round?.relics.has(index) ? 'relic' : 'gem'}`}
               >{tileLabel(index)}</button>
             ))}
           </div>
-          <div className="ruby-message" role="status">{message}</div>
+          <div className={`ruby-message ${round?.status === 'lost' ? 'is-loss' : round?.status === 'cashed' ? 'is-win' : ''}`} role="status"><span className="ruby-message-icon" aria-hidden="true">{round?.status === 'lost' ? '×' : round?.status === 'cashed' ? '✓' : round?.status === 'playing' ? '✦' : 'i'}</span><span>{message}</span></div>
           <div className="ruby-action-row">
             {round?.status === 'playing' ? (
               <button type="button" className="ruby-cashout" onClick={cashOut} disabled={!round.safePicks}>
@@ -159,6 +161,7 @@ export default function RubyRush() {
               </button>
             )}
           </div>
+          {round?.status === 'playing' && <p className="ruby-risk-note">Your stake is already in play. A mine ends this run — cash out after at least one safe pick.</p>}
           <p className="ruby-disclaimer">Practice credits only. No deposits, withdrawals, or cash prizes.</p>
         </div>
 
@@ -178,11 +181,11 @@ export default function RubyRush() {
                 <button key={amount} type="button" className={mineCount === amount ? 'is-selected' : ''} onClick={() => setMineCount(amount)} disabled={round?.status === 'playing'}>{amount}</button>
               ))}
             </div>
-            <p>More mines means a riskier vault and faster multiplier growth.</p>
+            <p>More mines means a riskier vault and faster multiplier growth.</p><div className="ruby-risk-meter" aria-label={`${mineCount} mines selected`}>{Array.from({ length: 12 }, (_, index) => <i key={index} className={index < mineCount ? 'is-filled' : ''} />)}</div>
           </div>
-          <div className="ruby-relic-card">
+          <div className={`ruby-relic-card ${round?.relicsFound ? 'is-found' : ''}`}>
             <span className="ruby-relic-icon">✦</span>
-            <div><strong>RELIC BOOST</strong><p>Two hidden relics are tucked among the safe tiles. Find one for a 20% multiplier boost.</p></div>
+            <div><strong>RELIC BOOST <span>{round?.relicsFound ? 'FOUND +' : 'HIDDEN'}</span></strong><p>Two hidden relics are tucked among the safe tiles. Each one found adds 20% to your multiplier.</p></div>
           </div>
           <div className="ruby-history-card">
             <span className="ruby-label">RECENT RUNS</span>
