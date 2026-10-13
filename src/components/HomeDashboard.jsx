@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
+import crown24Artwork from '../assets/file_00000000da6c8211b168793beecdc78f.png'
+import twinFortuneArtwork from '../assets/file_00000000de548208b1b1d6e87d33fff9.png'
 
 function todayLocal() {
   const now = new Date()
@@ -176,10 +178,10 @@ export default function HomeDashboard({ onOpenGame, onOpenBookings, onOpenResult
 
       <div className="home-trading-art-grid" aria-label="Choose a game">
         <button type="button" className="home-trading-art-card" onClick={() => onOpenGame('tickets')} aria-label="Enter Crown 24 lobby">
-          <img src="/images/crown24-trading-card.webp" alt="Crown 24 artwork: golden bull, rising market chart, crown and Play Now design" loading="eager" />
+          <img src={crown24Artwork} alt="Crown 24 artwork" loading="eager" />
         </button>
         <button type="button" className="home-trading-art-card" onClick={() => onOpenGame('double')} aria-label="Enter Twin Fortune lobby">
-          <img src="/images/twin-fortune-trading-card.webp" alt="Twin Fortune artwork: green bull and red bear facing each other over trading charts, with Play Now design" loading="eager" />
+          <img src={twinFortuneArtwork} alt="Twin Fortune artwork" loading="eager" />
         </button>
       </div>
 
