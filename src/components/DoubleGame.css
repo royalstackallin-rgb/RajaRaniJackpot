@@ -636,3 +636,15 @@
  .double-page.double-history-only .double-status{max-width:62px;padding:7px 6px;font-size:8px}
  .double-page.double-history-only .double-history-number-row{grid-template-columns:34px minmax(0,1fr) minmax(0,1fr);gap:5px;font-size:10px}
 }
+
+/* Public odds disclosure for Twin Fortune */
+.double-odds-disclosure{margin-top:14px;padding:13px;border:1px solid rgba(255,91,128,.34);border-radius:13px;background:rgba(10,5,10,.5)}
+.double-odds-disclosure>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;color:#ffb1c3;font-weight:750;cursor:pointer;list-style:none}
+.double-odds-disclosure>summary::-webkit-details-marker{display:none}
+.double-odds-disclosure>p,.double-odds-disclosure>small{display:block;color:#b8bdcc;font-size:12px;line-height:1.55;margin:10px 0}
+.double-odds-table-wrap{width:100%;overflow-x:auto}
+.double-odds-table{width:100%;border-collapse:collapse;font-size:12px;color:#f5eaf0}
+.double-odds-table th,.double-odds-table td{padding:9px 5px;text-align:left;border-bottom:1px solid rgba(255,91,128,.16)}
+.double-odds-table th{color:#ffb1c3;font-weight:750}
+.double-odds-table td:nth-child(2),.double-odds-table td:nth-child(3),.double-odds-table th:nth-child(2),.double-odds-table th:nth-child(3){text-align:right;white-space:nowrap}
+.double-odds-table tr:last-child td{border-bottom:0}
