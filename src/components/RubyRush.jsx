@@ -142,7 +142,11 @@ export default function RubyRush() {
             ))}
           </div>
           <div className={`ruby-message ${round?.status === 'lost' ? 'is-loss' : round?.status === 'cashed' ? 'is-win' : ''}`} role="status"><span className="ruby-message-icon" aria-hidden="true">{round?.status === 'lost' ? '×' : round?.status === 'cashed' ? '✓' : round?.status === 'playing' ? '✦' : 'i'}</span><span>{message}</span></div>
-          {round?.status === 'playing' && <button type="button" className="ruby-cashout ruby-board-cashout" onClick={cashOut} disabled={!round.safePicks}>CASH OUT · {formatCredits(potentialReturn)} credits</button>}
+          {round?.status === 'playing' ? (
+            <button type="button" className="ruby-cashout ruby-board-cashout" onClick={cashOut} disabled={!round.safePicks}>CASH OUT · {formatCredits(potentialReturn)} credits</button>
+          ) : (
+            <button type="button" className="ruby-start ruby-board-cashout ruby-board-replay" onClick={startRound} disabled={bet > credits}>{round ? 'PLAY AGAIN' : 'OPEN THE VAULT'}</button>
+          )}
           {round?.status === 'playing' && <p className="ruby-risk-note">Your stake is already in play. A mine ends this run — cash out after at least one safe pick.</p>}
           <p className="ruby-disclaimer">Practice credits only. No deposits, withdrawals, or cash prizes.</p>
         </div>
@@ -166,8 +170,10 @@ export default function RubyRush() {
             {betMode === 'auto' && <p className="ruby-auto-note">Auto mode setup is coming next. For now, start and reveal tiles manually.</p>}
             {round?.status === 'playing' ? (
               <p className="ruby-active-round-note">Round in progress — use the Cash Out button directly under the board.</p>
+            ) : round ? (
+              <p className="ruby-active-round-note">Round finished — use Play Again directly under the board.</p>
             ) : (
-              <button type="button" className="ruby-start ruby-bet-main" onClick={startRound} disabled={bet > credits}>{round ? 'PLAY AGAIN' : 'BET'}</button>
+              <button type="button" className="ruby-start ruby-bet-main" onClick={startRound} disabled={bet > credits}>BET</button>
             )}
             <p className="ruby-practice-hint">Practice credits only · No cash prizes</p>
           </div>
