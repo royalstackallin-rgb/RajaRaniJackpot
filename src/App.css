@@ -3307,3 +3307,10 @@ body[data-round-theme] .main-menu button:not(.active) {
 .view-back-button:focus-visible{outline:2px solid var(--accent,#f2d28b);outline-offset:3px}
 @media(hover:hover){.view-back-button:hover{background:linear-gradient(135deg,color-mix(in srgb,var(--accent,#e9bd62) 24%,#09070b),rgba(8,10,17,.96));border-color:var(--accent,#f2d28b)}}
 @media(prefers-reduced-motion:reduce){.view-back-button{transition:none}}
+
+/* More playful, readable game title beside the back control. */
+.view-navigation{gap:14px;min-height:56px}
+.view-navigation .view-navigation-title{overflow:visible;color:#ffe2a0;font-size:clamp(22px,5.7vw,30px);font-weight:850;letter-spacing:.025em;line-height:1.12;text-shadow:0 2px 0 rgba(0,0,0,.3),0 0 16px rgba(245,190,90,.18);white-space:nowrap}
+.app-view-double .view-navigation .view-navigation-title{color:#ff8ca7;text-shadow:0 2px 0 rgba(0,0,0,.3),0 0 16px rgba(255,40,90,.2)}
+.view-navigation .view-back-button{flex-shrink:0}
+@media(max-width:380px){.view-navigation{gap:10px}.view-navigation .view-navigation-title{font-size:22px}}
