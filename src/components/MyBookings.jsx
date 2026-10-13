@@ -32,9 +32,9 @@ function getEntryResults(entry) {
   return asArray(entry?.game_results)
 }
 
-function MyBookings() {
+function MyBookings({ initialGame = null }) {
   const [bookings, setBookings] = useState([])
-  const [selectedGame, setSelectedGame] = useState(null)
+  const [selectedGame, setSelectedGame] = useState(initialGame)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [expandedBookings, setExpandedBookings] = useState({})
