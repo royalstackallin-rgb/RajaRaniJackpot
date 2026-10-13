@@ -3,6 +3,7 @@ import './RubyRush.css'
 import { supabase } from '../lib/supabase'
 
 const TILE_COUNT = 25
+const SAFE_PICK_CAPS = { 2: 14, 4: 12, 6: 10, 8: 8, 12: 6 }
 
 
 function formatCredits(value) {
@@ -183,7 +184,7 @@ export default function RubyRush() {
         <div className="ruby-board-panel">
           <div className="ruby-board-top">
             <div><span className="ruby-label">VAULT MULTIPLIER</span><strong className={`ruby-multiplier ${round?.status === 'playing' ? 'is-live' : ''}`}>{displayedMultiplier.toFixed(2)}×</strong><span className="ruby-board-caption">{round?.status === 'cashed' ? `Final return: ${formatCredits(round.payout)} credits` : round?.status === 'lost' ? 'Run ended — vault revealed' : round?.status === 'playing' ? `Potential return: ${formatCredits(potentialReturn)} credits` : 'Find a safe tile to begin'}</span></div>
-            <div className="ruby-board-stat"><span>SAFE PICKS</span><strong>{round?.safePicks || 0}<small> / {TILE_COUNT - mineCount}</small></strong><div className="ruby-progress-track"><span style={{ width: `${((round?.safePicks || 0) / (TILE_COUNT - mineCount)) * 100}%` }} /></div></div>
+            <div className="ruby-board-stat"><span>SAFE PICKS</span><strong>{round?.safePicks || 0}<small> / {SAFE_PICK_CAPS[mineCount]}</small></strong><div className="ruby-progress-track"><span style={{ width: `${((round?.safePicks || 0) / SAFE_PICK_CAPS[mineCount]) * 100}%` }} /></div></div>
           </div>
           <p className="ruby-risk-note">Published safe-pick cap: 2 mines = 14, 4 = 12, 6 = 10, 8 = 8, 12 = 6. Reaching the cap automatically cashes out.</p>
           <div className="ruby-grid" aria-label="Ruby Rush 5 by 5 vault grid">
