@@ -12,6 +12,7 @@ import './App.css'
 
 function App() {
   const [mode, setMode] = useState('login')
+  const [showForgotPassword, setShowForgotPassword] = useState(false)
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -75,6 +76,28 @@ function App() {
     checkAdmin()
     return () => { cancelled = true }
   }, [session?.user?.id])
+
+  const handleForgotPassword = async (event) => {
+    event.preventDefault()
+    setMessage('')
+    if (!email.trim()) {
+      setMessage('Enter your email address first, and we will send you a password reset link.')
+      return
+    }
+    setLoading(true)
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
+        redirectTo: 'https://raja-rani-jackpot-azg9t1jcv-royalstackallin-rgb.vercel.app/',
+      })
+      if (error) throw error
+      setMessage('If an account exists for this email, a password reset link has been sent. Check your inbox and spam folder.')
+      setShowForgotPassword(false)
+    } catch (error) {
+      setMessage(error.message || 'Could not send the password reset email. Please try again.')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -286,7 +309,28 @@ function App() {
           </button>
         </div>
 
-        <form onSubmit={handleSubmit}>
+        {showForgotPassword ? (
+          <form onSubmit={handleForgotPassword}>
+            <p>Enter your account email and we'll send you a password reset link.</p>
+            <label>
+              Email
+              <input
+                type="email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                placeholder="you@example.com"
+                required
+                autoComplete="email"
+              />
+            </label>
+            <button className="submit-button" type="submit" disabled={loading}>
+              {loading ? 'Sending...' : 'Send Reset Link'}
+            </button>
+            <button className="secondary-button" type="button" onClick={() => { setShowForgotPassword(false); setMessage('') }}>
+              Back to Login
+            </button>
+          </form>
+        ) : <form onSubmit={handleSubmit}>
           {mode === 'signup' && (
             <label>
               Username
