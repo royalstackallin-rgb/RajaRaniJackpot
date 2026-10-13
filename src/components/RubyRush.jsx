@@ -6,15 +6,19 @@ const STARTING_CREDITS = 1000
 const BET_OPTIONS = [10, 25, 50, 100]
 
 function shuffledTiles() {
-  return Array.from({ length: TILE_COUNT }, (_, index) => index)
-    .sort(() => Math.random() - 0.5)
+  const tiles = Array.from({ length: TILE_COUNT }, (_, index) => index)
+  for (let index = tiles.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(Math.random() * (index + 1))
+    ;[tiles[index], tiles[swapIndex]] = [tiles[swapIndex], tiles[index]]
+  }
+  return tiles
 }
 
 function formatCredits(value) {
   return Math.round(value).toLocaleString('en-IN')
 }
 
-export default function RubyRush({ onBack }) {
+export default function RubyRush() {
   const [credits, setCredits] = useState(STARTING_CREDITS)
   const [bet, setBet] = useState(25)
   const [mineCount, setMineCount] = useState(4)
