@@ -99,3 +99,16 @@
   .ruby-tile{border-radius:7px}
   .ruby-history-card{grid-row:auto}
 }
+
+
+/* Keep the live return and cash-out beside the active board */
+.ruby-board-cashout{display:flex;width:100%;min-height:50px;margin-top:10px;position:sticky;bottom:8px;z-index:5;box-shadow:0 5px 22px #0008}
+.ruby-active-round-note{margin:12px 0 0;padding:10px;border:1px solid #3a4b57;border-radius:8px;background:#101c25;color:#b9c8d2;font-size:11px;line-height:1.45}
+@media(max-width:680px){
+  .ruby-layout{display:flex;flex-direction:column}
+  .ruby-board-panel{order:1;width:100%;box-sizing:border-box}
+  .ruby-controls{order:2;width:100%;box-sizing:border-box;display:grid;grid-template-columns:1fr}
+  .ruby-board-top{position:relative}
+  .ruby-board-cashout{position:sticky;bottom:8px}
+  .ruby-board-caption{max-width:none}
+}
