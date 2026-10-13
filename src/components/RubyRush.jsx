@@ -20,7 +20,7 @@ function formatCredits(value) {
 
 export default function RubyRush() {
   const [credits, setCredits] = useState(STARTING_CREDITS)
-  const [bet, setBet] = useState(25)
+  const [bet, setBet] = useState('25')
   const [betMode, setBetMode] = useState('manual')
   const [mineCount, setMineCount] = useState(4)
   const [round, setRound] = useState(null)
@@ -36,21 +36,27 @@ export default function RubyRush() {
     return Math.floor((0.97 / chance) * 100) / 100
   }, [round, mineCount])
 
+  const numericBet = Number(bet)
+  const validBet = Number.isSafeInteger(numericBet) && numericBet >= 1 && numericBet <= credits
   const potentialReturn = round?.status === 'playing'
-    ? Math.floor(bet * multiplier)
+    ? Math.floor(numericBet * multiplier)
     : 0
   const displayedMultiplier = round?.safePicks ? multiplier : 1
   const roundStatus = !round ? 'READY TO PLAY' : round.status === 'playing' ? 'VAULT OPEN' : round.status === 'lost' ? 'MINE TRIGGERED' : 'VAULT SECURED'
 
   const startRound = () => {
     if (round?.status === 'playing') return
-    if (credits < bet) {
+    if (!Number.isSafeInteger(numericBet) || numericBet < 1) {
+      setMessage('Enter a whole stake amount of at least 1 credit.')
+      return
+    }
+    if (credits < numericBet) {
       setMessage('Not enough practice credits. Choose a smaller stake or reset your demo credits.')
       return
     }
     const shuffled = shuffledTiles()
     const mines = new Set(shuffled.slice(0, mineCount))
-    setCredits((value) => value - bet)
+    setCredits((value) => value - numericBet)
     setRound({
       mines,
       revealed: new Set(),
@@ -68,7 +74,7 @@ export default function RubyRush() {
     if (round.mines.has(index)) {
       const finished = { ...round, revealed, status: 'lost', outcome: 'mine' }
       setRound(finished)
-      setHistory((items) => [{ result: 'Mine hit', amount: -bet }, ...items].slice(0, 5))
+      setHistory((items) => [{ result: 'Mine hit', amount: -numericBet }, ...items].slice(0, 5))
       setMessage('BOOM! You found a mine. Start another vault run and try a different strategy.')
       return
     }
@@ -80,10 +86,10 @@ export default function RubyRush() {
 
   const cashOut = () => {
     if (!round || round.status !== 'playing' || round.safePicks === 0) return
-    const payout = Math.floor(bet * multiplier)
+    const payout = Math.floor(numericBet * multiplier)
     setCredits((value) => value + payout)
     setRound({ ...round, status: 'cashed', outcome: 'cashout', payout })
-    setHistory((items) => [{ result: 'Cashed out', amount: payout - bet }, ...items].slice(0, 5))
+    setHistory((items) => [{ result: 'Cashed out', amount: payout - numericBet }, ...items].slice(0, 5))
     setMessage(`Vault secured! ${formatCredits(payout)} practice credits returned to your balance.`)
   }
 
@@ -157,11 +163,11 @@ export default function RubyRush() {
               <button type="button" role="tab" aria-selected={betMode === 'manual'} className={betMode === 'manual' ? 'is-selected' : ''} onClick={() => setBetMode('manual')} disabled={round?.status === 'playing'}>Manual</button>
               <button type="button" role="tab" aria-selected={betMode === 'auto'} className={betMode === 'auto' ? 'is-selected' : ''} onClick={() => setBetMode('auto')} disabled={round?.status === 'playing'}>Auto</button>
             </div>
-            <label className="ruby-label" htmlFor="ruby-bet-amount">BET AMOUNT <span className="ruby-bet-value">{formatCredits(bet)} credits</span></label>
+            <label className="ruby-label" htmlFor="ruby-bet-amount">BET AMOUNT <span className="ruby-bet-value">{formatCredits(numericBet)} credits</span></label>
             <div className="ruby-stake-input">
-              <input id="ruby-bet-amount" type="number" inputMode="numeric" min="1" max={credits} step="1" value={bet} onChange={(event) => setBet(Math.max(1, Math.min(credits || 1, Number(event.target.value) || 1)))} disabled={round?.status === 'playing'} />
-              <button type="button" onClick={() => setBet((value) => Math.max(1, Math.floor(value / 2)))} disabled={round?.status === 'playing'}>½</button>
-              <button type="button" onClick={() => setBet((value) => Math.min(credits || 1, value * 2))} disabled={round?.status === 'playing'}>2×</button>
+              <input id="ruby-bet-amount" type="number" inputMode="numeric" min="1" max={credits} step="1" value={bet} onChange={(event) => setBet(event.target.value)} disabled={round?.status === 'playing'} />
+              <button type="button" onClick={() => setBet(String(Math.max(1, Math.floor((Number(bet) || 1) / 2))))} disabled={round?.status === 'playing'}>½</button>
+              <button type="button" onClick={() => setBet(String(Math.min(credits || 1, (Number(bet) || 1) * 2)))} disabled={round?.status === 'playing'}>2×</button>
             </div>
             <label className="ruby-label" htmlFor="ruby-mine-count">MINES</label>
             <select id="ruby-mine-count" value={mineCount} onChange={(event) => setMineCount(Number(event.target.value))} disabled={round?.status === 'playing'}>
@@ -173,7 +179,7 @@ export default function RubyRush() {
             ) : round ? (
               <p className="ruby-active-round-note">Round finished — use Play Again directly under the board.</p>
             ) : (
-              <button type="button" className="ruby-start ruby-bet-main" onClick={startRound} disabled={bet > credits}>BET</button>
+              <button type="button" className="ruby-start ruby-bet-main" onClick={startRound} disabled={!validBet}>BET</button>
             )}
             <p className="ruby-practice-hint">Practice credits only · No cash prizes</p>
           </div>
