@@ -41,7 +41,7 @@ function formatMoney(value) {
   return Number(value || 0).toLocaleString('en-IN')
 }
 
-export default function DoubleGame({ historyOnly = false }) {
+export default function DoubleGame({ historyOnly = false, onOpenBookings, onOpenResults }) {
   const [rounds, setRounds] = useState([])
   const [selectedNumbers, setSelectedNumbers] = useState([])
   const [stakes, setStakes] = useState({})
@@ -273,6 +273,10 @@ export default function DoubleGame({ historyOnly = false }) {
   return (
     <section className={`double-page ${historyOnly ? 'double-history-only' : ''}`}>
       {!historyOnly && (<>
+      <div className="lobby-history-actions lobby-history-actions-double" aria-label="Twin Fortune history">
+        <button type="button" onClick={onOpenBookings}>▤ <span>My Bookings</span><b>→</b></button>
+        <button type="button" onClick={onOpenResults}>✦ <span>Game Results</span><b>→</b></button>
+      </div>
       <div className="double-heading">
         <div>
           <p className="double-eyebrow">YOUR DOUBLE LOBBY · 00–99</p>
