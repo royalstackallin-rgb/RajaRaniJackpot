@@ -15,16 +15,11 @@ const TIMES = [
 const NUMBERS = Array.from({ length: 100 }, (_, i) => String(i).padStart(2, '0'))
 
 const TWIN_FORTUNE_ODDS = [
-  { digit: '0', perNumber: '0.80%', group: '8.0%' },
-  { digit: '1', perNumber: '0.85%', group: '8.5%' },
-  { digit: '2', perNumber: '0.90%', group: '9.0%' },
-  { digit: '3', perNumber: '0.95%', group: '9.5%' },
-  { digit: '4', perNumber: '1.00%', group: '10.0%' },
-  { digit: '5', perNumber: '1.00%', group: '10.0%' },
-  { digit: '6', perNumber: '1.05%', group: '10.5%' },
-  { digit: '7', perNumber: '1.10%', group: '11.0%' },
-  { digit: '8', perNumber: '1.15%', group: '11.5%' },
-  { digit: '9', perNumber: '1.20%', group: '12.0%' },
+  { range: '₹0–₹70', weight: '7' },
+  { range: '₹71–₹100', weight: '5' },
+  { range: '₹101–₹300', weight: '3' },
+  { range: '₹301–₹500', weight: '2' },
+  { range: 'Above ₹500', weight: '1' },
 ]
 
 function istDateString(date = new Date()) {
@@ -324,18 +319,18 @@ export default function DoubleGame({ historyOnly = false, onOpenBookings, onOpen
           <p className="how-to-play-example"><strong>Example:</strong> A ₹10 stake on number 27 has a potential payout of ₹800 if 27 is the winning number. Selecting 10 numbers at ₹10 each costs ₹100 in total.</p>
           <details className="double-odds-disclosure">
             <summary>Published weighted odds <span aria-hidden="true">＋</span></summary>
-            <p>Each number's chance is fixed by its final digit. The odds do not change with bookings, stake amounts, or player identity.</p>
+            <p>For each number, the server totals the stakes from all players in this round and assigns a weight from the table below. These are weights, not percentages. The actual chance is that number’s weight divided by the sum of all 100 numbers’ weights. The weights can change as bookings change and are locked in when the draw runs.</p>
             <div className="double-odds-table-wrap">
               <table className="double-odds-table">
-                <thead><tr><th>Ending digit</th><th>Chance per number</th><th>Chance of any of 10</th></tr></thead>
+                <thead><tr><th>Total stake on a number (all players)</th><th>Weight</th></tr></thead>
                 <tbody>
                   {TWIN_FORTUNE_ODDS.map((odds) => (
-                    <tr key={odds.digit}><td>Numbers ending in {odds.digit}</td><td>{odds.perNumber}</td><td>{odds.group}</td></tr>
+                    <tr key={odds.range}><td>{odds.range}</td><td>{odds.weight}</td></tr>
                   ))}
                 </tbody>
               </table>
             </div>
-            <small>One number is drawn per round. The published per-number odds total 100% across numbers 00–99.</small>
+            <small>One number is drawn per round. Because weights are normalized across all 100 numbers, actual percentages depend on the full round’s stake totals. A number with a smaller total wager receives a higher weight under these rules.</small>
           </details>
 
         </div>
