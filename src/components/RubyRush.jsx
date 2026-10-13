@@ -126,7 +126,7 @@ export default function RubyRush() {
       <div className="ruby-layout">
         <div className="ruby-board-panel">
           <div className="ruby-board-top">
-            <div><span className="ruby-label">VAULT MULTIPLIER</span><strong className={`ruby-multiplier ${round?.status === 'playing' ? 'is-live' : ''}`}>{displayedMultiplier.toFixed(2)}×</strong><span className="ruby-board-caption">{round?.status === 'cashed' ? `Final return: ${formatCredits(round.payout)} credits` : round?.status === 'lost' ? 'Run ended — vault revealed' : round?.status === 'playing' ? 'Cash out to secure your return' : 'Find a safe tile to begin'}</span></div>
+            <div><span className="ruby-label">VAULT MULTIPLIER</span><strong className={`ruby-multiplier ${round?.status === 'playing' ? 'is-live' : ''}`}>{displayedMultiplier.toFixed(2)}×</strong><span className="ruby-board-caption">{round?.status === 'cashed' ? `Final return: ${formatCredits(round.payout)} credits` : round?.status === 'lost' ? 'Run ended — vault revealed' : round?.status === 'playing' ? `Potential return: ${formatCredits(potentialReturn)} credits` : 'Find a safe tile to begin'}</span></div>
             <div className="ruby-board-stat"><span>SAFE PICKS</span><strong>{round?.safePicks || 0}<small> / {TILE_COUNT - mineCount}</small></strong><div className="ruby-progress-track"><span style={{ width: `${((round?.safePicks || 0) / (TILE_COUNT - mineCount)) * 100}%` }} /></div></div>
           </div>
           <div className="ruby-grid" aria-label="Ruby Rush 5 by 5 vault grid">
@@ -142,6 +142,7 @@ export default function RubyRush() {
             ))}
           </div>
           <div className={`ruby-message ${round?.status === 'lost' ? 'is-loss' : round?.status === 'cashed' ? 'is-win' : ''}`} role="status"><span className="ruby-message-icon" aria-hidden="true">{round?.status === 'lost' ? '×' : round?.status === 'cashed' ? '✓' : round?.status === 'playing' ? '✦' : 'i'}</span><span>{message}</span></div>
+          {round?.status === 'playing' && <button type="button" className="ruby-cashout ruby-board-cashout" onClick={cashOut} disabled={!round.safePicks}>CASH OUT · {formatCredits(potentialReturn)} credits</button>}
           {round?.status === 'playing' && <p className="ruby-risk-note">Your stake is already in play. A mine ends this run — cash out after at least one safe pick.</p>}
           <p className="ruby-disclaimer">Practice credits only. No deposits, withdrawals, or cash prizes.</p>
         </div>
@@ -164,7 +165,7 @@ export default function RubyRush() {
             </select>
             {betMode === 'auto' && <p className="ruby-auto-note">Auto mode setup is coming next. For now, start and reveal tiles manually.</p>}
             {round?.status === 'playing' ? (
-              <button type="button" className="ruby-cashout ruby-bet-main" onClick={cashOut} disabled={!round.safePicks}>CASH OUT · {formatCredits(potentialReturn)} credits</button>
+              <p className="ruby-active-round-note">Round in progress — use the Cash Out button directly under the board.</p>
             ) : (
               <button type="button" className="ruby-start ruby-bet-main" onClick={startRound} disabled={bet > credits}>{round ? 'PLAY AGAIN' : 'BET'}</button>
             )}
