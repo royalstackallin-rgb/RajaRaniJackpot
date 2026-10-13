@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
 import crown24Artwork from '../assets/file_00000000da6c8211b168793beecdc78f.png'
 import twinFortuneArtwork from '../assets/file_00000000de548208b1b1d6e87d33fff9.png'
+import './RubyRushHome.css'
 
 function todayLocal() {
   const now = new Date()
