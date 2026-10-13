@@ -207,9 +207,6 @@ function App() {
           {view === 'withdraw' && <Withdraw />}
           {view === 'deposit-admin' && isWalletAdmin && <DepositAdmin />}
 
-          <p className="footer-note">
-            Virtual credits only. No cash value.
-          </p>
         </div>
       </main>
     )
@@ -252,9 +249,6 @@ function App() {
             </div>
           )}
 
-          <p className="footer-note">
-            Virtual credits only. No cash value.
-          </p>
         </div>
       </main>
     )
@@ -350,9 +344,6 @@ function App() {
           </div>
         )}
 
-        <p className="footer-note">
-          Virtual credits only. No cash value.
-        </p>
       </div>
     </main>
   )
