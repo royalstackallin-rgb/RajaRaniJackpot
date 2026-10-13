@@ -141,7 +141,7 @@ function App() {
                 aria-expanded={showAppMenu}
                 onClick={() => setShowAppMenu((open) => !open)}
               >
-                <span></span><span></span><span></span>
+                <svg className="app-menu-profile-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4" /><path d="M4.5 20c.7-4 3.2-6 7.5-6s6.8 2 7.5 6" /></svg>
               </button>
               {showAppMenu && (
                 <div className="app-menu-dropdown">
