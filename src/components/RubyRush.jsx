@@ -14,6 +14,29 @@ function shuffledTiles() {
   return tiles
 }
 
+function combination(n, k) {
+  if (k < 0 || k > n) return 0
+  if (k === 0 || k === n) return 1
+  let result = 1
+  for (let index = 1; index <= Math.min(k, n - k); index += 1) {
+    result = (result * (n - index + 1)) / index
+  }
+  return result
+}
+
+// Expected relic multiplier among safe tiles at this pick count.
+function expectedRelicBoost(safeTiles, safePicks) {
+  const totalWays = combination(safeTiles, safePicks)
+  if (!totalWays) return 1
+  let expectedBoost = 0
+  for (let found = 0; found <= Math.min(2, safePicks); found += 1) {
+    const otherPicks = safePicks - found
+    const ways = combination(2, found) * combination(safeTiles - 2, otherPicks)
+    expectedBoost += (ways / totalWays) * Math.pow(1.2, found)
+  }
+  return expectedBoost
+}
+
 function formatCredits(value) {
   return Math.round(value).toLocaleString('en-IN')
 }
@@ -32,8 +55,13 @@ export default function RubyRush() {
     for (let i = 0; i < round.safePicks; i += 1) {
       chance *= (TILE_COUNT - mineCount - i) / (TILE_COUNT - i)
     }
-    const base = Math.floor((0.97 / chance) * 100) / 100
-    return Number((base * Math.pow(1.2, round.relicsFound || 0)).toFixed(2))
+
+    // Normalize the payout for the expected relic boost at this pick count.
+    // Flooring the displayed multiplier keeps rounding from exceeding the target RTP.
+    const safeTiles = TILE_COUNT - mineCount
+    const expectedBoost = expectedRelicBoost(safeTiles, round.safePicks)
+    const base = Math.floor((0.97 / (chance * expectedBoost)) * 100) / 100
+    return Math.floor((base * Math.pow(1.2, round.relicsFound || 0)) * 100) / 100
   }, [round, mineCount])
 
   const potentialReturn = round?.status === 'playing'
