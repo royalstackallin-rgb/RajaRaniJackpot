@@ -120,8 +120,16 @@ export default function RubyRush() {
     } else {
       const safePicks = Number(data.safe_picks || 0)
       const nextMultiplier = Number(data.multiplier || 1)
-      setRound({ ...round, revealed, safePicks, multiplier: nextMultiplier, potentialReturn: Number(data.potential_return || 0) })
-      setMessage('Safe gem! Your multiplier has climbed. Cash out or risk another tile.')
+      if (data.auto_cashout) {
+        const payout = Number(data.payout || 0)
+        setCredits(Number(data.balance))
+        setRound({ ...round, revealed, safePicks, multiplier: nextMultiplier, potentialReturn: payout, payout, status: 'cashed', outcome: 'cashout' })
+        setHistory((items) => [{ result: 'Auto cash-out at cap', amount: payout - Number(round.stake) }, ...items].slice(0, 5))
+        setMessage(`Maximum ${safePicks} safe picks reached. Automatic cash-out returned ${formatCredits(payout)} credits.`)
+      } else {
+        setRound({ ...round, revealed, safePicks, multiplier: nextMultiplier, potentialReturn: Number(data.potential_return || 0) })
+        setMessage('Safe gem! Your multiplier has climbed. Cash out or risk another tile.')
+      }
     }
     setBusy(false)
   }
@@ -177,6 +185,7 @@ export default function RubyRush() {
             <div><span className="ruby-label">VAULT MULTIPLIER</span><strong className={`ruby-multiplier ${round?.status === 'playing' ? 'is-live' : ''}`}>{displayedMultiplier.toFixed(2)}×</strong><span className="ruby-board-caption">{round?.status === 'cashed' ? `Final return: ${formatCredits(round.payout)} credits` : round?.status === 'lost' ? 'Run ended — vault revealed' : round?.status === 'playing' ? `Potential return: ${formatCredits(potentialReturn)} credits` : 'Find a safe tile to begin'}</span></div>
             <div className="ruby-board-stat"><span>SAFE PICKS</span><strong>{round?.safePicks || 0}<small> / {TILE_COUNT - mineCount}</small></strong><div className="ruby-progress-track"><span style={{ width: `${((round?.safePicks || 0) / (TILE_COUNT - mineCount)) * 100}%` }} /></div></div>
           </div>
+          <p className="ruby-risk-note">Published safe-pick cap: 2 mines = 14, 4 = 12, 6 = 10, 8 = 8, 12 = 6. Reaching the cap automatically cashes out.</p>
           <div className="ruby-grid" aria-label="Ruby Rush 5 by 5 vault grid">
             {Array.from({ length: TILE_COUNT }, (_, index) => (
               <button
