@@ -247,7 +247,7 @@ function App() {
           {view === 'bookings' && <MyBookings initialGame={bookingsGame} />}
           {view === 'results' && <GameResults initialGame={resultsGame} />}
           {view === 'double' && <DoubleGame onOpenBookings={() => { setBookingsGame('double'); navigateTo('bookings') }} onOpenResults={() => { setResultsGame('double'); navigateTo('results') }} />}
-          {view === 'ruby-rush' && <RubyRush onBack={navigateBack} />}
+          {view === 'ruby-rush' && <RubyRush />}
           {view === 'wallet' && <Wallet />}
           {view === 'withdraw' && <Withdraw />}
           {view === 'deposit-admin' && isWalletAdmin && <DepositAdmin />}
