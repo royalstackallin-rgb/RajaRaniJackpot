@@ -159,7 +159,7 @@ function App() {
           {view !== 'home' && (
             <div className="view-navigation">
               <button type="button" className="view-back-button" onClick={navigateBack} aria-label="Go back to previous page"><span aria-hidden="true">←</span> Back</button>
-              <span>{({ tickets: 'Crown 24 Lobby', double: 'Twin Fortune Lobby', slot: 'Royal Reels', bookings: 'My Bookings', results: 'Game Results', wallet: 'Wallet', withdraw: 'Withdraw', 'deposit-admin': 'Deposit Admin' })[view] || ''}</span>
+              <span className="view-navigation-title">{({ tickets: 'Crown 24', double: 'Twin Fortune', slot: 'Royal Reels', bookings: 'My Bookings', results: 'Game Results', wallet: 'Wallet', withdraw: 'Withdraw', 'deposit-admin': 'Deposit Admin' })[view] || ''}</span>
             </div>
           )}
 
