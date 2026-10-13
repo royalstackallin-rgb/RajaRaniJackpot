@@ -29,10 +29,10 @@ function App() {
 
   const navigateBack = () => {
     if (viewHistory.length > 0) {
-      navigateTo(viewHistory[viewHistory.length - 1])
+      setView(viewHistory[viewHistory.length - 1])
       setViewHistory((history) => history.slice(0, -1))
     } else {
-      navigateTo('home')
+      setView('home')
     }
   }
   const [resultsGame, setResultsGame] = useState(null)
