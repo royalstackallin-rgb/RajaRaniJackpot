@@ -142,16 +142,6 @@ export default function RubyRush() {
             ))}
           </div>
           <div className={`ruby-message ${round?.status === 'lost' ? 'is-loss' : round?.status === 'cashed' ? 'is-win' : ''}`} role="status"><span className="ruby-message-icon" aria-hidden="true">{round?.status === 'lost' ? '×' : round?.status === 'cashed' ? '✓' : round?.status === 'playing' ? '✦' : 'i'}</span><span>{message}</span></div>
-          {round?.status === 'playing' ? (
-              <button type="button" className="ruby-cashout" onClick={cashOut} disabled={!round.safePicks}>
-                CASH OUT · {formatCredits(potentialReturn)} <small>credits</small>
-              </button>
-            ) : (
-              <button type="button" className="ruby-start" onClick={startRound}>
-                {round ? 'PLAY AGAIN' : 'OPEN THE VAULT'} <span>→</span>
-              </button>
-            )}
-          </div>
           {round?.status === 'playing' && <p className="ruby-risk-note">Your stake is already in play. A mine ends this run — cash out after at least one safe pick.</p>}
           <p className="ruby-disclaimer">Practice credits only. No deposits, withdrawals, or cash prizes.</p>
         </div>
