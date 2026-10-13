@@ -97,6 +97,7 @@ export default function RubyRush() {
   const resetCredits = () => {
     if (round?.status === 'playing') return
     setCredits(STARTING_CREDITS)
+    setRound(null)
     setHistory([])
     setMessage('Demo balance reset to 1,000 practice credits.')
   }
