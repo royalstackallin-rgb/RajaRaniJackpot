@@ -20,6 +20,21 @@ function App() {
   const [session, setSession] = useState(null)
   const [isWalletAdmin, setIsWalletAdmin] = useState(false)
   const [view, setView] = useState('home')
+  const [viewHistory, setViewHistory] = useState([])
+
+  const navigateTo = (nextView) => {
+    setViewHistory((history) => view === nextView ? history : [...history, view])
+    setView(nextView)
+  }
+
+  const navigateBack = () => {
+    if (viewHistory.length > 0) {
+      navigateTo(viewHistory[viewHistory.length - 1])
+      setViewHistory((history) => history.slice(0, -1))
+    } else {
+      navigateTo('home')
+    }
+  }
   const [resultsGame, setResultsGame] = useState(null)
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false)
   const [showAppMenu, setShowAppMenu] = useState(false)
@@ -107,6 +122,7 @@ function App() {
     }
     setShowLogoutConfirm(false)
     setView('home')
+    setViewHistory([])
     setMessage('')
   }
 
@@ -115,7 +131,7 @@ function App() {
       <main className={`app-page app-view-${view}`}>
         <div className="app-shell">
           <header className="app-header">
-            <button type="button" className="app-brand app-brand-home" onClick={() => setView('home')} aria-label="Go to Home"><img src="/targetora-wordmark.svg" alt="TARGETORSTAKE" style={{ width: "clamp(220px, 72vw, 330px)", maxWidth: "100%", display: "block" }} /></button>
+            <button type="button" className="app-brand app-brand-home" onClick={() => navigateTo('home')} aria-label="Go to Home"><img src="/targetora-wordmark.svg" alt="TARGETORSTAKE" style={{ width: "clamp(220px, 72vw, 330px)", maxWidth: "100%", display: "block" }} /></button>
             <div className="app-menu-wrap">
               <button
                 type="button"
@@ -132,9 +148,9 @@ function App() {
                     <span>ACCOUNT</span>
                     <strong>{session.user.email}</strong>
                   </div>
-                  <button type="button" className="app-menu-wallet" onClick={() => { setShowAppMenu(false); setView('wallet') }}>Wallet / Buy In</button>
-                  <button type="button" className="app-menu-wallet" onClick={() => { setShowAppMenu(false); setView('withdraw') }}>Withdraw</button>
-                  {isWalletAdmin && <button type="button" className="app-menu-wallet" onClick={() => { setShowAppMenu(false); setView('deposit-admin') }}>Deposit Admin</button>}
+                  <button type="button" className="app-menu-wallet" onClick={() => { setShowAppMenu(false); navigateTo('wallet') }}>Wallet / Buy In</button>
+                  <button type="button" className="app-menu-wallet" onClick={() => { setShowAppMenu(false); navigateTo('withdraw') }}>Withdraw</button>
+                  {isWalletAdmin && <button type="button" className="app-menu-wallet" onClick={() => { setShowAppMenu(false); navigateTo('deposit-admin') }}>Deposit Admin</button>}
                   <button type="button" className="app-menu-logout" onClick={() => { setShowAppMenu(false); setShowLogoutConfirm(true) }}>Logout</button>
                 </div>
               )}
@@ -142,7 +158,7 @@ function App() {
           </header>
           {view !== 'home' && (
             <div className="view-navigation">
-              <button type="button" className="view-back-button" onClick={() => setView('home')}>← Back to Home</button>
+              <button type="button" className="view-back-button" onClick={navigateBack} aria-label="Go back to previous page"><span aria-hidden="true">←</span> Back</button>
               <span>{({ tickets: 'Crown 24 Lobby', double: 'Twin Fortune Lobby', slot: 'Royal Reels', bookings: 'My Bookings', results: 'Game Results', wallet: 'Wallet', withdraw: 'Withdraw', 'deposit-admin': 'Deposit Admin' })[view] || ''}</span>
             </div>
           )}
@@ -181,7 +197,7 @@ function App() {
         </div>
       )}
 
-          {view === 'home' && <HomeDashboard onOpenGame={setView} onOpenBookings={() => setView('bookings')} onOpenResults={(game) => { setResultsGame(game); setView('results') }} onOpenWallet={() => setView('wallet')} />}
+          {view === 'home' && <HomeDashboard onOpenGame={setView} onOpenBookings={() => navigateTo('bookings')} onOpenResults={(game) => { setResultsGame(game); navigateTo('results') }} onOpenWallet={() => navigateTo('wallet')} />}
           {view === 'tickets' && <TicketLobby />}
           {view === 'bookings' && <MyBookings />}
           {view === 'results' && <GameResults initialGame={resultsGame} />}
@@ -215,7 +231,7 @@ function App() {
             <button
               className="submit-button"
               type="button"
-              onClick={() => setView('home')}
+              onClick={() => navigateTo('home')}
             >
               Enter Lobby
             </button>
