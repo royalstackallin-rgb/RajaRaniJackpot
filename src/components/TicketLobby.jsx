@@ -59,7 +59,7 @@ function getRoundName(round) {
 }
 
 
-function TicketLobby() {
+function TicketLobby({ onOpenBookings, onOpenResults }) {
   const [tickets, setTickets] = useState({})
   const [bookingRow, setBookingRow] = useState(null)
   const [message, setMessage] = useState('')
@@ -414,6 +414,10 @@ function TicketLobby() {
 
   return (
     <section className="ticket-lobby">
+      <div className="lobby-history-actions" aria-label="Crown 24 history">
+        <button type="button" onClick={onOpenBookings}>▤ <span>My Bookings</span><b>→</b></button>
+        <button type="button" onClick={onOpenResults}>✦ <span>Game Results</span><b>→</b></button>
+      </div>
       <div className="ticket-header">
         <div>
           <span className="eyebrow">{getRoundName(currentRound)}</span>
