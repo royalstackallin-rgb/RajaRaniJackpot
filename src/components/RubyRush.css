@@ -82,7 +82,9 @@
 .ruby-practice-hint{margin-top:10px;text-align:center;color:#91a0aa;font-size:9px}
 .ruby-board-panel{background:linear-gradient(145deg,#14232d,#0e1922);border-color:#2a3b46}
 .ruby-grid{gap:8px}
-.ruby-tile{border-color:#203543;border-radius:9px;background:#0c1922;color:#72ef47;font-size:clamp(22px,3vw,34px)}
+.ruby-tile{border-color:#203543;border-radius:9px;background:#0c1922;color:#718391;font-size:clamp(22px,3vw,34px)}
+.ruby-tile.is-gem{border-color:#214e34;background:#10241d;color:#5fea4b}
+.ruby-tile.is-mine{border-color:#652b39;background:#25151e;color:#ff5c70}
 .ruby-tile.is-gem{border-color:#214e34;background:#10241d;color:#5fea4b}
 .ruby-tile.is-mine{border-color:#652b39;background:#25151e;color:#ff5c70}
 .ruby-history-card{background:#111c25;border-color:#2a3b46}
