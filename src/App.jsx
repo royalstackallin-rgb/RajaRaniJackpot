@@ -400,7 +400,13 @@ function App() {
                 ? 'Login'
                 : 'Create Account'}
           </button>
-        </form>
+        </form>}
+
+        {mode === 'login' && !showForgotPassword && (
+          <button type="button" className="secondary-button" onClick={() => { setShowForgotPassword(true); setMessage('') }}>
+            Forgot Password?
+          </button>
+        )}
 
         {message && (
           <div className="message" role="status">
