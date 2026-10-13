@@ -112,3 +112,6 @@
   .ruby-board-cashout{position:sticky;bottom:8px}
   .ruby-board-caption{max-width:none}
 }
+
+
+.ruby-board-replay{background:linear-gradient(100deg,#65e63d,#42c928);color:#10220b;box-shadow:0 5px 22px #0005}
