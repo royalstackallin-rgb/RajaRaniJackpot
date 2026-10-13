@@ -290,7 +290,7 @@ export default function DoubleGame({ historyOnly = false, onOpenBookings, onOpen
         <div>
           <p className="double-eyebrow">YOUR DOUBLE LOBBY · 00–99</p>
           <h1>Twin Fortune</h1>
-          <p>Track the next draw, booking deadline and latest winning number before choosing your numbers.</p>
+          <p>Track the next draw, booking deadline and latest result before choosing your numbers.</p>
         </div>
         <div className="double-wallet">
           <span>WALLET BALANCE</span>
@@ -319,7 +319,7 @@ export default function DoubleGame({ historyOnly = false, onOpenBookings, onOpen
           </ol>
           <p className="how-to-play-example"><strong>Example:</strong> A ₹10 stake on number 27 has a potential payout of ₹800 if 27 is the winning number. Selecting 10 numbers at ₹10 each costs ₹100 in total.</p>
           <details className="double-odds-disclosure">
-            <summary>Published weighted odds <span aria-hidden="true">＋</span></summary>
+            <summary>Published odds <span aria-hidden="true">＋</span></summary>
             <p>For each number, the server totals the stakes from all players in this round and applies the exact percentage in the table. These are actual per-number chances, not weights. A single random draw can land in the remaining probability, in which case the round has no winning number. The odds are calculated when the draw runs.</p>
             <div className="double-odds-table-wrap">
               <table className="double-odds-table">
