@@ -45,7 +45,7 @@ export default function DoubleResults() {
       <div className="history-heading">
         <span className="history-eyebrow">OFFICIAL HISTORY</span>
         <h2>Twin Fortune Results</h2>
-        <p>Completed Double rounds and winning numbers.</p>
+        <p>Completed Twin Fortune rounds, winning numbers and no-winner results.</p>
       </div>
       <form className="results-search" onSubmit={loadResults}>
         <label>
@@ -76,8 +76,8 @@ export default function DoubleResults() {
             </div>
             <div className="result-number-grid">
               <div className="result-number-item">
-                <span>WINNING NUMBER</span>
-                <strong>{round.winning_number ?? '—'}</strong>
+                <span>{round.winning_number == null ? 'ROUND RESULT' : 'WINNING NUMBER'}</span>
+                <strong>{round.winning_number == null ? 'NO WINNER' : String(round.winning_number).padStart(2, '0')}</strong>
               </div>
             </div>
           </article>
