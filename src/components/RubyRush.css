@@ -58,3 +58,44 @@
 @media(max-width:680px){.ruby-balance-row{align-items:flex-start}.ruby-balance-actions{flex-direction:column;align-items:flex-end}.ruby-round-status{font-size:8px}.ruby-progress-track{width:60px}.ruby-board-caption{max-width:190px}}
 @media(max-width:420px){.ruby-balance-row{padding:12px}.ruby-balance-actions{gap:7px}.ruby-round-status{padding:6px 7px;letter-spacing:.3px}.ruby-board-top{align-items:flex-start}.ruby-multiplier{font-size:27px}.ruby-board-caption{max-width:155px;font-size:9px}.ruby-progress-track{width:50px}.ruby-message{font-size:11px}.ruby-message-icon{width:22px;height:22px}}
 @media(prefers-reduced-motion:reduce){.ruby-rush *, .ruby-rush *:before,.ruby-rush *:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+
+
+/* Compact mines-style betting layout */
+.ruby-layout{grid-template-columns:minmax(235px,.38fr) minmax(0,1fr);align-items:stretch}
+.ruby-controls{grid-column:1;grid-row:1}
+.ruby-board-panel{grid-column:2;grid-row:1}
+.ruby-betting-card{padding:15px;background:linear-gradient(145deg,#1c2a35,#111c26);border-color:#30414d}
+.ruby-mode-tabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;margin-bottom:18px;border:1px solid #344652;border-radius:999px;background:#101b24}
+.ruby-mode-tabs button{min-height:37px;border:0;border-radius:999px;background:transparent;color:#b9c5ce;font-size:12px;font-weight:850}
+.ruby-mode-tabs button.is-selected{background:#354653;color:#fff;box-shadow:0 2px 8px #0003}
+.ruby-mode-tabs button:disabled{opacity:.65}
+.ruby-betting-card>.ruby-label{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:14px 0 8px;color:#b5c3cd}
+.ruby-bet-value{color:#dce5eb;font-size:10px;letter-spacing:0}
+.ruby-stake-input{display:grid;grid-template-columns:minmax(0,1fr) 42px 42px;gap:0;overflow:hidden;margin-bottom:18px;border:1px solid #3a4b57;border-radius:9px;background:#101c25}
+.ruby-stake-input input{width:100%;min-width:0;padding:12px 10px;border:0;outline:none;background:transparent;color:#f7fbff;font-size:14px;font-weight:800}
+.ruby-stake-input button{border:0;border-left:1px solid #344550;background:#243440;color:#e1eaf0;font-weight:900}
+.ruby-betting-card select{width:100%;min-height:44px;margin-bottom:16px;padding:0 11px;border:1px solid #3a4b57;border-radius:8px;background:#101c25;color:#f7fbff;font-weight:800}
+.ruby-bet-main{margin-top:4px;min-height:52px;border-radius:8px;background:#65e63d;color:#10220b;box-shadow:none;font-size:15px;letter-spacing:0}
+.ruby-bet-main:hover{filter:brightness(1.05)}
+.ruby-bet-main:disabled{opacity:.45}
+.ruby-auto-note{margin:0 0 12px!important;padding:9px;border:1px solid #344652;border-radius:8px;background:#101c25;color:#b7c6cf!important}
+.ruby-practice-hint{margin-top:10px;text-align:center;color:#91a0aa;font-size:9px}
+.ruby-board-panel{background:linear-gradient(145deg,#14232d,#0e1922);border-color:#2a3b46}
+.ruby-grid{gap:8px}
+.ruby-tile{border-color:#203543;border-radius:9px;background:#0c1922;color:#72ef47;font-size:clamp(22px,3vw,34px)}
+.ruby-tile.is-gem{border-color:#214e34;background:#10241d;color:#5fea4b}
+.ruby-tile.is-mine{border-color:#652b39;background:#25151e;color:#ff5c70}
+.ruby-history-card{background:#111c25;border-color:#2a3b46}
+@media(max-width:680px){
+  .ruby-layout{grid-template-columns:minmax(0,1fr);gap:10px}
+  .ruby-controls{grid-column:1;grid-row:1;grid-template-columns:1fr}
+  .ruby-board-panel{grid-column:1;grid-row:2}
+  .ruby-betting-card{padding:12px}
+  .ruby-mode-tabs{margin-bottom:12px}
+  .ruby-betting-card>.ruby-label{margin-top:10px}
+  .ruby-stake-input{margin-bottom:12px}
+  .ruby-betting-card select{margin-bottom:12px}
+  .ruby-grid{gap:5px}
+  .ruby-tile{border-radius:7px}
+  .ruby-history-card{grid-row:auto}
+}
