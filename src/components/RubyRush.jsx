@@ -21,6 +21,7 @@ function formatCredits(value) {
 export default function RubyRush() {
   const [credits, setCredits] = useState(STARTING_CREDITS)
   const [bet, setBet] = useState(25)
+  const [betMode, setBetMode] = useState('manual')
   const [mineCount, setMineCount] = useState(4)
   const [round, setRound] = useState(null)
   const [message, setMessage] = useState('Choose your stake and start a vault run.')
@@ -141,8 +142,7 @@ export default function RubyRush() {
             ))}
           </div>
           <div className={`ruby-message ${round?.status === 'lost' ? 'is-loss' : round?.status === 'cashed' ? 'is-win' : ''}`} role="status"><span className="ruby-message-icon" aria-hidden="true">{round?.status === 'lost' ? '×' : round?.status === 'cashed' ? '✓' : round?.status === 'playing' ? '✦' : 'i'}</span><span>{message}</span></div>
-          <div className="ruby-action-row">
-            {round?.status === 'playing' ? (
+          {round?.status === 'playing' ? (
               <button type="button" className="ruby-cashout" onClick={cashOut} disabled={!round.safePicks}>
                 CASH OUT · {formatCredits(potentialReturn)} <small>credits</small>
               </button>
@@ -157,22 +157,28 @@ export default function RubyRush() {
         </div>
 
         <aside className="ruby-controls">
-          <div className="ruby-control-card">
-            <span className="ruby-label">YOUR STAKE</span>
-            <div className="ruby-bet-options">
-              {BET_OPTIONS.map((amount) => (
-                <button key={amount} type="button" className={bet === amount ? 'is-selected' : ''} onClick={() => setBet(amount)} disabled={round?.status === 'playing'}>{amount}</button>
-              ))}
+          <div className="ruby-control-card ruby-betting-card">
+            <div className="ruby-mode-tabs" role="tablist" aria-label="Betting mode">
+              <button type="button" role="tab" aria-selected={betMode === 'manual'} className={betMode === 'manual' ? 'is-selected' : ''} onClick={() => setBetMode('manual')} disabled={round?.status === 'playing'}>Manual</button>
+              <button type="button" role="tab" aria-selected={betMode === 'auto'} className={betMode === 'auto' ? 'is-selected' : ''} onClick={() => setBetMode('auto')} disabled={round?.status === 'playing'}>Auto</button>
             </div>
-          </div>
-          <div className="ruby-control-card">
-            <span className="ruby-label">HIDDEN MINES</span>
-            <div className="ruby-mine-options">
-              {[2, 4, 6, 8, 12].map((amount) => (
-                <button key={amount} type="button" className={mineCount === amount ? 'is-selected' : ''} onClick={() => setMineCount(amount)} disabled={round?.status === 'playing'}>{amount}</button>
-              ))}
+            <label className="ruby-label" htmlFor="ruby-bet-amount">BET AMOUNT <span className="ruby-bet-value">{formatCredits(bet)} credits</span></label>
+            <div className="ruby-stake-input">
+              <input id="ruby-bet-amount" type="number" inputMode="numeric" min="1" max={credits} step="1" value={bet} onChange={(event) => setBet(Math.max(1, Math.min(credits || 1, Number(event.target.value) || 1)))} disabled={round?.status === 'playing'} />
+              <button type="button" onClick={() => setBet((value) => Math.max(1, Math.floor(value / 2)))} disabled={round?.status === 'playing'}>½</button>
+              <button type="button" onClick={() => setBet((value) => Math.min(credits || 1, value * 2))} disabled={round?.status === 'playing'}>2×</button>
             </div>
-            <p>More mines means a riskier vault and faster multiplier growth.</p><div className="ruby-risk-meter" aria-label={`${mineCount} mines selected`}>{Array.from({ length: 12 }, (_, index) => <i key={index} className={index < mineCount ? 'is-filled' : ''} />)}</div>
+            <label className="ruby-label" htmlFor="ruby-mine-count">MINES</label>
+            <select id="ruby-mine-count" value={mineCount} onChange={(event) => setMineCount(Number(event.target.value))} disabled={round?.status === 'playing'}>
+              {[2, 4, 6, 8, 12].map((amount) => <option key={amount} value={amount}>{amount} mines</option>)}
+            </select>
+            {betMode === 'auto' && <p className="ruby-auto-note">Auto mode setup is coming next. For now, start and reveal tiles manually.</p>}
+            {round?.status === 'playing' ? (
+              <button type="button" className="ruby-cashout ruby-bet-main" onClick={cashOut} disabled={!round.safePicks}>CASH OUT · {formatCredits(potentialReturn)} credits</button>
+            ) : (
+              <button type="button" className="ruby-start ruby-bet-main" onClick={startRound} disabled={bet > credits}>{round ? 'PLAY AGAIN' : 'BET'}</button>
+            )}
+            <p className="ruby-practice-hint">Practice credits only · No cash prizes</p>
           </div>
           <div className="ruby-history-card">
             <span className="ruby-label">RECENT RUNS</span>
