@@ -1,33 +1,56 @@
-import { useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import './RubyRush.css'
+import { supabase } from '../lib/supabase'
 
 const TILE_COUNT = 25
-const STARTING_CREDITS = 1000
-const BET_OPTIONS = [10, 25, 50, 100]
 
-function shuffledTiles() {
-  const tiles = Array.from({ length: TILE_COUNT }, (_, index) => index)
-  for (let index = tiles.length - 1; index > 0; index -= 1) {
-    const swapIndex = Math.floor(Math.random() * (index + 1))
-    ;[tiles[index], tiles[swapIndex]] = [tiles[swapIndex], tiles[index]]
-  }
-  return tiles
-}
 
 function formatCredits(value) {
   return Math.round(value).toLocaleString('en-IN')
 }
 
 export default function RubyRush() {
-  const [credits, setCredits] = useState(STARTING_CREDITS)
+  const [credits, setCredits] = useState(null)
   const [bet, setBet] = useState('25')
   const [betMode, setBetMode] = useState('manual')
   const [mineCount, setMineCount] = useState(4)
   const [round, setRound] = useState(null)
-  const [message, setMessage] = useState('Choose your stake and start a vault run.')
+  const [message, setMessage] = useState('Checking your wallet…')
   const [history, setHistory] = useState([])
+  const [walletLoading, setWalletLoading] = useState(true)
+  const [busy, setBusy] = useState(false)
+  const [userId, setUserId] = useState(null)
+
+  const refreshWallet = useCallback(async () => {
+    setWalletLoading(true)
+    const { data: authData, error: authError } = await supabase.auth.getUser()
+    if (authError || !authData?.user) {
+      setUserId(null)
+      setCredits(null)
+      setMessage('Please sign in to use your TARGETORSTAKE wallet.')
+      setWalletLoading(false)
+      return
+    }
+    setUserId(authData.user.id)
+    const { data, error } = await supabase.from('wallets').select('balance').eq('user_id', authData.user.id).maybeSingle()
+    if (error || !data) {
+      setCredits(null)
+      setMessage(error?.message || 'Wallet not found for this account.')
+    } else {
+      setCredits(Number(data.balance))
+      setMessage('Choose your stake and start a vault run.')
+    }
+    setWalletLoading(false)
+  }, [])
+
+  useEffect(() => {
+    refreshWallet()
+    const { data: authListener } = supabase.auth.onAuthStateChange(() => refreshWallet())
+    return () => authListener.subscription.unsubscribe()
+  }, [refreshWallet])
 
   const multiplier = useMemo(() => {
+    if (round?.multiplier != null) return Number(round.multiplier)
     if (!round?.safePicks) return 1
     let chance = 1
     for (let i = 0; i < round.safePicks; i += 1) {
@@ -37,68 +60,87 @@ export default function RubyRush() {
   }, [round, mineCount])
 
   const numericBet = Number(bet)
-  const validBet = Number.isSafeInteger(numericBet) && numericBet >= 1 && numericBet <= credits
+  const validBet = Number.isSafeInteger(numericBet) && numericBet >= 1 && credits !== null && numericBet <= credits && !walletLoading && !busy && Boolean(userId)
   const potentialReturn = round?.status === 'playing'
-    ? Math.floor(numericBet * multiplier)
+    ? Number(round.potentialReturn ?? Math.floor(Number(round.stake) * multiplier))
     : 0
   const displayedMultiplier = round?.safePicks ? multiplier : 1
   const roundStatus = !round ? 'READY TO PLAY' : round.status === 'playing' ? 'VAULT OPEN' : round.status === 'lost' ? 'MINE TRIGGERED' : 'VAULT SECURED'
 
-  const startRound = () => {
-    if (round?.status === 'playing') return
+  const startRound = async () => {
+    if (round?.status === 'playing' || busy || !userId) return
     if (!Number.isSafeInteger(numericBet) || numericBet < 1) {
       setMessage('Enter a whole stake amount of at least 1 credit.')
       return
     }
-    if (credits < numericBet) {
-      setMessage('Not enough practice credits. Choose a smaller stake or reset your demo credits.')
+    if (credits === null || numericBet > credits) {
+      setMessage('Your wallet balance is not enough for that stake.')
       return
     }
-    const shuffled = shuffledTiles()
-    const mines = new Set(shuffled.slice(0, mineCount))
-    setCredits((value) => value - numericBet)
+    setBusy(true)
+    const { data, error } = await supabase.rpc('ruby_rush_start_round', { p_stake: numericBet, p_mine_count: mineCount })
+    if (error) {
+      setMessage(error.message || 'Could not start the round.')
+      setBusy(false)
+      await refreshWallet()
+      return
+    }
+    setCredits(Number(data.balance))
     setRound({
-      mines,
+      id: data.round_id,
+      stake: Number(data.stake),
+      mineCount: Number(data.mine_count),
+      mines: new Set(),
       revealed: new Set(),
       safePicks: 0,
+      multiplier: 1,
+      potentialReturn: 0,
       status: 'playing',
       outcome: null,
     })
     setMessage('Vault unlocked. Find gems, watch the multiplier, and cash out when ready.')
+    setBusy(false)
   }
 
-  const revealTile = (index) => {
-    if (!round || round.status !== 'playing' || round.revealed.has(index)) return
-    const revealed = new Set(round.revealed)
-    revealed.add(index)
-    if (round.mines.has(index)) {
-      const finished = { ...round, revealed, status: 'lost', outcome: 'mine' }
-      setRound(finished)
-      setHistory((items) => [{ result: 'Mine hit', amount: -numericBet }, ...items].slice(0, 5))
-      setMessage('BOOM! You found a mine. Start another vault run and try a different strategy.')
+  const revealTile = async (index) => {
+    if (!round || round.status !== 'playing' || round.revealed.has(index) || busy) return
+    setBusy(true)
+    const { data, error } = await supabase.rpc('ruby_rush_reveal_tile', { p_round_id: round.id, p_tile: index })
+    if (error) {
+      setMessage(error.message || 'Could not reveal that tile. Try again.')
+      setBusy(false)
       return
     }
-
-    const safePicks = round.safePicks + 1
-    setRound({ ...round, revealed, safePicks })
-    setMessage('Safe gem! Your multiplier has climbed. Cash out or risk another tile.')
+    const revealed = new Set((data.revealed_positions || []).map(Number))
+    if (data.mine_hit) {
+      const mines = new Set((data.mine_positions || []).map(Number))
+      setRound({ ...round, mines, revealed, status: 'lost', outcome: 'mine', safePicks: Number(data.safe_picks || 0) })
+      setHistory((items) => [{ result: 'Mine hit', amount: -Number(round.stake) }, ...items].slice(0, 5))
+      setMessage('BOOM! You found a mine. Start another vault run and try a different strategy.')
+    } else {
+      const safePicks = Number(data.safe_picks || 0)
+      const nextMultiplier = Number(data.multiplier || 1)
+      setRound({ ...round, revealed, safePicks, multiplier: nextMultiplier, potentialReturn: Number(data.potential_return || 0) })
+      setMessage('Safe gem! Your multiplier has climbed. Cash out or risk another tile.')
+    }
+    setBusy(false)
   }
 
-  const cashOut = () => {
-    if (!round || round.status !== 'playing' || round.safePicks === 0) return
-    const payout = Math.floor(numericBet * multiplier)
-    setCredits((value) => value + payout)
-    setRound({ ...round, status: 'cashed', outcome: 'cashout', payout })
-    setHistory((items) => [{ result: 'Cashed out', amount: payout - numericBet }, ...items].slice(0, 5))
-    setMessage(`Vault secured! ${formatCredits(payout)} practice credits returned to your balance.`)
-  }
-
-  const resetCredits = () => {
-    if (round?.status === 'playing') return
-    setCredits(STARTING_CREDITS)
-    setRound(null)
-    setHistory([])
-    setMessage('Demo balance reset to 1,000 practice credits.')
+  const cashOut = async () => {
+    if (!round || round.status !== 'playing' || round.safePicks === 0 || busy) return
+    setBusy(true)
+    const { data, error } = await supabase.rpc('ruby_rush_cash_out', { p_round_id: round.id })
+    if (error) {
+      setMessage(error.message || 'Cash out failed. Your round remains open; try again.')
+      setBusy(false)
+      return
+    }
+    const payout = Number(data.payout)
+    setCredits(Number(data.balance))
+    setRound({ ...round, status: 'cashed', outcome: 'cashout', payout, multiplier: Number(data.multiplier) })
+    setHistory((items) => [{ result: 'Cashed out', amount: payout - Number(round.stake) }, ...items].slice(0, 5))
+    setMessage(`Vault secured! ${formatCredits(payout)} credits returned to your wallet.`)
+    setBusy(false)
   }
 
   const tileLabel = (index) => {
@@ -117,7 +159,7 @@ export default function RubyRush() {
     <section className="ruby-rush">
       <div className="ruby-hero">
         <div className="ruby-hero-copy">
-          <span className="ruby-kicker">TARGETORSTAKE ORIGINAL · PRACTICE MODE</span>
+          <span className="ruby-kicker">TARGETORSTAKE ORIGINAL · SERVER-VERIFIED ROUNDS</span>
           <h1>RUBY <span>RUSH</span></h1>
           <p>Crack the vault. Find the gems. Know when to walk away.</p>
         </div>
@@ -125,8 +167,8 @@ export default function RubyRush() {
       </div>
 
       <div className="ruby-balance-row">
-        <div className="ruby-balance-copy"><span>PRACTICE CREDITS</span><strong>{formatCredits(credits)}</strong></div>
-        <div className="ruby-balance-actions"><span className={`ruby-round-status ${round?.status || 'ready'}`}><i />{roundStatus}</span><button type="button" onClick={resetCredits} disabled={round?.status === 'playing'}>Reset demo</button></div>
+        <div className="ruby-balance-copy"><span>WALLET BALANCE</span><strong>{walletLoading ? 'Loading…' : credits === null ? '—' : formatCredits(credits)}</strong></div>
+        <div className="ruby-balance-actions"><span className={`ruby-round-status ${round?.status || 'ready'}`}><i />{roundStatus}</span><button type="button" onClick={refreshWallet} disabled={walletLoading || busy}>Refresh</button></div>
       </div>
 
       <div className="ruby-layout">
@@ -142,19 +184,18 @@ export default function RubyRush() {
                 key={index}
                 className={tileClass(index)}
                 onClick={() => revealTile(index)}
-                disabled={round?.status !== 'playing' || round.revealed.has(index)}
+                disabled={round?.status !== 'playing' || round.revealed.has(index) || busy}
                 aria-label={!round || (round.status === 'playing' && !round.revealed.has(index)) ? `Reveal tile ${index + 1}` : `Tile ${index + 1}: ${round?.mines.has(index) ? 'mine' : 'gem'}`}
               >{tileLabel(index)}</button>
             ))}
           </div>
           <div className={`ruby-message ${round?.status === 'lost' ? 'is-loss' : round?.status === 'cashed' ? 'is-win' : ''}`} role="status"><span className="ruby-message-icon" aria-hidden="true">{round?.status === 'lost' ? '×' : round?.status === 'cashed' ? '✓' : round?.status === 'playing' ? '✦' : 'i'}</span><span>{message}</span></div>
           {round?.status === 'playing' ? (
-            <button type="button" className="ruby-cashout ruby-board-cashout" onClick={cashOut} disabled={!round.safePicks}>CASH OUT · {formatCredits(potentialReturn)} credits</button>
+            <button type="button" className="ruby-cashout ruby-board-cashout" onClick={cashOut} disabled={!round.safePicks || busy}>CASH OUT · {formatCredits(potentialReturn)} credits</button>
           ) : (
-            <button type="button" className="ruby-start ruby-board-cashout ruby-board-replay" onClick={startRound} disabled={bet > credits}>{round ? 'PLAY AGAIN' : 'OPEN THE VAULT'}</button>
+            <button type="button" className="ruby-start ruby-board-cashout ruby-board-replay" onClick={startRound} disabled={!validBet || busy}>{busy ? 'PLEASE WAIT…' : round ? 'PLAY AGAIN' : 'OPEN THE VAULT'}</button>
           )}
           {round?.status === 'playing' && <p className="ruby-risk-note">Your stake is already in play. A mine ends this run — cash out after at least one safe pick.</p>}
-          <p className="ruby-disclaimer">Practice credits only. No deposits, withdrawals, or cash prizes.</p>
         </div>
 
         <aside className="ruby-controls">
@@ -165,9 +206,9 @@ export default function RubyRush() {
             </div>
             <label className="ruby-label" htmlFor="ruby-bet-amount">BET AMOUNT <span className="ruby-bet-value">{formatCredits(numericBet)} credits</span></label>
             <div className="ruby-stake-input">
-              <input id="ruby-bet-amount" type="number" inputMode="numeric" min="1" max={credits} step="1" value={bet} onChange={(event) => setBet(event.target.value)} disabled={round?.status === 'playing'} />
-              <button type="button" onClick={() => setBet(String(Math.max(1, Math.floor((Number(bet) || 1) / 2))))} disabled={round?.status === 'playing'}>½</button>
-              <button type="button" onClick={() => setBet(String(Math.min(credits || 1, (Number(bet) || 1) * 2)))} disabled={round?.status === 'playing'}>2×</button>
+              <input id="ruby-bet-amount" type="number" inputMode="numeric" min="1" max={credits ?? undefined} step="1" value={bet} onChange={(event) => setBet(event.target.value)} disabled={round?.status === 'playing' || walletLoading || busy || !userId} />
+              <button type="button" onClick={() => setBet(String(Math.max(1, Math.floor((Number(bet) || 1) / 2))))} disabled={round?.status === 'playing' || walletLoading || busy || credits === null}>½</button>
+              <button type="button" onClick={() => setBet(String(Math.min(credits || 1, (Number(bet) || 1) * 2)))} disabled={round?.status === 'playing' || walletLoading || busy || credits === null}>2×</button>
             </div>
             <label className="ruby-label" htmlFor="ruby-mine-count">MINES</label>
             <select id="ruby-mine-count" value={mineCount} onChange={(event) => setMineCount(Number(event.target.value))} disabled={round?.status === 'playing'}>
@@ -179,9 +220,9 @@ export default function RubyRush() {
             ) : round ? (
               <p className="ruby-active-round-note">Round finished — use Play Again directly under the board.</p>
             ) : (
-              <button type="button" className="ruby-start ruby-bet-main" onClick={startRound} disabled={!validBet}>BET</button>
+              <button type="button" className="ruby-start ruby-bet-main" onClick={startRound} disabled={!validBet}>{busy ? 'PLEASE WAIT…' : walletLoading ? 'LOADING WALLET…' : !userId ? 'SIGN IN TO PLAY' : 'BET'}</button>
             )}
-            <p className="ruby-practice-hint">Practice credits only · No cash prizes</p>
+            <p className="ruby-practice-hint">Stake and payouts are checked by the server.</p>
           </div>
           <div className="ruby-history-card">
             <span className="ruby-label">RECENT RUNS</span>
