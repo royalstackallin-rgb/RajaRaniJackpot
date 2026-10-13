@@ -189,7 +189,6 @@ export default function HomeDashboard({ onOpenGame, onOpenBookings, onOpenResult
       </button>
 
       <article className="home-next-draw">
-        <img className="home-game-artwork home-game-artwork-crown" src={crown24Artwork} alt="Crown 24 — Predict, Play, Win" loading="eager" />
         <div className="home-card-topline">
           <span className="home-eyebrow">NEXT CROWN 24 DRAW</span>
           <span className={`home-status ${statusClass}`}>{bookingStatus}</span>
@@ -215,6 +214,7 @@ export default function HomeDashboard({ onOpenGame, onOpenBookings, onOpenResult
         )}
         {loadError && <p className="home-error" role="status">{loadError}</p>}
         <button type="button" className="home-primary-button" onClick={() => onOpenGame('tickets')}>Enter Crown 24 Lobby <span>→</span></button>
+        <img className="home-game-artwork home-game-artwork-crown" src={crown24Artwork} alt="Crown 24 — Predict, Play, Win" loading="eager" />
       </article>
 
       <article className="home-latest-card home-center-result">
@@ -241,7 +241,6 @@ export default function HomeDashboard({ onOpenGame, onOpenBookings, onOpenResult
       </div>
 
       <article className="home-double-draw-card">
-        <img className="home-game-artwork home-game-artwork-twin" src={twinFortuneArtwork} alt="Twin Fortune — Predict Both Ways" loading="eager" />
         <div className="home-double-title-row">
           <span className="home-double-emblem">00<br />99</span>
           <div className="home-double-title">
@@ -263,6 +262,7 @@ export default function HomeDashboard({ onOpenGame, onOpenBookings, onOpenResult
           </div>
         </div>
         <button type="button" className="home-double-enter" onClick={() => onOpenGame('double')}>Enter Twin Fortune Lobby <span>→</span></button>
+        <img className="home-game-artwork home-game-artwork-twin" src={twinFortuneArtwork} alt="Twin Fortune — Predict Both Ways" loading="eager" />
       </article>
 
       <article className="home-latest-card home-double-result">
