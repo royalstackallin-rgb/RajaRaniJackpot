@@ -3295,10 +3295,10 @@ body[data-round-theme] .main-menu button:not(.active) {
 
 
 /* Artwork belongs inside its matching game section, above draw details. */
-.home-game-artwork{display:block;width:100%;height:auto;max-height:340px;object-fit:cover;object-position:center;border-radius:14px;margin:0 0 20px;border:1px solid rgba(255,255,255,.12)}
+.home-game-artwork{display:block;width:100%;height:auto;max-height:260px;aspect-ratio:16/9;object-fit:contain;object-position:center;border-radius:14px;margin:18px 0 0;background:rgba(0,0,0,.22);border:1px solid rgba(255,255,255,.12)}
 .home-game-artwork-crown{border-color:rgba(245,190,61,.55)}
 .home-game-artwork-twin{border-color:rgba(255,38,85,.55)}
-@media(max-width:520px){.home-game-artwork{max-height:none;aspect-ratio: 1 / 1.05;object-fit:cover;margin-bottom:16px}}
+@media(max-width:520px){.home-game-artwork{max-height:220px;aspect-ratio:16/9;object-fit:contain;margin-top:14px}}
 
 /* Compact back control: adaptive dark glass with warm metallic accent. */
 .view-back-button{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:10px 15px;border:1px solid color-mix(in srgb,var(--accent,#e9bd62) 62%,transparent);border-radius:999px;background:linear-gradient(135deg,color-mix(in srgb,var(--accent,#e9bd62) 15%,#09070b),rgba(8,10,17,.92));color:var(--accent,#f2d28b);font-size:13px;font-weight:750;letter-spacing:.015em;box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 4px 14px rgba(0,0,0,.18);cursor:pointer;transition:background .18s ease,border-color .18s ease,transform .18s ease}
