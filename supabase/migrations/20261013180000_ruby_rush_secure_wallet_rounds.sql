@@ -30,8 +30,13 @@ begin
   select balance into b from public.wallets where user_id=u for update;
   if not found then raise exception 'Wallet not found'; end if;
   if b < p_stake then raise exception 'Insufficient wallet balance'; end if;
-  select array_agg(tile) into m from
-    (select generate_series(0,24) tile order by random() limit p_mine_count) q;
+  select array_agg(tile order by random()) into m
+  from (
+    select g.tile
+    from generate_series(0,24) as g(tile)
+    order by random()
+    limit p_mine_count
+  ) q;
   insert into public.ruby_rush_rounds(user_id,stake,mine_count,mine_positions)
     values(u,p_stake,p_mine_count,m) returning * into r;
   b := public.change_wallet_balance(u,-p_stake,'game_entry','Ruby Rush stake · '||r.id::text);
