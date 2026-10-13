@@ -15,11 +15,12 @@ const TIMES = [
 const NUMBERS = Array.from({ length: 100 }, (_, i) => String(i).padStart(2, '0'))
 
 const TWIN_FORTUNE_ODDS = [
-  { range: '₹0–₹70', weight: '7' },
-  { range: '₹71–₹100', weight: '5' },
-  { range: '₹101–₹300', weight: '3' },
-  { range: '₹301–₹500', weight: '2' },
-  { range: 'Above ₹500', weight: '1' },
+  { range: '₹0 (no bets)', target: '1.00%', weight: 100 },
+  { range: '₹1–₹70', target: '0.70%', weight: 70 },
+  { range: '₹71–₹100', target: '0.50%', weight: 50 },
+  { range: '₹101–₹300', target: '0.30%', weight: 30 },
+  { range: '₹301–₹500', target: '2.00%', weight: 200 },
+  { range: 'Above ₹500', target: '0.10%', weight: 10 },
 ]
 
 function istDateString(date = new Date()) {
@@ -322,15 +323,15 @@ export default function DoubleGame({ historyOnly = false, onOpenBookings, onOpen
             <p>For each number, the server totals the stakes from all players in this round and assigns a weight from the table below. These are weights, not percentages. The actual chance is that number’s weight divided by the sum of all 100 numbers’ weights. The weights can change as bookings change and are locked in when the draw runs.</p>
             <div className="double-odds-table-wrap">
               <table className="double-odds-table">
-                <thead><tr><th>Total stake on a number (all players)</th><th>Weight</th></tr></thead>
+                <thead><tr><th>Total stake per number (all players)</th><th>Intended relative odds</th></tr></thead>
                 <tbody>
                   {TWIN_FORTUNE_ODDS.map((odds) => (
-                    <tr key={odds.range}><td>{odds.range}</td><td>{odds.weight}</td></tr>
+                    <tr key={odds.range}><td>{odds.range}</td><td>{odds.target}</td></tr>
                   ))}
                 </tbody>
               </table>
             </div>
-            <small>One number is drawn per round. Because weights are normalized across all 100 numbers, actual percentages depend on the full round’s stake totals. A number with a smaller total wager receives a higher weight under these rules.</small>
+            <small>One number is drawn per round. Actual chances are normalized across all 100 numbers and depend on the combined stakes for the round. The ₹301–₹500 tier has the highest relative weight; numbers with more than ₹500 wagered have the lowest.</small>
           </details>
 
         </div>
