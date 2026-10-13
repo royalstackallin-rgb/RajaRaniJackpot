@@ -31,7 +31,7 @@ export default function DoubleResults() {
       if (queryError) throw queryError
       setRounds(data || [])
     } catch (err) {
-      setError(err.message || 'Could not load Targetor Double results.')
+      setError(err.message || 'Could not load Twin Fortune results.')
       setRounds([])
     } finally {
       setLoading(false)
@@ -44,7 +44,7 @@ export default function DoubleResults() {
     <section className="history-page">
       <div className="history-heading">
         <span className="history-eyebrow">OFFICIAL HISTORY</span>
-        <h2>Targetor Double Results</h2>
+        <h2>Twin Fortune Results</h2>
         <p>Completed Double rounds and winning numbers.</p>
       </div>
       <form className="results-search" onSubmit={loadResults}>
@@ -69,7 +69,7 @@ export default function DoubleResults() {
           <article className="result-card" key={round.id}>
             <div className="result-card-heading">
               <div>
-                <h3>Targetor Double</h3>
+                <h3>Twin Fortune</h3>
                 <p>{round.game_date} · {displayTime(round.round_time)}</p>
               </div>
               <span className="booking-status won">COMPLETED</span>
