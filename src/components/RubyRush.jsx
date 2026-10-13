@@ -14,29 +14,6 @@ function shuffledTiles() {
   return tiles
 }
 
-function combination(n, k) {
-  if (k < 0 || k > n) return 0
-  if (k === 0 || k === n) return 1
-  let result = 1
-  for (let index = 1; index <= Math.min(k, n - k); index += 1) {
-    result = (result * (n - index + 1)) / index
-  }
-  return result
-}
-
-// Expected relic multiplier among safe tiles at this pick count.
-function expectedRelicBoost(safeTiles, safePicks) {
-  const totalWays = combination(safeTiles, safePicks)
-  if (!totalWays) return 1
-  let expectedBoost = 0
-  for (let found = 0; found <= Math.min(2, safePicks); found += 1) {
-    const otherPicks = safePicks - found
-    const ways = combination(2, found) * combination(safeTiles - 2, otherPicks)
-    expectedBoost += (ways / totalWays) * Math.pow(1.2, found)
-  }
-  return expectedBoost
-}
-
 function formatCredits(value) {
   return Math.round(value).toLocaleString('en-IN')
 }
@@ -55,13 +32,7 @@ export default function RubyRush() {
     for (let i = 0; i < round.safePicks; i += 1) {
       chance *= (TILE_COUNT - mineCount - i) / (TILE_COUNT - i)
     }
-
-    // Normalize the payout for the expected relic boost at this pick count.
-    // Flooring the displayed multiplier keeps rounding from exceeding the target RTP.
-    const safeTiles = TILE_COUNT - mineCount
-    const expectedBoost = expectedRelicBoost(safeTiles, round.safePicks)
-    const base = Math.floor((0.97 / (chance * expectedBoost)) * 100) / 100
-    return Math.floor((base * Math.pow(1.2, round.relicsFound || 0)) * 100) / 100
+    return Math.floor((0.97 / chance) * 100) / 100
   }, [round, mineCount])
 
   const potentialReturn = round?.status === 'playing'
@@ -78,14 +49,11 @@ export default function RubyRush() {
     }
     const shuffled = shuffledTiles()
     const mines = new Set(shuffled.slice(0, mineCount))
-    const relics = new Set(shuffled.slice(mineCount, mineCount + 2))
     setCredits((value) => value - bet)
     setRound({
       mines,
-      relics,
       revealed: new Set(),
       safePicks: 0,
-      relicsFound: 0,
       status: 'playing',
       outcome: null,
     })
@@ -104,13 +72,9 @@ export default function RubyRush() {
       return
     }
 
-    const foundRelic = round.relics.has(index)
     const safePicks = round.safePicks + 1
-    const relicsFound = round.relicsFound + (foundRelic ? 1 : 0)
-    setRound({ ...round, revealed, safePicks, relicsFound })
-    setMessage(foundRelic
-      ? 'RELIC FOUND! Your vault boost adds 20% to the multiplier. Cash out or keep exploring.'
-      : 'Safe gem! Your multiplier has climbed. Cash out or risk another tile.')
+    setRound({ ...round, revealed, safePicks })
+    setMessage('Safe gem! Your multiplier has climbed. Cash out or risk another tile.')
   }
 
   const cashOut = () => {
@@ -133,14 +97,12 @@ export default function RubyRush() {
   const tileLabel = (index) => {
     if (!round || (round.status === 'playing' && !round.revealed.has(index))) return '◆'
     if (round?.mines.has(index)) return '✹'
-    if (round?.relics.has(index)) return '✦'
     return '♦'
   }
 
   const tileClass = (index) => {
     if (!round || (round.status === 'playing' && !round.revealed.has(index))) return 'ruby-tile'
     if (round?.mines.has(index)) return 'ruby-tile is-mine'
-    if (round?.relics.has(index)) return 'ruby-tile is-relic'
     return 'ruby-tile is-gem'
   }
 
@@ -174,7 +136,7 @@ export default function RubyRush() {
                 className={tileClass(index)}
                 onClick={() => revealTile(index)}
                 disabled={round?.status !== 'playing' || round.revealed.has(index)}
-                aria-label={!round || (round.status === 'playing' && !round.revealed.has(index)) ? `Reveal tile ${index + 1}` : `Tile ${index + 1}: ${round?.mines.has(index) ? 'mine' : round?.relics.has(index) ? 'relic' : 'gem'}`}
+                aria-label={!round || (round.status === 'playing' && !round.revealed.has(index)) ? `Reveal tile ${index + 1}` : `Tile ${index + 1}: ${round?.mines.has(index) ? 'mine' : 'gem'}`}
               >{tileLabel(index)}</button>
             ))}
           </div>
@@ -211,10 +173,6 @@ export default function RubyRush() {
               ))}
             </div>
             <p>More mines means a riskier vault and faster multiplier growth.</p><div className="ruby-risk-meter" aria-label={`${mineCount} mines selected`}>{Array.from({ length: 12 }, (_, index) => <i key={index} className={index < mineCount ? 'is-filled' : ''} />)}</div>
-          </div>
-          <div className={`ruby-relic-card ${round?.relicsFound ? 'is-found' : ''}`}>
-            <span className="ruby-relic-icon">✦</span>
-            <div><strong>RELIC BOOST <span>{round?.relicsFound ? 'FOUND +' : 'HIDDEN'}</span></strong><p>Two hidden relics are tucked among the safe tiles. Each one found adds 20% to your multiplier.</p></div>
           </div>
           <div className="ruby-history-card">
             <span className="ruby-label">RECENT RUNS</span>
