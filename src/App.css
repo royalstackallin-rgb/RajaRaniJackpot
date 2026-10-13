@@ -3325,3 +3325,8 @@ body[data-round-theme] .main-menu button:not(.active) {
 .lobby-history-actions-double button{border-color:rgba(255,54,101,.35);background:linear-gradient(135deg,rgba(255,32,82,.12),rgba(8,9,16,.9));color:#ff9bb3}
 .lobby-history-actions-double button:focus-visible{outline-color:#ff7898}
 @media(max-width:380px){.lobby-history-actions{gap:7px}.lobby-history-actions button{padding:10px 8px;gap:6px}.lobby-history-actions button span{font-size:12px}}
+
+/* Profile-style account menu trigger */
+.app-menu-trigger{width:50px;height:50px;border-radius:16px}
+.app-menu-trigger .app-menu-profile-icon{width:27px;height:27px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.app-menu-trigger.is-open{background:color-mix(in srgb,var(--round-accent,#fbbf24) 14%,var(--round-deep,#100b05))}
