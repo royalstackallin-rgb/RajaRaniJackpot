@@ -15,12 +15,12 @@ const TIMES = [
 const NUMBERS = Array.from({ length: 100 }, (_, i) => String(i).padStart(2, '0'))
 
 const TWIN_FORTUNE_ODDS = [
-  { range: '₹0 (no bets)', target: '1.00%', weight: 100 },
-  { range: '₹1–₹70', target: '0.70%', weight: 70 },
-  { range: '₹71–₹100', target: '0.50%', weight: 50 },
-  { range: '₹101–₹300', target: '0.30%', weight: 30 },
-  { range: '₹301–₹500', target: '2.00%', weight: 200 },
-  { range: 'Above ₹500', target: '0.10%', weight: 10 },
+  { range: '₹0 (no bets)', target: '1.00%' },
+  { range: '₹1–₹70', target: '0.70%' },
+  { range: '₹71–₹100', target: '0.50%' },
+  { range: '₹101–₹300', target: '0.30%' },
+  { range: '₹301–₹500', target: '0.20%' },
+  { range: 'Above ₹500', target: '0.10%' },
 ]
 
 function istDateString(date = new Date()) {
@@ -274,7 +274,7 @@ export default function DoubleGame({ historyOnly = false, onOpenBookings, onOpen
   const displayTime = (time) => ({ '00:00': '12:00 AM', '03:00': '3:00 AM', '06:00': '6:00 AM', '09:00': '9:00 AM', '12:00': '12:00 PM', '15:00': '3:00 PM', '18:00': '6:00 PM', '21:00': '9:00 PM' }[String(time).slice(0, 5)] || String(time).slice(0, 5))
   const roundLabel = (round) =>
     round ? `${round.game_date} · ${displayTime(round.round_time)}` : 'No round available'
-  const latestDoubleResult = [...rounds].reverse().find((round) => ['drawn', 'settled'].includes(round.status) && round.winning_number !== null && round.winning_number !== undefined) || null
+  const latestDoubleResult = [...rounds].reverse().find((round) => ['drawn', 'settled'].includes(round.status)) || null
   const bookingCountdownTarget = canBook ? currentRoundTime - 5 * 60 * 1000 : currentRoundTime
   const countdownSeconds = Math.max(0, Math.floor((bookingCountdownTarget - now.getTime()) / 1000))
   const countdownText = [Math.floor(countdownSeconds / 3600), Math.floor((countdownSeconds % 3600) / 60), countdownSeconds % 60].map((part) => String(part).padStart(2, '0')).join(':')
@@ -320,7 +320,7 @@ export default function DoubleGame({ historyOnly = false, onOpenBookings, onOpen
           <p className="how-to-play-example"><strong>Example:</strong> A ₹10 stake on number 27 has a potential payout of ₹800 if 27 is the winning number. Selecting 10 numbers at ₹10 each costs ₹100 in total.</p>
           <details className="double-odds-disclosure">
             <summary>Published weighted odds <span aria-hidden="true">＋</span></summary>
-            <p>For each number, the server totals the stakes from all players in this round and assigns a weight from the table below. These are weights, not percentages. The actual chance is that number’s weight divided by the sum of all 100 numbers’ weights. The weights can change as bookings change and are locked in when the draw runs.</p>
+            <p>For each number, the server totals the stakes from all players in this round and applies the exact percentage in the table. These are actual per-number chances, not weights. A single random draw can land in the remaining probability, in which case the round has no winning number. The odds are calculated when the draw runs.</p>
             <div className="double-odds-table-wrap">
               <table className="double-odds-table">
                 <thead><tr><th>Total stake per number (all players)</th><th>Intended relative odds</th></tr></thead>
@@ -331,7 +331,7 @@ export default function DoubleGame({ historyOnly = false, onOpenBookings, onOpen
                 </tbody>
               </table>
             </div>
-            <small>One number is drawn per round. Actual chances are normalized across all 100 numbers and depend on the combined stakes for the round. The ₹301–₹500 tier has the highest relative weight; numbers with more than ₹500 wagered have the lowest.</small>
+            <small>Each number uses its listed exact chance based on combined stakes from all players. If the sum of all numbers’ chances is below 100%, the remainder is the chance of no winning number. Numbers with ₹0 stake have a 1.00% chance each.</small>
           </details>
 
         </div>
@@ -345,7 +345,7 @@ export default function DoubleGame({ historyOnly = false, onOpenBookings, onOpen
         {currentRound && <div className="double-lobby-countdown"><span>{canBook ? 'BOOKING CLOSES IN' : 'DRAW TIME / STATUS'}</span><strong>{countdownText}</strong></div>}
         <div className="double-lobby-latest">
           <span className="double-label">LATEST COMPLETED RESULT</span>
-          {latestDoubleResult ? <div className="double-lobby-latest-row"><strong>{String(latestDoubleResult.winning_number).padStart(2, '0')}</strong><span>{latestDoubleResult.game_date} · {displayTime(latestDoubleResult.round_time)}</span></div> : <p>No completed Double result yet.</p>}
+          {latestDoubleResult ? <div className="double-lobby-latest-row"><strong>{latestDoubleResult.winning_number == null ? '—' : String(latestDoubleResult.winning_number).padStart(2, '0')}</strong><span>{latestDoubleResult.winning_number == null ? 'No winning number · ' : ''}{latestDoubleResult.game_date} · {displayTime(latestDoubleResult.round_time)}</span></div> : <p>No completed Twin Fortune result yet.</p>}
         </div>
       </section>
 
@@ -359,10 +359,10 @@ export default function DoubleGame({ historyOnly = false, onOpenBookings, onOpen
             {currentRound && ['drawn', 'settled'].includes(currentRound.status) ? 'RESULT' : currentRound && currentRound.status === 'open' && now.getTime() >= currentRoundTime ? 'DRAWING' : currentRound && currentRound.status === 'open' && now.getTime() >= currentRoundTime - 5 * 60 * 1000 ? 'BOOKING CLOSED' : currentRound ? currentRound.status.toUpperCase() : 'WAITING'}
           </span>
         </div>
-        {currentRound?.winning_number && (
+        {currentRound && ['drawn', 'settled'].includes(currentRound.status) && (
           <div className="double-winner">
-            <span>WINNING NUMBER</span>
-            <strong>{currentRound.winning_number}</strong>
+            <span>{currentRound.winning_number == null ? 'ROUND RESULT' : 'WINNING NUMBER'}</span>
+            <strong>{currentRound.winning_number == null ? 'NO WINNER' : String(currentRound.winning_number).padStart(2, '0')}</strong>
           </div>
         )}
         <div className="double-payout-note">Potential payout: <strong>80× stake per winning number</strong>. Stake applies to each selected number.</div>
