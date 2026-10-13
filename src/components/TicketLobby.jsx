@@ -422,7 +422,7 @@ function TicketLobby({ onOpenBookings, onOpenResults }) {
         <div>
           <span className="eyebrow">{getRoundName(currentRound)}</span>
           <h2>00–09</h2>
-          <p>Enter number of tickets for each number</p>
+          <p>Choose ticket quantities for each number. More tickets on a number lower its winning chance; numbers with fewer or no tickets become more likely.</p>
         </div>
 
         <div className="ticket-header-right">
