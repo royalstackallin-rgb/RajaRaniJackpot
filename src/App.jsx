@@ -36,6 +36,7 @@ function App() {
     }
   }
   const [resultsGame, setResultsGame] = useState(null)
+  const [bookingsGame, setBookingsGame] = useState(null)
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false)
   const [showAppMenu, setShowAppMenu] = useState(false)
 
@@ -198,10 +199,10 @@ function App() {
       )}
 
           {view === 'home' && <HomeDashboard onOpenGame={setView} onOpenBookings={() => navigateTo('bookings')} onOpenResults={(game) => { setResultsGame(game); navigateTo('results') }} onOpenWallet={() => navigateTo('wallet')} />}
-          {view === 'tickets' && <TicketLobby />}
-          {view === 'bookings' && <MyBookings />}
+          {view === 'tickets' && <TicketLobby onOpenBookings={() => { setBookingsGame('classic'); navigateTo('bookings') }} onOpenResults={() => { setResultsGame('classic'); navigateTo('results') }} />}
+          {view === 'bookings' && <MyBookings initialGame={bookingsGame} />}
           {view === 'results' && <GameResults initialGame={resultsGame} />}
-          {view === 'double' && <DoubleGame />}
+          {view === 'double' && <DoubleGame onOpenBookings={() => { setBookingsGame('double'); navigateTo('bookings') }} onOpenResults={() => { setResultsGame('double'); navigateTo('results') }} />}
           {view === 'wallet' && <Wallet />}
           {view === 'withdraw' && <Withdraw />}
           {view === 'deposit-admin' && isWalletAdmin && <DepositAdmin />}
