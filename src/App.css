@@ -3357,3 +3357,11 @@ body[data-round-theme] .main-menu button:not(.active) {
 /* Two upcoming titles remain after removing the already-developed Ruby Rush. */
 .home-coming-soon-grid{grid-template-columns:repeat(2,minmax(0,1fr));max-width:520px;margin-inline:auto}
 @media(max-width:520px){.home-coming-soon-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.home-coming-soon-card{min-height:180px}}
+
+/* Host-managed deposit QR and five-minute player session */
+.wallet-deposit-qr-image{display:block;width:min(100%,320px);height:auto;aspect-ratio:1;object-fit:contain;margin:14px auto;padding:10px;border:1px solid rgba(245,213,139,.5);border-radius:14px;background:#fff}
+.wallet-qr-session{text-align:center}
+.wallet-qr-session p{line-height:1.55}
+.wallet-qr-countdown{display:block!important;color:#ffda75!important;font-size:24px!important;font-variant-numeric:tabular-nums;letter-spacing:.04em}
+.host-deposit-qr-preview{margin-top:18px;padding-top:16px;border-top:1px solid rgba(255,255,255,.1);text-align:center}
+.host-deposit-qr-preview h3{margin:0;color:#f5d58b}
