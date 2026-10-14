@@ -3,7 +3,6 @@ import './RubyRush.css'
 import { supabase } from '../lib/supabase'
 
 const TILE_COUNT = 25
-const SAFE_PICK_CAPS = { 2: 14, 4: 12, 6: 10, 8: 8, 12: 6 }
 
 
 function formatCredits(value) {
@@ -66,7 +65,7 @@ export default function RubyRush() {
     ? Number(round.potentialReturn ?? Math.floor(Number(round.stake) * multiplier))
     : 0
   const displayedMultiplier = round?.safePicks ? multiplier : 1
-  const roundStatus = !round ? 'READY TO PLAY' : round.status === 'playing' ? 'VAULT OPEN' : round.status === 'lost' ? 'MINE TRIGGERED' : 'VAULT SECURED'
+  const roundStatus = !round ? 'READY TO PLAY' : round.status === 'playing' ? 'VAULT OPEN' : round.status === 'lost' ? 'MINE TRIGGERED' : round.status === 'ended' ? 'ROUND ENDED' : 'VAULT SECURED'
 
   const startRound = async () => {
     if (round?.status === 'playing' || busy || !userId) return
@@ -108,7 +107,12 @@ export default function RubyRush() {
     setBusy(true)
     const { data, error } = await supabase.rpc('ruby_rush_reveal_tile', { p_round_id: round.id, p_tile: index })
     if (error) {
-      setMessage(error.message || 'Could not reveal that tile. Try again.')
+      if ((error.message || '').toLowerCase().includes('round has ended')) {
+        setRound({ ...round, status: 'ended' })
+        setMessage('This round has already ended on the server. Start a new vault run.')
+      } else {
+        setMessage(error.message || 'Could not reveal that tile. Try again.')
+      }
       setBusy(false)
       return
     }
@@ -121,16 +125,8 @@ export default function RubyRush() {
     } else {
       const safePicks = Number(data.safe_picks || 0)
       const nextMultiplier = Number(data.multiplier || 1)
-      if (data.auto_cashout) {
-        const payout = Number(data.payout || 0)
-        setCredits(Number(data.balance))
-        setRound({ ...round, revealed, safePicks, multiplier: nextMultiplier, potentialReturn: payout, payout, status: 'cashed', outcome: 'cashout' })
-        setHistory((items) => [{ result: 'Auto cash-out at cap', amount: payout - Number(round.stake) }, ...items].slice(0, 5))
-        setMessage(`Maximum ${safePicks} safe picks reached. Automatic cash-out returned ${formatCredits(payout)} credits.`)
-      } else {
-        setRound({ ...round, revealed, safePicks, multiplier: nextMultiplier, potentialReturn: Number(data.potential_return || 0) })
-        setMessage('Safe gem! Your multiplier has climbed. Cash out or risk another tile.')
-      }
+      setRound({ ...round, revealed, safePicks, multiplier: nextMultiplier, potentialReturn: Number(data.potential_return || 0) })
+      setMessage('Safe gem! Your multiplier has climbed. Cash out or risk another tile.')
     }
     setBusy(false)
   }
@@ -184,9 +180,9 @@ export default function RubyRush() {
         <div className="ruby-board-panel">
           <div className="ruby-board-top">
             <div><span className="ruby-label">VAULT MULTIPLIER</span><strong className={`ruby-multiplier ${round?.status === 'playing' ? 'is-live' : ''}`}>{displayedMultiplier.toFixed(2)}×</strong><span className="ruby-board-caption">{round?.status === 'cashed' ? `Final return: ${formatCredits(round.payout)} credits` : round?.status === 'lost' ? 'Run ended — vault revealed' : round?.status === 'playing' ? `Potential return: ${formatCredits(potentialReturn)} credits` : 'Find a safe tile to begin'}</span></div>
-            <div className="ruby-board-stat"><span>SAFE PICKS</span><strong>{round?.safePicks || 0}<small> / {SAFE_PICK_CAPS[mineCount]}</small></strong><div className="ruby-progress-track"><span style={{ width: `${((round?.safePicks || 0) / SAFE_PICK_CAPS[mineCount]) * 100}%` }} /></div></div>
+            <div className="ruby-board-stat"><span>SAFE PICKS</span><strong>{round?.safePicks || 0}<small> / {TILE_COUNT - mineCount}</small></strong><div className="ruby-progress-track"><span style={{ width: `${((round?.safePicks || 0) / (TILE_COUNT - mineCount)) * 100}%` }} /></div></div>
           </div>
-          <p className="ruby-risk-note">Published safe-pick cap: 2 mines = 14, 4 = 12, 6 = 10, 8 = 8, 12 = 6. Reaching the cap automatically cashes out.</p>
+          <div className="ruby-board-heading"><span>THE VAULT</span><small>25 sealed tiles · choose carefully</small></div>
           <div className="ruby-grid" aria-label="Ruby Rush 5 by 5 vault grid">
             {Array.from({ length: TILE_COUNT }, (_, index) => (
               <button
