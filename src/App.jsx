@@ -6,7 +6,6 @@ import MyBookings from './components/MyBookings'
 import GameResults from './components/GameResults'
 import DoubleGame from './components/DoubleGame'
 import RubyRush from './components/RubyRush'
-import RiseOrRuin from './components/RiseOrRuin'
 import Wallet from './components/Wallet'
 import Withdraw from './components/Withdraw'
 import DepositAdmin from './components/DepositAdmin'
@@ -172,7 +171,7 @@ function App() {
     setMessage('')
   }
 
-  if (session && ['home', 'tickets', 'bookings', 'results', 'double', 'ruby-rush', 'rise-or-ruin', 'wallet', 'withdraw', 'deposit-admin'].includes(view)) {
+  if (session && ['home', 'tickets', 'bookings', 'results', 'double', 'ruby-rush', 'wallet', 'withdraw', 'deposit-admin'].includes(view)) {
     return (
       <main className={`app-page app-view-${view}`}>
         <div className="app-shell">
@@ -205,7 +204,7 @@ function App() {
           {view !== 'home' && (
             <div className="view-navigation">
               <button type="button" className="view-back-button" onClick={navigateBack} aria-label="Go back to previous page"><span aria-hidden="true">←</span> Back</button>
-              <span className="view-navigation-title">{({ tickets: 'Crown 24', double: 'Twin Fortune', slot: 'Royal Reels', 'ruby-rush': 'Ruby Rush', 'rise-or-ruin': 'Rise or Ruin', bookings: 'My Bookings', results: 'Game Results', wallet: 'Wallet', withdraw: 'Withdraw', 'deposit-admin': 'Deposit Admin' })[view] || ''}</span>
+              <span className="view-navigation-title">{({ tickets: 'Crown 24', double: 'Twin Fortune', slot: 'Royal Reels', 'ruby-rush': 'Ruby Rush', bookings: 'My Bookings', results: 'Game Results', wallet: 'Wallet', withdraw: 'Withdraw', 'deposit-admin': 'Deposit Admin' })[view] || ''}</span>
             </div>
           )}
 
@@ -249,7 +248,6 @@ function App() {
           {view === 'results' && <GameResults initialGame={resultsGame} />}
           {view === 'double' && <DoubleGame onOpenBookings={() => { setBookingsGame('double'); navigateTo('bookings') }} onOpenResults={() => { setResultsGame('double'); navigateTo('results') }} />}
           {view === 'ruby-rush' && <RubyRush />}
-          {view === 'rise-or-ruin' && <RiseOrRuin />}
           {view === 'wallet' && <Wallet />}
           {view === 'withdraw' && <Withdraw />}
           {view === 'deposit-admin' && isWalletAdmin && <DepositAdmin />}
