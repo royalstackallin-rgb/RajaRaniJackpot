@@ -151,3 +151,8 @@
 .ruby-tile .sealed-art{font-size:clamp(22px,4vw,34px);opacity:.6;color:#8ba9b7}
 .ruby-tile.is-gem{background:radial-gradient(circle at 50% 42%,#174e36,#0d2b21 72%)}
 .ruby-tile.is-mine{background:radial-gradient(circle at 50% 42%,#571d2b,#26121a 72%)}
+
+/* Ruby Rush illustrated vault header */
+.ruby-rush .ruby-hero-artwork{display:block;padding:0;overflow:hidden;border:1px solid #9d3447;border-radius:22px;background:#10070d;box-shadow:0 10px 34px #f21c4a16}
+.ruby-rush .ruby-hero-banner{display:block;width:100%;height:auto;aspect-ratio:12/5;object-fit:cover}
+@media(max-width:420px){.ruby-rush .ruby-hero-artwork{border-radius:16px}.ruby-rush .ruby-hero-banner{aspect-ratio:2/1}}
