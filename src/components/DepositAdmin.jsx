@@ -15,8 +15,8 @@ export default function DepositAdmin() {
   const [proofUrls, setProofUrls] = useState({})
   const [withdrawalRequests, setWithdrawalRequests] = useState([])
   const [withdrawalQrUrls, setWithdrawalQrUrls] = useState({})
-  const [depositQrPath, setDepositQrPath] = useState('')
-  const [depositQrUrl, setDepositQrUrl] = useState('')
+  const [depositQrs, setDepositQrs] = useState([])
+  const [depositQrLabel, setDepositQrLabel] = useState('')
   const [depositQrFile, setDepositQrFile] = useState(null)
 
   const refresh = useCallback(async () => {
@@ -26,11 +26,11 @@ export default function DepositAdmin() {
     const { data: adminRow, error: adminError } = await supabase.from('wallet_admins').select('user_id').eq('user_id', user.id).maybeSingle()
     if (adminError || !adminRow) { setIsAdmin(false); setMessage('This account is not authorized to access the deposit admin panel.'); setLoading(false); return }
     setIsAdmin(true)
-    const [depositResult, methodResult, withdrawalResult, qrSettingsResult] = await Promise.all([
+    const [depositResult, methodResult, withdrawalResult, qrListResult] = await Promise.all([
       supabase.from('wallet_deposits').select('id,user_id,amount_rupees,status,payment_reference,payment_method,proof_path,created_at,review_note,assigned_upi_id').eq('provider', 'manual_upi').order('created_at', { ascending: false }).limit(100),
       supabase.from('wallet_payment_methods').select('id,label,upi_id,active,created_at').order('created_at', { ascending: false }),
       supabase.from('withdrawal_requests').select('id,user_id,amount_rupees,status,qr_storage_path,created_at,admin_note').order('created_at', { ascending: false }).limit(100),
-      supabase.from('wallet_deposit_settings').select('qr_storage_path').eq('id', 1).maybeSingle(),
+      supabase.from('wallet_deposit_qrs').select('id,label,storage_path,active,created_at').order('created_at', { ascending: false }),
     ])
     if (depositResult.error) setMessage('Could not load requests: ' + depositResult.error.message)
     else {
@@ -46,14 +46,14 @@ export default function DepositAdmin() {
     }
     if (methodResult.error) setMessage('Could not load UPI accounts: ' + methodResult.error.message)
     else setMethods(methodResult.data || [])
-    if (qrSettingsResult.error) setMessage('Could not load host QR settings: ' + qrSettingsResult.error.message)
+    if (qrListResult.error) setMessage('Could not load host QR codes: ' + qrListResult.error.message)
     else {
-      const path = qrSettingsResult.data?.qr_storage_path || ''
-      setDepositQrPath(path)
-      if (path) {
-        const { data: signed } = await supabase.storage.from('host-deposit-qr').createSignedUrl(path, 300)
-        setDepositQrUrl(signed?.signedUrl || '')
-      } else setDepositQrUrl('')
+      const items = qrListResult.data || []
+      const withUrls = await Promise.all(items.map(async item => {
+        const { data: signed } = await supabase.storage.from('host-deposit-qr').createSignedUrl(item.storage_path, 300)
+        return { ...item, signedUrl: signed?.signedUrl || '' }
+      }))
+      setDepositQrs(withUrls)
     }
     if (withdrawalResult.error) setMessage("Could not load withdrawals: " + withdrawalResult.error.message)
     else {
@@ -76,6 +76,8 @@ export default function DepositAdmin() {
   const saveDepositQr = async (event) => {
     event.preventDefault()
     setMessage('')
+    const cleanLabel = depositQrLabel.trim()
+    if (!cleanLabel) { setMessage('Enter a label for this QR code.'); return }
     if (!depositQrFile) { setMessage('Choose a QR image first.'); return }
     if (!['image/jpeg', 'image/png', 'image/webp'].includes(depositQrFile.type) || depositQrFile.size > 5 * 1024 * 1024) {
       setMessage('Choose a JPG, PNG or WEBP QR image under 5 MB.')
@@ -83,25 +85,56 @@ export default function DepositAdmin() {
     }
     setBusyId('deposit-qr')
     try {
-      const { error: uploadError } = await supabase.storage.from('host-deposit-qr').upload('host/deposit-qr', depositQrFile, {
+      const safeName = depositQrFile.name.replace(/[^a-zA-Z0-9._-]/g, '-')
+      const storagePath = 'host/deposit-qrs/' + Date.now() + '-' + Math.random().toString(36).slice(2, 9) + '-' + safeName
+      const { error: uploadError } = await supabase.storage.from('host-deposit-qr').upload(storagePath, depositQrFile, {
         contentType: depositQrFile.type,
-        upsert: true,
+        upsert: false,
       })
       if (uploadError) throw uploadError
-      const { error: settingsError } = await supabase.from('wallet_deposit_settings').update({
-        qr_storage_path: 'host/deposit-qr',
-        updated_at: new Date().toISOString(),
-      }).eq('id', 1)
-      if (settingsError) throw settingsError
-      setDepositQrPath('host/deposit-qr')
+      const { data: { user } } = await supabase.auth.getUser()
+      const { error: insertError } = await supabase.from('wallet_deposit_qrs').insert({
+        label: cleanLabel, storage_path: storagePath, active: true, created_by: user?.id || null,
+      })
+      if (insertError) {
+        await supabase.storage.from('host-deposit-qr').remove([storagePath])
+        throw insertError
+      }
+      setDepositQrLabel('')
       setDepositQrFile(null)
-      setMessage('Host deposit QR saved. Players will see it during five-minute deposit sessions.')
+      const input = document.getElementById('host-deposit-qr-file')
+      if (input) input.value = ''
+      setMessage('QR code added. It can now be assigned to player deposit sessions.')
       await refresh()
     } catch (error) {
       setMessage('Could not save deposit QR: ' + (error.message || 'Unknown error'))
     } finally {
       setBusyId('')
     }
+  }
+
+  const toggleDepositQr = async (item) => {
+    setBusyId(item.id); setMessage('')
+    const { error } = await supabase.from('wallet_deposit_qrs').update({ active: !item.active, updated_at: new Date().toISOString() }).eq('id', item.id)
+    if (error) setMessage('Could not update QR: ' + error.message)
+    else setMessage(item.active ? 'QR disabled for new deposit sessions.' : 'QR enabled for new deposit sessions.')
+    setBusyId('')
+    await refresh()
+  }
+
+  const deleteDepositQr = async (item) => {
+    if (!window.confirm('Delete this QR code? Existing deposit requests may still refer to it.')) return
+    setBusyId(item.id); setMessage('')
+    const { error } = await supabase.from('wallet_deposit_qrs').delete().eq('id', item.id)
+    if (error) {
+      setMessage('Could not delete QR: ' + error.message)
+      setBusyId('')
+      return
+    }
+    const { error: storageError } = await supabase.storage.from('host-deposit-qr').remove([item.storage_path])
+    setBusyId('')
+    setMessage(storageError ? 'QR record deleted, but its image could not be removed from storage.' : 'QR code deleted.')
+    await refresh()
   }
 
   const addMethod = async (event) => {
@@ -177,7 +210,7 @@ export default function DepositAdmin() {
     <div className="wallet-heading"><div><p className="wallet-eyebrow">PRIVATE HOST TOOLS</p><h1>Deposit Requests &amp; UPI Accounts</h1><p className="wallet-subtitle">Manage receiving accounts. Verify every payment in the relevant bank transaction history before approving.</p></div><button className="wallet-refresh" onClick={refresh} disabled={loading}>Refresh</button></div>
     {message && <p className="wallet-message" role="status">{message}</p>}
     {!isAdmin ? <div className="wallet-history-card"><h2>Admin access required</h2><p className="wallet-subtitle">Add your authenticated user ID to public.wallet_admins in the correct Supabase project before using these tools.</p></div> : <>
-      <div className="wallet-history-card"><h2>Host deposit QR code</h2><p>Upload one QR code for all player deposits. Replace it whenever your receiving QR changes. Players will see it for 5 minutes per deposit session.</p><form onSubmit={saveDepositQr} className="deposit-method-form"><label htmlFor="host-deposit-qr-file">UPI QR image (JPG/PNG/WEBP, max 5 MB)</label><input id="host-deposit-qr-file" type="file" accept="image/jpeg,image/png,image/webp" onChange={e => setDepositQrFile(e.target.files?.[0] || null)} required={!depositQrPath} /><button className="wallet-buy-button" type="submit" disabled={busyId === 'deposit-qr' || !depositQrFile}>{busyId === 'deposit-qr' ? 'Saving QR…' : depositQrPath ? 'Replace host QR' : 'Save host QR'}</button></form>{depositQrUrl ? <div className="host-deposit-qr-preview"><h3>Current player deposit QR</h3><img className="wallet-deposit-qr-image" src={depositQrUrl} alt="Current host deposit QR" /><p className="wallet-empty">Saved QR is active for new deposit sessions.</p></div> : <p className="wallet-empty">No host QR saved yet. Players cannot start deposits until you upload one.</p>}</div>
+      <div className="wallet-history-card"><h2>Host deposit QR codes</h2><p>Add multiple receiving QR codes. Each player deposit session is assigned one active QR for 5 minutes. Disable a QR to stop assigning it to new sessions.</p><form onSubmit={saveDepositQr} className="deposit-method-form"><label htmlFor="deposit-qr-label">QR label</label><input id="deposit-qr-label" value={depositQrLabel} onChange={e => setDepositQrLabel(e.target.value)} placeholder="e.g. GPay account 1" maxLength={80} required /><label htmlFor="host-deposit-qr-file">UPI QR image (JPG/PNG/WEBP, max 5 MB)</label><input id="host-deposit-qr-file" type="file" accept="image/jpeg,image/png,image/webp" onChange={e => setDepositQrFile(e.target.files?.[0] || null)} required /><button className="wallet-buy-button" type="submit" disabled={busyId === 'deposit-qr' || !depositQrFile || !depositQrLabel.trim()}>{busyId === 'deposit-qr' ? 'Saving QR…' : 'Add QR code'}</button></form>{depositQrs.length === 0 ? <p className="wallet-empty">No host QR codes saved yet. Add at least one active QR before players can start deposits.</p> : <div className="deposit-admin-list">{depositQrs.map(item => <article className="deposit-admin-card" key={item.id}><div className="deposit-admin-card-head"><div><strong>{item.label}</strong><small>{item.active ? 'Active — may be assigned to new sessions' : 'Disabled — not assigned to new sessions'}</small></div><span className={'wallet-deposit-status ' + (item.active ? 'credited' : 'failed')}>{item.active ? 'active' : 'disabled'}</span></div>{item.signedUrl && <img className="wallet-deposit-qr-image" src={item.signedUrl} alt={item.label + ' QR code'} />}<div className="deposit-admin-actions"><button disabled={busyId === item.id} onClick={() => toggleDepositQr(item)}>{item.active ? 'Disable' : 'Enable'}</button><button className="reject" disabled={busyId === item.id} onClick={() => deleteDepositQr(item)}>Delete</button></div></article>)}</div>}</div>
       <div className="wallet-history-card">
         <h2>Withdrawal Requests</h2>
         <p>Approval means approved for further review only. No money is transferred by this action.</p>
