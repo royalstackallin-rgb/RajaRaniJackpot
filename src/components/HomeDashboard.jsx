@@ -289,7 +289,7 @@ export default function HomeDashboard({ onOpenGame, onOpenBookings, onOpenResult
 
       <article className="ruby-home-card">
         <div className="ruby-home-art"><span>✦</span><strong>RUBY RUSH</strong><small>CRACK THE VAULT</small></div>
-        <div className="ruby-home-copy"><span className="home-eyebrow">TARGETORSTAKE ORIGINAL</span><h2>Risk it. Reveal it. Secure it.</h2><p>Find hidden gems, discover relic boosts, and choose when to cash out in a free practice game.</p><button type="button" onClick={() => onOpenGame('ruby-rush')}>Enter Ruby Rush <span>→</span></button></div>
+        <div className="ruby-home-copy"><span className="home-eyebrow">TARGETORSTAKE ORIGINAL</span><h2>Risk it. Reveal it. Secure it.</h2><p>Uncover hidden gems, watch your multiplier climb, and decide when to cash out. One wrong pick ends your run — how far will you go?</p><button type="button" onClick={() => onOpenGame('ruby-rush')}>Enter Ruby Rush <span>→</span></button></div>
       </article>
 
     </section>
