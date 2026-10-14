@@ -72,11 +72,13 @@ begin
 end $$;
 
 create or replace function public.ruby_rush_cash_out(p_round_id uuid)
-returns jsonb language plpgsql security definer set search_path=public as $$
+returns jsonb language plpgsql security definer set search_path=public as $
 declare
   r public.ruby_rush_rounds%rowtype;
   chance numeric := 1;
   mult numeric;
+  paid bigint;
+  b bigint;
   i integer;
 begin
   if auth.uid() is null then raise exception 'Please sign in'; end if;
