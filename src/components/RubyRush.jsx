@@ -162,13 +162,13 @@ export default function RubyRush() {
 
   return (
     <section className="ruby-rush">
-      <div className="ruby-hero ruby-hero-artwork">
-        <img
-          className="ruby-hero-banner"
-          src="/ruby-rush-banner.svg"
-          alt="Ruby Rush — Crack the Vault, featuring a glowing ruby and a bomb"
-          fetchPriority="high"
-        />
+      <div className="ruby-hero">
+        <div className="ruby-hero-copy">
+          <span className="ruby-kicker">TARGETORSTAKE ORIGINAL · SERVER-VERIFIED ROUNDS</span>
+          <h1>RUBY <span>RUSH</span></h1>
+          <p>Crack the vault. Find the gems. Know when to walk away.</p>
+        </div>
+        <div className="ruby-vault-mark" aria-hidden="true"><span>✦</span></div>
       </div>
 
       <div className="ruby-balance-row">
