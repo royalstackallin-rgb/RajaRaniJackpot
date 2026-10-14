@@ -60,13 +60,10 @@ export default function Wallet() {
       if (error) throw error
       const assignment = Array.isArray(data) ? data[0] : data
       if (!assignment?.assignment_id) throw new Error('Could not start a QR session. Please contact the host.')
-      const { data: settings, error: settingsError } = await supabase
-        .from('wallet_deposit_settings').select('qr_storage_path').eq('id', 1).maybeSingle()
-      if (settingsError) throw settingsError
-      if (!settings?.qr_storage_path) throw new Error('The host has not configured a deposit QR yet.')
+      if (!assignment.qr_storage_path) throw new Error('No active host deposit QR was assigned. Please contact the host.')
       const { data: signed, error: qrError } = await supabase.storage
-        .from('host-deposit-qr').createSignedUrl(settings.qr_storage_path, 300)
-      if (qrError || !signed?.signedUrl) throw new Error('Could not load the host QR. Please try again.')
+        .from('host-deposit-qr').createSignedUrl(assignment.qr_storage_path, 300)
+      if (qrError || !signed?.signedUrl) throw new Error('Could not load the assigned host QR. Please try again.')
       setAssigned({
         id: assignment.assignment_id,
         label: assignment.assigned_label || 'Host payment QR',
