@@ -10,6 +10,8 @@ export default function Wallet() {
   const [proof, setProof] = useState(null)
   const [deposits, setDeposits] = useState([])
   const [assigned, setAssigned] = useState(null)
+  const [qrUrl, setQrUrl] = useState('')
+  const [secondsLeft, setSecondsLeft] = useState(0)
   const [loading, setLoading] = useState(false)
   const [refreshing, setRefreshing] = useState(true)
   const [message, setMessage] = useState('')
@@ -30,8 +32,26 @@ export default function Wallet() {
   }, [])
   useEffect(() => { refresh() }, [refresh])
 
+  useEffect(() => {
+    if (!assigned?.expires_at) { setSecondsLeft(0); return }
+    const update = () => {
+      const remaining = Math.max(0, Math.ceil((new Date(assigned.expires_at).getTime() - Date.now()) / 1000))
+      setSecondsLeft(remaining)
+      if (remaining === 0) {
+        setAssigned(null)
+        setQrUrl('')
+        setMessage('This QR session expired after 5 minutes. Request a new QR to continue.')
+      }
+    }
+    update()
+    const timer = window.setInterval(update, 1000)
+    return () => window.clearInterval(timer)
+  }, [assigned?.expires_at])
+
   const startPayment = async () => {
     setMessage('')
+    setAssigned(null)
+    setQrUrl('')
     const rupees = Number(amount)
     if (!Number.isSafeInteger(rupees) || rupees < 10 || rupees > 50000) { setMessage('Enter a whole amount between ₹10 and ₹50,000.'); return }
     setLoading(true)
@@ -39,20 +59,23 @@ export default function Wallet() {
       const { data, error } = await supabase.rpc('assign_manual_upi_method', { p_amount_rupees: rupees })
       if (error) throw error
       const assignment = Array.isArray(data) ? data[0] : data
-      if (!assignment?.assignment_id || !assignment?.assigned_upi_id) throw new Error('No UPI account could be assigned. Please contact the host.')
-      const method = {
+      if (!assignment?.assignment_id) throw new Error('Could not start a QR session. Please contact the host.')
+      const { data: settings, error: settingsError } = await supabase
+        .from('wallet_deposit_settings').select('qr_storage_path').eq('id', 1).maybeSingle()
+      if (settingsError) throw settingsError
+      if (!settings?.qr_storage_path) throw new Error('The host has not configured a deposit QR yet.')
+      const { data: signed, error: qrError } = await supabase.storage
+        .from('host-deposit-qr').createSignedUrl(settings.qr_storage_path, 300)
+      if (qrError || !signed?.signedUrl) throw new Error('Could not load the host QR. Please try again.')
+      setAssigned({
         id: assignment.assignment_id,
-        label: assignment.assigned_label,
-        upi_id: assignment.assigned_upi_id,
+        label: assignment.assigned_label || 'Host payment QR',
         amount_rupees: assignment.amount_rupees,
         expires_at: assignment.expires_at,
-      }
-      setAssigned(method)
-      const note = 'TARGETORSTAKE deposit ' + method.id.slice(0, 8)
-      const upiUrl = 'upi://pay?pa=' + encodeURIComponent(method.upi_id) + '&pn=' + encodeURIComponent(method.label || 'TARGETORSTAKE') + '&am=' + encodeURIComponent(String(rupees)) + '&cu=INR&tn=' + encodeURIComponent(note)
-      window.location.href = upiUrl
+      })
+      setQrUrl(signed.signedUrl)
     } catch (error) {
-      setMessage(error.message || 'Could not assign a UPI account.')
+      setMessage(error.message || 'Could not start the QR payment session.')
     } finally {
       setLoading(false)
     }
@@ -62,7 +85,7 @@ export default function Wallet() {
     event.preventDefault(); setMessage('')
     const rupees = Number(amount)
     if (!Number.isSafeInteger(rupees) || rupees < 10 || rupees > 50000) { setMessage('Enter a whole amount between ₹10 and ₹50,000.'); return }
-    if (!assigned) { setMessage('First tap Pay with UPI to receive an assigned payment account.'); return }
+    if (!assigned || secondsLeft <= 0) { setMessage('Your QR session has expired. Request a new QR before submitting.'); return }
     if (Number(assigned.amount_rupees) !== rupees) { setMessage('Amount changed. Start a new payment assignment.'); return }
     if (!reference.trim()) { setMessage('Enter the UPI transaction reference number.'); return }
     if (!proof) { setMessage('Upload the payment screenshot so the host can review your request.'); return }
@@ -88,14 +111,14 @@ export default function Wallet() {
   }
 
   return <section className="wallet-page">
-    <div className="wallet-heading"><div><p className="wallet-eyebrow">TARGETORSTAKE ACCOUNT</p><h1>Wallet / Buy In</h1><p className="wallet-subtitle">Choose an amount, pay the randomly assigned UPI account, then submit your reference and screenshot for host review.</p></div><button type="button" className="wallet-refresh" onClick={refresh} disabled={refreshing}>Refresh</button></div>
+    <div className="wallet-heading"><div><p className="wallet-eyebrow">TARGETORSTAKE ACCOUNT</p><h1>Wallet / Buy In</h1><p className="wallet-subtitle">Choose an amount, scan the host QR within 5 minutes, then submit your reference and screenshot for host review.</p></div><button type="button" className="wallet-refresh" onClick={refresh} disabled={refreshing}>Refresh</button></div>
     <div className="wallet-balance-card"><span>AVAILABLE BALANCE</span><strong>{refreshing && balance === null ? 'Loading…' : money(balance)}</strong><small>Pending requests are not included in your balance.</small></div>
-    <div className="wallet-deposit-card"><h2>Step 1 · Pay by UPI</h2><label htmlFor="wallet-deposit-amount">Deposit amount (₹)</label><input id="wallet-deposit-amount" type="number" inputMode="numeric" min="10" max="50000" step="1" value={amount} onChange={e => { setAmount(e.target.value); setAssigned(null) }} required /><div className="wallet-quick-amounts">{[100,500,1000,2000].map(v => <button key={v} type="button" className={Number(amount) === v ? 'selected' : ''} onClick={() => { setAmount(String(v)); setAssigned(null) }}>₹{v.toLocaleString('en-IN')}</button>)}</div><button className="wallet-buy-button" type="button" onClick={startPayment} disabled={loading}>{loading ? 'Preparing payment…' : 'Pay with UPI'}</button>{assigned && <div className="wallet-upi-id"><span>Assigned receiving account</span><strong>{assigned.label}</strong><strong>{assigned.upi_id}</strong><p>Pay exactly {money(amount)} to this account. If you cancel the payment, do not submit a deposit request.</p><button type="button" onClick={() => { navigator.clipboard?.writeText(assigned.upi_id); setMessage('UPI ID copied if clipboard permission is available.') }}>Copy UPI ID</button></div>}<p className="wallet-secure-note">Opening a UPI app does not confirm payment. Verify the recipient in your UPI app. Never enter your UPI PIN on this website.</p></div>
+    <div className="wallet-deposit-card"><h2>Step 1 · Pay by UPI</h2><label htmlFor="wallet-deposit-amount">Deposit amount (₹)</label><input id="wallet-deposit-amount" type="number" inputMode="numeric" min="10" max="50000" step="1" value={amount} onChange={e => { setAmount(e.target.value); setAssigned(null) }} required /><div className="wallet-quick-amounts">{[100,500,1000,2000].map(v => <button key={v} type="button" className={Number(amount) === v ? 'selected' : ''} onClick={() => { setAmount(String(v)); setAssigned(null) }}>₹{v.toLocaleString('en-IN')}</button>)}</div><button className="wallet-buy-button" type="button" onClick={startPayment} disabled={loading}>{loading ? 'Preparing QR…' : 'Show deposit QR'} </button>{assigned && qrUrl && <div className="wallet-upi-id wallet-qr-session"><span>SCAN HOST QR TO PAY</span><strong>{assigned.label}</strong><p>Pay exactly {money(assigned.amount_rupees)} using your UPI app.</p><img className="wallet-deposit-qr-image" src={qrUrl} alt="Host deposit UPI QR code" /><strong className="wallet-qr-countdown">QR expires in {String(Math.floor(secondsLeft / 60)).padStart(2, '0')}:{String(secondsLeft % 60).padStart(2, '0')}</strong><p>Pay before the timer ends. If the QR expires, request a new one. Never enter your UPI PIN on this website.</p></div>}<p className="wallet-secure-note">The QR is shown for 5 minutes. Paying does not automatically credit your wallet; submit your transaction reference and screenshot for host review.</p></div>
     <form className="wallet-deposit-card" onSubmit={submitRequest}>
       <h2>Step 2 · Submit payment request</h2><p>Only submit this after completing the payment. Cancelled payments should not be submitted.</p>
       <label htmlFor="wallet-upi-reference">UPI transaction reference / UTR</label><input id="wallet-upi-reference" value={reference} onChange={e => setReference(e.target.value)} maxLength={100} placeholder="Enter transaction reference" required />
       <label htmlFor="wallet-proof">Payment screenshot (JPG/PNG/WEBP, max 5 MB)</label><input id="wallet-proof" type="file" accept="image/jpeg,image/png,image/webp" onChange={e => setProof(e.target.files?.[0] || null)} required />
-      <button className="wallet-buy-button" type="submit" disabled={loading || !assigned}>{loading ? 'Submitting request…' : 'Submit for host approval'}</button>
+      <button className="wallet-buy-button" type="submit" disabled={loading || !assigned || secondsLeft <= 0}>{loading ? 'Submitting request…' : 'Submit for host approval'}</button>
     </form>
     {message && <p className="wallet-message" role="status">{message}</p>}
     <div className="wallet-history-card"><div className="wallet-history-heading"><h2>My deposit requests</h2><button type="button" onClick={refresh} disabled={refreshing}>Reload</button></div>{deposits.length === 0 ? <p className="wallet-empty">No deposit requests yet.</p> : <div className="wallet-deposit-list">{deposits.map(d => <div className="wallet-deposit-row" key={d.id}><div><strong>{money(d.amount_rupees)}</strong><span>{new Date(d.created_at).toLocaleString('en-IN')}{d.assigned_upi_id ? ' · Paid to: ' + d.assigned_upi_id : ''}{d.payment_reference ? ' · Ref: ' + d.payment_reference : ''}</span>{d.review_note && <span>{d.review_note}</span>}</div><span className={'wallet-deposit-status ' + d.status}>{d.status === 'credited' ? 'approved' : d.status === 'failed' ? 'rejected' : d.status}</span></div>)}</div>}</div><p className="wallet-disclaimer">A screenshot does not prove payment. Wallet credits are added only after host verification. Use only if this activity is legally permitted and approved by your payment provider.</p>
