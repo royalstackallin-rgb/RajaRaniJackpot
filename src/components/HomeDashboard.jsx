@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
 import crown24Artwork from '../assets/file_00000000da6c8211b168793beecdc78f.png'
 import twinFortuneArtwork from '../assets/file_00000000de548208b1b1d6e87d33fff9.png'
+import './RubyRushHome.css'
 
 function todayLocal() {
   const now = new Date()
@@ -286,6 +287,11 @@ export default function HomeDashboard({ onOpenGame, onOpenBookings, onOpenResult
         </button>
       </div>
 
+
+      <article className="ruby-home-card">
+        <img className="ruby-home-art ruby-home-art-image" src="https://raw.githubusercontent.com/royalstackallin-rgb/RajaRaniJackpot/main/src/assets/Rubyrush.png" alt="Ruby Rush artwork" loading="eager" style={{ display: 'block', width: '100%', height: 'auto', aspectRatio: '2.4 / 1', objectFit: 'cover', padding: 0 }} />
+        <div className="ruby-home-copy"><span className="home-eyebrow">TARGETORSTAKE ORIGINAL</span><h2>Risk it. Reveal it. Secure it.</h2><p>Uncover hidden gems, watch your multiplier climb, and decide when to cash out. One wrong pick ends your run — how far will you go?</p><button type="button" onClick={() => onOpenGame('ruby-rush')}>Enter Ruby Rush <span>→</span></button></div>
+      </article>
 
       <section className="home-coming-soon" aria-labelledby="home-coming-soon-title">
         <div className="home-coming-soon-heading">
