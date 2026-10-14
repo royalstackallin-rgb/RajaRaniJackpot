@@ -15,12 +15,12 @@ const TIMES = [
 const NUMBERS = Array.from({ length: 100 }, (_, i) => String(i).padStart(2, '0'))
 
 const TWIN_FORTUNE_ODDS = [
-  { range: '₹0 (no bets)', target: '1.00%' },
-  { range: '₹1–₹70', target: '0.70%' },
-  { range: '₹71–₹100', target: '0.50%' },
-  { range: '₹101–₹300', target: '0.30%' },
-  { range: '₹301–₹500', target: '0.20%' },
-  { range: 'Above ₹500', target: '0.10%' },
+  { range: '₹0 (no bets)', target: '100' },
+  { range: '₹1–₹70', target: '70' },
+  { range: '₹71–₹100', target: '50' },
+  { range: '₹101–₹300', target: '30' },
+  { range: '₹301–₹500', target: '20' },
+  { range: 'Above ₹500', target: '10' },
 ]
 
 function istDateString(date = new Date()) {
@@ -322,11 +322,11 @@ export default function DoubleGame({ historyOnly = false, onOpenBookings, onOpen
           </ol>
           <p className="how-to-play-example"><strong>Example:</strong> A ₹10 stake on number 27 has a potential payout of ₹800 if 27 is the winning number. Selecting 10 numbers at ₹10 each costs ₹100 in total.</p>
           <details className="double-odds-disclosure">
-            <summary>Published odds <span aria-hidden="true">＋</span></summary>
-            <p>For each number, the server totals the stakes from all players in this round and applies the exact percentage in the table. These are actual per-number chances, not weights. A single random draw can land in the remaining probability, in which case the round has no winning number. The odds are calculated when the draw runs.</p>
+            <summary>Winning weights <span aria-hidden="true">＋</span></summary>
+            <p>Every Twin Fortune round has exactly one winning number. The server totals all pending stakes on each number, assigns that number a weight from the table, and makes one secure random draw across the combined weights. A number's actual chance is its weight divided by the total weight of all 100 numbers, so the percentage changes with the round's stakes.</p>
             <div className="double-odds-table-wrap">
               <table className="double-odds-table">
-                <thead><tr><th>Total stake per number (all players)</th><th>Intended relative odds</th></tr></thead>
+                <thead><tr><th>Total stake per number (all players)</th><th>Relative weight</th></tr></thead>
                 <tbody>
                   {TWIN_FORTUNE_ODDS.map((odds) => (
                     <tr key={odds.range}><td>{odds.range}</td><td>{odds.target}</td></tr>
@@ -334,7 +334,7 @@ export default function DoubleGame({ historyOnly = false, onOpenBookings, onOpen
                 </tbody>
               </table>
             </div>
-            <small>Each number uses its listed exact chance based on combined stakes from all players. If the sum of all numbers’ chances is below 100%, the remainder is the chance of no winning number. Numbers with ₹0 stake have a 1.00% chance each.</small>
+            <small>Weights: ₹0 stake = 100; ₹1–₹70 = 70; ₹71–₹100 = 50; ₹101–₹300 = 30; ₹301–₹500 = 20; above ₹500 = 10. Actual chance = that number's weight ÷ total weights for numbers 00–99. Even when no one books a number, it remains eligible to win. A winning number is always drawn.</small>
           </details>
 
         </div>
