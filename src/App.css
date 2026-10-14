@@ -2846,7 +2846,8 @@ body[data-round-theme] .main-menu button:not(.active) {
 .wallet-balance-card>span{color:#9baecb;font-size:10px;font-weight:900;letter-spacing:.13em}
 .wallet-balance-card strong{font-size:clamp(30px,7vw,42px);color:#f5d58b}
 .wallet-balance-card small{color:#8392ab}
-.wallet-deposit-card h2,.wallet-history-card h2{margin:0;font-size:19px}
+.wallet-deposit-card h2,.wallet-history-card h2{margin:0;color:#f5d58b;font-size:19px;line-height:1.35}
+.wallet-deposit-card h2{font-weight:850;text-wrap:pretty}
 .wallet-deposit-card>p{color:#aab8d0;font-size:13px;line-height:1.5}
 .wallet-deposit-card label{display:block;margin:18px 0 7px;color:#aab8d0;font-size:12px;font-weight:800}
 .wallet-deposit-card>input{box-sizing:border-box;width:100%;padding:14px;border:1px solid #ffffff35;border-radius:10px;background:#050b16;color:#fff;font:inherit;font-size:18px}
