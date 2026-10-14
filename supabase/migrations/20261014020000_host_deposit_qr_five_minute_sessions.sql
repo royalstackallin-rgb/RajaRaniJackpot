@@ -10,7 +10,7 @@ create table if not exists public.wallet_deposit_settings (
 insert into public.wallet_deposit_settings(id) values (1) on conflict (id) do nothing;
 alter table public.wallet_deposit_settings enable row level security;
 revoke all on public.wallet_deposit_settings from anon, authenticated;
-grant select on public.wallet_deposit_settings to authenticated;
+grant select, update on public.wallet_deposit_settings to authenticated;
 drop policy if exists "Signed-in users can view deposit QR setting" on public.wallet_deposit_settings;
 create policy "Signed-in users can view deposit QR setting"
   on public.wallet_deposit_settings for select to authenticated using (true);
