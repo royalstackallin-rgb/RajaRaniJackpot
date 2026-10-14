@@ -3330,3 +3330,24 @@ body[data-round-theme] .main-menu button:not(.active) {
 .app-menu-trigger{width:50px;height:50px;border-radius:16px}
 .app-menu-trigger .app-menu-profile-icon{width:27px;height:27px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .app-menu-trigger.is-open{background:color-mix(in srgb,var(--round-accent,#fbbf24) 14%,var(--round-deep,#100b05))}
+
+
+/* Home: upcoming game teasers */
+.home-coming-soon{margin:30px 0 10px;padding:20px 16px;border:1px solid rgba(239,190,83,.22);border-radius:18px;background:radial-gradient(ellipse at 50% 0%,rgba(132,29,39,.2),transparent 58%),linear-gradient(155deg,rgba(20,13,15,.96),rgba(8,8,12,.98));}
+.home-coming-soon-heading{margin-bottom:17px}
+.home-coming-soon-heading h2{margin:7px 0 6px;color:#fff0cf;font-size:clamp(21px,5vw,27px);font-weight:850;line-height:1.15;letter-spacing:-.025em}
+.home-coming-soon-heading p{margin:0;color:#a9a2a5;font-size:13px;line-height:1.5}
+.home-coming-soon-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.home-coming-soon-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;min-width:0;min-height:190px;padding:13px 11px 12px;overflow:hidden;border:1px solid rgba(255,255,255,.11);border-radius:13px;background:linear-gradient(155deg,rgba(39,27,31,.96),rgba(13,12,17,.98));}
+.home-coming-soon-card:before{position:absolute;top:0;left:12px;right:12px;height:2px;border-radius:0 0 3px 3px;background:var(--coming-accent,#e6b75b);content:""}
+.coming-soon-royal{--coming-accent:#f0c45c}
+.coming-soon-ruby{--coming-accent:#ff5b70;background:linear-gradient(155deg,rgba(54,15,25,.96),rgba(13,12,17,.98))}
+.coming-soon-poker{--coming-accent:#8ab6ff;background:linear-gradient(155deg,rgba(18,29,47,.96),rgba(13,12,17,.98))}
+.coming-soon-symbol{display:grid;place-items:center;width:36px;height:36px;margin:3px 0 11px;border:1px solid color-mix(in srgb,var(--coming-accent) 48%,transparent);border-radius:10px;background:color-mix(in srgb,var(--coming-accent) 12%,transparent);color:var(--coming-accent);font-size:23px;font-weight:800}
+.coming-soon-tag{color:var(--coming-accent);font-size:8px;font-weight:850;letter-spacing:.09em;line-height:1.35}
+.home-coming-soon-card h3{margin:6px 0;color:#fff5e8;font-size:clamp(12px,3vw,15px);font-weight:850;line-height:1.2}
+.home-coming-soon-card p{margin:0 0 12px;color:#aaa4aa;font-size:10px;line-height:1.45}
+.coming-soon-status{display:flex;align-items:center;gap:6px;margin-top:auto;color:#d5cbd0;font-size:9px;font-weight:750;white-space:nowrap}
+.coming-soon-status span{width:6px;height:6px;border-radius:50%;background:var(--coming-accent);box-shadow:0 0 8px color-mix(in srgb,var(--coming-accent) 60%,transparent)}
+@media(max-width:390px){.home-coming-soon{padding:17px 11px}.home-coming-soon-grid{gap:7px}.home-coming-soon-card{min-height:184px;padding:12px 8px 10px}.coming-soon-tag{font-size:7px}.home-coming-soon-card p{font-size:9px}.coming-soon-status{font-size:8px}}
+@media(prefers-reduced-motion:reduce){.home-coming-soon-card{scroll-behavior:auto}}
