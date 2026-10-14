@@ -1,0 +1,193 @@
+.ruby-rush{--ruby-red:#f04452;--ruby-gold:#ffc76a;color:#f7f4f5;padding:4px 0 30px;text-align:left}.ruby-hero{position:relative;display:flex;align-items:center;justify-content:space-between;gap:18px;overflow:hidden;padding:24px 22px;margin-bottom:14px;border:1px solid #5b202d;border-radius:22px;background:radial-gradient(circle at 78% 10%,#5c1425 0,transparent 36%),linear-gradient(135deg,#24101a,#100d17 72%)}.ruby-hero-copy{position:relative;z-index:1}.ruby-kicker,.ruby-label{display:block;color:#eaa6a8;font-size:10px;font-weight:900;letter-spacing:1.5px}.ruby-hero h1{margin:8px 0 5px;color:#fff;font-size:clamp(30px,7vw,46px);font-weight:950;letter-spacing:1px;line-height:1}.ruby-hero h1 span{color:#ff5967}.ruby-hero p{max-width:430px;color:#c6aeb6;font-size:13px}.ruby-vault-mark{width:82px;height:82px;flex:0 0 auto;display:grid;place-items:center;border:2px solid #a84150;border-radius:22px;transform:rotate(45deg);background:linear-gradient(145deg,#5c1b2b,#1b0b13);box-shadow:0 0 35px #f0445226}.ruby-vault-mark span{color:#ffc76a;font-size:39px;transform:rotate(-45deg)}.ruby-balance-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;margin-bottom:14px;border:1px solid #2d2935;border-radius:15px;background:#111019}.ruby-balance-row span,.ruby-balance-row strong{display:block}.ruby-balance-row span{color:#9d96a6;font-size:10px;font-weight:800;letter-spacing:1px}.ruby-balance-row strong{margin-top:3px;color:#ffcf7d;font-size:23px}.ruby-balance-row button{padding:9px 11px;border:1px solid #40313c;border-radius:9px;background:#20151f;color:#f4c5ca;font-size:11px;font-weight:800}.ruby-balance-row button:disabled{opacity:.4}.ruby-layout{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(230px,.7fr);gap:14px;align-items:start}.ruby-board-panel,.ruby-control-card,.ruby-relic-card,.ruby-history-card{border:1px solid #302834;border-radius:18px;background:linear-gradient(145deg,#15121b,#0e0c13);padding:15px}.ruby-board-top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:13px}.ruby-multiplier{display:block;margin-top:3px;color:#ffc76a;font-size:30px;font-weight:950;line-height:1.1}.ruby-board-stat{text-align:right}.ruby-board-stat span{display:block;color:#918998;font-size:9px;font-weight:900;letter-spacing:1px}.ruby-board-stat strong{display:block;margin-top:4px;font-size:15px}.ruby-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px}.ruby-tile{aspect-ratio:1;min-width:0;display:grid;place-items:center;padding:0;border:1px solid #593040;border-radius:12px;background:linear-gradient(145deg,#351824,#21121d);color:#f36c83;font-size:clamp(19px,4vw,28px);font-weight:900;box-shadow:inset 0 1px #ffffff0a;transition:transform .12s,border-color .12s,background .12s}.ruby-tile:not(:disabled){cursor:pointer}.ruby-tile:not(:disabled):active{transform:scale(.94)}.ruby-tile:disabled{cursor:default}.ruby-tile.is-gem{border-color:#4e8c6c;background:linear-gradient(145deg,#1c5943,#102b25);color:#74ffc0}.ruby-tile.is-relic{border-color:#bd9448;background:linear-gradient(145deg,#77501e,#3c2917);color:#ffdc83}.ruby-tile.is-mine{border-color:#e34b5d;background:linear-gradient(145deg,#8f2637,#451421);color:#fff;font-size:25px}.ruby-message{min-height:49px;display:flex;align-items:center;margin-top:12px;padding:10px 12px;border:1px solid #342733;border-radius:11px;background:#100d14;color:#cfc1ce;font-size:12px;line-height:1.45}.ruby-action-row{margin-top:10px}.ruby-start,.ruby-cashout{width:100%;min-height:51px;display:flex;justify-content:center;align-items:center;gap:8px;border:0;border-radius:12px;background:linear-gradient(100deg,#ff5c68,#c91f43);color:#fff;font-size:14px;font-weight:950;letter-spacing:.6px;box-shadow:0 8px 24px #dc24412b}.ruby-cashout{background:linear-gradient(100deg,#ffcf79,#e99535);color:#28140d}.ruby-cashout small{font-size:10px;font-weight:800}.ruby-start:disabled,.ruby-cashout:disabled{opacity:.45}.ruby-disclaimer{margin-top:10px;text-align:center;color:#827783;font-size:10px;line-height:1.4}.ruby-controls{display:grid;gap:12px}.ruby-bet-options,.ruby-mine-options{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:10px}.ruby-mine-options{grid-template-columns:repeat(5,minmax(0,1fr))}.ruby-bet-options button,.ruby-mine-options button{min-height:38px;padding:0 5px;border:1px solid #40303e;border-radius:9px;background:#1b141f;color:#d6c5d1;font-size:12px;font-weight:850}.ruby-bet-options button.is-selected,.ruby-mine-options button.is-selected{border-color:#f25a6a;background:#59202e;color:#fff}.ruby-bet-options button:disabled,.ruby-mine-options button:disabled{opacity:.65}.ruby-control-card p,.ruby-history-card>p{margin-top:10px;color:#968b9b;font-size:11px;line-height:1.5}.ruby-relic-card{display:flex;gap:12px;align-items:flex-start;border-color:#574327;background:linear-gradient(145deg,#282014,#15110d)}.ruby-relic-icon{width:36px;height:36px;flex:0 0 auto;display:grid;place-items:center;border-radius:10px;background:#63451d;color:#ffdc83;font-size:22px}.ruby-relic-card strong{font-size:11px;letter-spacing:1px;color:#ffdc83}.ruby-relic-card p{margin-top:4px;color:#b9a994;font-size:11px;line-height:1.45}.ruby-history-row{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid #28212c;font-size:11px}.ruby-history-row:first-of-type{margin-top:6px}.ruby-history-row:last-child{border-bottom:0}.ruby-history-row span{color:#c9bdca}.ruby-history-row strong{font-variant-numeric:tabular-nums}.ruby-history-row .is-positive{color:#77e9ae}.ruby-history-row .is-negative{color:#ff7183}@media(max-width:680px){.ruby-hero{padding:21px 16px}.ruby-vault-mark{width:58px;height:58px;border-radius:16px}.ruby-vault-mark span{font-size:28px}.ruby-layout{grid-template-columns:1fr}.ruby-controls{grid-template-columns:1fr 1fr}.ruby-relic-card,.ruby-history-card{min-height:120px}.ruby-board-panel{padding:12px}.ruby-grid{gap:6px}.ruby-tile{border-radius:9px}.ruby-hero p{max-width:300px}}@media(max-width:420px){.ruby-controls{grid-template-columns:1fr}.ruby-relic-card,.ruby-history-card{min-height:0}.ruby-hero{gap:8px}.ruby-vault-mark{width:46px;height:46px;border-radius:12px}.ruby-vault-mark span{font-size:23px}.ruby-kicker{font-size:8px}.ruby-hero p{font-size:12px}.ruby-tile{border-radius:7px}}
+
+
+/* Premium polish: clearer round states, progress, and tactile feedback */
+.ruby-rush{isolation:isolate}
+.ruby-hero{box-shadow:0 16px 42px #0003}
+.ruby-hero:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(110deg,transparent 28%,#ffffff05 48%,transparent 68%);background-size:220% 100%;animation:ruby-sheen 9s ease-in-out infinite}
+.ruby-vault-mark{position:relative;z-index:1;box-shadow:0 0 0 7px #f0445208,0 0 35px #f0445226,inset 0 0 20px #ffcf7d0a}
+.ruby-balance-copy{min-width:0}
+.ruby-balance-actions{display:flex;align-items:center;justify-content:flex-end;gap:9px;flex-wrap:wrap}
+.ruby-round-status{display:inline-flex;align-items:center;gap:6px;padding:7px 9px;border:1px solid #42313f;border-radius:999px;background:#19131d;color:#c8bac9;font-size:9px;font-weight:900;letter-spacing:.7px;white-space:nowrap}
+.ruby-round-status i{width:6px;height:6px;border-radius:50%;background:#a39aa8}
+.ruby-round-status.playing{border-color:#65303e;background:#301620;color:#ff9da8}
+.ruby-round-status.playing i{background:#ff6677;box-shadow:0 0 9px #ff6677;animation:ruby-pulse 1.5s infinite}
+.ruby-round-status.cashed{border-color:#3c7155;background:#13271e;color:#8cf0b5}
+.ruby-round-status.cashed i{background:#68e6a1}
+.ruby-round-status.lost{border-color:#71303b;background:#32151d;color:#ff8b9a}
+.ruby-round-status.lost i{background:#ff6577}
+.ruby-board-panel{box-shadow:0 18px 45px #0002}
+.ruby-board-caption{display:block;margin-top:5px;color:#9d91a0;font-size:10px;line-height:1.4}
+.ruby-multiplier{transition:color .2s,transform .2s}
+.ruby-multiplier.is-live{color:#ffdb92;text-shadow:0 0 22px #ffc76a28;animation:ruby-number-in .25s ease-out}
+.ruby-board-stat strong small{color:#827987;font-size:11px}
+.ruby-progress-track{height:4px;width:74px;overflow:hidden;margin:8px 0 0 auto;border-radius:999px;background:#342734}
+.ruby-progress-track span{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#e83e57,#ffc76a);transition:width .25s ease}
+.ruby-tile{position:relative;overflow:hidden;box-shadow:inset 0 1px #ffffff0a,0 5px 12px #0002;transition:transform .15s ease,border-color .18s ease,background .18s ease,box-shadow .18s ease}
+.ruby-tile:not(:disabled):hover{transform:translateY(-2px);border-color:#e65a76;box-shadow:0 6px 16px #e6385420,inset 0 1px #ffffff10}
+.ruby-tile:not(:disabled):active{transform:scale(.94)}
+.ruby-tile:focus-visible,.ruby-start:focus-visible,.ruby-cashout:focus-visible,.ruby-bet-options button:focus-visible,.ruby-mine-options button:focus-visible,.ruby-balance-row button:focus-visible{outline:2px solid #ffcf7d;outline-offset:3px}
+.ruby-tile.is-gem{animation:ruby-reveal .22s ease-out;box-shadow:inset 0 0 22px #74ffc014,0 0 12px #43cf8a10}
+.ruby-tile.is-relic{animation:ruby-relic-reveal .36s cubic-bezier(.2,.8,.2,1);box-shadow:inset 0 0 22px #ffdc831a,0 0 20px #ffc76a22}
+.ruby-tile.is-mine{animation:ruby-mine-reveal .32s ease-out;box-shadow:inset 0 0 24px #ff66771c,0 0 22px #ff53621c}
+.ruby-message{gap:10px;border-color:#40313d;transition:background .2s,border-color .2s}
+.ruby-message-icon{width:24px;height:24px;flex:0 0 auto;display:grid;place-items:center;border-radius:50%;background:#322532;color:#e9bdcc;font-size:13px;font-weight:950}
+.ruby-message.is-win{border-color:#3b7054;background:linear-gradient(100deg,#13251d,#100f14);color:#a5f3c5}
+.ruby-message.is-win .ruby-message-icon{background:#214b35;color:#a5f3c5}
+.ruby-message.is-loss{border-color:#74303d;background:linear-gradient(100deg,#2b121a,#100f14);color:#ffabb5}
+.ruby-message.is-loss .ruby-message-icon{background:#632231;color:#ffb4bc}
+.ruby-risk-note{margin:9px 0 0;padding:9px 10px;border-left:2px solid #e75a68;background:#21131b;color:#d8aeb8;font-size:10px;line-height:1.5}
+.ruby-risk-meter{display:flex;gap:4px;margin-top:10px}
+.ruby-risk-meter i{height:4px;flex:1;border-radius:999px;background:#322734}
+.ruby-risk-meter i.is-filled{background:linear-gradient(90deg,#dc344f,#ff8990)}
+.ruby-relic-card{transition:border-color .2s,box-shadow .2s}
+.ruby-relic-card.is-found{border-color:#a68140;box-shadow:0 0 22px #ffc76a10}
+.ruby-relic-card strong{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.ruby-relic-card strong span{padding:3px 6px;border-radius:5px;background:#49371c;color:#ffdf95;font-size:8px;letter-spacing:.6px}
+.ruby-start,.ruby-cashout{position:relative;overflow:hidden;transition:transform .15s ease,filter .15s ease,box-shadow .15s ease}
+.ruby-start:hover,.ruby-cashout:not(:disabled):hover{filter:brightness(1.08);transform:translateY(-1px);box-shadow:0 10px 28px #dc24413b}
+.ruby-start:active,.ruby-cashout:not(:disabled):active{transform:scale(.985)}
+.ruby-cashout:disabled{filter:saturate(.5);box-shadow:none}
+.ruby-disclaimer{letter-spacing:.1px}
+@keyframes ruby-reveal{from{transform:scale(.88);opacity:.65}to{transform:scale(1);opacity:1}}
+@keyframes ruby-relic-reveal{0%{transform:scale(.82);filter:brightness(.8)}65%{transform:scale(1.06);filter:brightness(1.35)}100%{transform:scale(1);filter:brightness(1)}}
+@keyframes ruby-mine-reveal{0%{transform:scale(.9)}35%{transform:scale(1.06)}70%{transform:scale(.98)}100%{transform:scale(1)}}
+@keyframes ruby-number-in{from{transform:translateY(3px);opacity:.6}to{transform:translateY(0);opacity:1}}
+@keyframes ruby-pulse{0%,100%{opacity:1}50%{opacity:.45}}
+@keyframes ruby-sheen{0%,70%,100%{background-position:150% 0}35%{background-position:-50% 0}}
+@media(max-width:680px){.ruby-balance-row{align-items:flex-start}.ruby-balance-actions{flex-direction:column;align-items:flex-end}.ruby-round-status{font-size:8px}.ruby-progress-track{width:60px}.ruby-board-caption{max-width:190px}}
+@media(max-width:420px){.ruby-balance-row{padding:12px}.ruby-balance-actions{gap:7px}.ruby-round-status{padding:6px 7px;letter-spacing:.3px}.ruby-board-top{align-items:flex-start}.ruby-multiplier{font-size:27px}.ruby-board-caption{max-width:155px;font-size:9px}.ruby-progress-track{width:50px}.ruby-message{font-size:11px}.ruby-message-icon{width:22px;height:22px}}
+@media(prefers-reduced-motion:reduce){.ruby-rush *, .ruby-rush *:before,.ruby-rush *:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+
+
+/* Compact mines-style betting layout */
+.ruby-layout{grid-template-columns:minmax(235px,.38fr) minmax(0,1fr);align-items:stretch}
+.ruby-controls{grid-column:1;grid-row:1}
+.ruby-board-panel{grid-column:2;grid-row:1}
+.ruby-betting-card{padding:15px;background:linear-gradient(145deg,#1c2a35,#111c26);border-color:#30414d}
+.ruby-mode-tabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;margin-bottom:18px;border:1px solid #344652;border-radius:999px;background:#101b24}
+.ruby-mode-tabs button{min-height:37px;border:0;border-radius:999px;background:transparent;color:#b9c5ce;font-size:12px;font-weight:850}
+.ruby-mode-tabs button.is-selected{background:#354653;color:#fff;box-shadow:0 2px 8px #0003}
+.ruby-mode-tabs button:disabled{opacity:.65}
+.ruby-betting-card>.ruby-label{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:14px 0 8px;color:#b5c3cd}
+.ruby-bet-value{color:#dce5eb;font-size:10px;letter-spacing:0}
+.ruby-stake-input{display:grid;grid-template-columns:minmax(0,1fr) 42px 42px;gap:0;overflow:hidden;margin-bottom:18px;border:1px solid #3a4b57;border-radius:9px;background:#101c25}
+.ruby-stake-input input{width:100%;min-width:0;padding:12px 10px;border:0;outline:none;background:transparent;color:#f7fbff;font-size:14px;font-weight:800}
+.ruby-stake-input button{border:0;border-left:1px solid #344550;background:#243440;color:#e1eaf0;font-weight:900}
+.ruby-betting-card select{width:100%;min-height:44px;margin-bottom:16px;padding:0 11px;border:1px solid #3a4b57;border-radius:8px;background:#101c25;color:#f7fbff;font-weight:800}
+.ruby-bet-main{margin-top:4px;min-height:52px;border-radius:8px;background:#65e63d;color:#10220b;box-shadow:none;font-size:15px;letter-spacing:0}
+.ruby-bet-main:hover{filter:brightness(1.05)}
+.ruby-bet-main:disabled{opacity:.45}
+.ruby-auto-note{margin:0 0 12px!important;padding:9px;border:1px solid #344652;border-radius:8px;background:#101c25;color:#b7c6cf!important}
+.ruby-practice-hint{margin-top:10px;text-align:center;color:#91a0aa;font-size:9px}
+.ruby-board-panel{background:linear-gradient(145deg,#14232d,#0e1922);border-color:#2a3b46}
+.ruby-grid{gap:8px}
+.ruby-tile{border-color:#203543;border-radius:9px;background:#0c1922;color:#718391;font-size:clamp(22px,3vw,34px)}
+.ruby-tile.is-gem{border-color:#214e34;background:#10241d;color:#5fea4b}
+.ruby-tile.is-mine{border-color:#652b39;background:#25151e;color:#ff5c70}
+.ruby-tile.is-gem{border-color:#214e34;background:#10241d;color:#5fea4b}
+.ruby-tile.is-mine{border-color:#652b39;background:#25151e;color:#ff5c70}
+.ruby-history-card{background:#111c25;border-color:#2a3b46}
+@media(max-width:680px){
+  .ruby-layout{grid-template-columns:minmax(0,1fr);gap:10px}
+  .ruby-controls{grid-column:1;grid-row:1;grid-template-columns:1fr}
+  .ruby-board-panel{grid-column:1;grid-row:2}
+  .ruby-betting-card{padding:12px}
+  .ruby-mode-tabs{margin-bottom:12px}
+  .ruby-betting-card>.ruby-label{margin-top:10px}
+  .ruby-stake-input{margin-bottom:12px}
+  .ruby-betting-card select{margin-bottom:12px}
+  .ruby-grid{gap:5px}
+  .ruby-tile{border-radius:7px}
+  .ruby-history-card{grid-row:auto}
+}
+
+
+/* Keep the live return and cash-out beside the active board */
+.ruby-board-cashout{display:flex;width:100%;min-height:50px;margin-top:10px;position:sticky;bottom:8px;z-index:5;box-shadow:0 5px 22px #0008}
+.ruby-active-round-note{margin:12px 0 0;padding:10px;border:1px solid #3a4b57;border-radius:8px;background:#101c25;color:#b9c8d2;font-size:11px;line-height:1.45}
+@media(max-width:680px){
+  .ruby-layout{display:flex;flex-direction:column}
+  .ruby-board-panel{order:1;width:100%;box-sizing:border-box}
+  .ruby-controls{order:2;width:100%;box-sizing:border-box;display:grid;grid-template-columns:1fr}
+  .ruby-board-top{position:relative}
+  .ruby-board-cashout{position:sticky;bottom:8px}
+  .ruby-board-caption{max-width:none}
+}
+
+
+.ruby-board-replay{background:linear-gradient(100deg,#65e63d,#42c928);color:#10220b;box-shadow:0 5px 22px #0005}
+
+
+/* Vault refresh: cinematic, jewel-like sealed tiles and stronger board hierarchy */
+.ruby-board-panel{position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 42%,#172b34 0,#101c25 56%,#0b131a 100%);border-color:#38505d}
+.ruby-board-panel:before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(135deg,#78e9ff08,transparent 35%,#e8b75d08 78%);z-index:0}
+.ruby-board-panel>*{position:relative;z-index:1}
+.ruby-board-heading{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:2px 0 12px;padding:0 2px}
+.ruby-board-heading span{color:#d9e7ed;font-size:11px;font-weight:950;letter-spacing:2px}
+.ruby-board-heading small{color:#8297a4;font-size:9px;text-align:right}
+.ruby-grid{gap:8px;padding:10px;border:1px solid #263c49;border-radius:16px;background:linear-gradient(145deg,#0a151d,#101e28);box-shadow:inset 0 0 28px #0006,0 12px 25px #0003}
+.ruby-tile{aspect-ratio:1;position:relative;border:1px solid #3a5867;border-radius:11px;background:linear-gradient(145deg,#243d4b,#142733 58%,#10202a);color:#8ba9b7;font-size:clamp(20px,3.6vw,31px);text-shadow:0 1px 7px #8ce7ff24;box-shadow:inset 0 1px #ffffff13,inset 0 -5px 12px #0003,0 4px 0 #09131a,0 7px 13px #0004;transition:transform .18s,border-color .2s,background .2s,box-shadow .2s}
+.ruby-tile:after{content:"";position:absolute;inset:4px;border:1px solid #ffffff08;border-radius:7px;pointer-events:none}
+.ruby-tile:not(:disabled):hover{transform:translateY(-3px);border-color:#7bc4d7;background:linear-gradient(145deg,#315466,#193442);color:#d5f8ff;box-shadow:inset 0 1px #ffffff22,0 0 18px #4eb7d326,0 6px 0 #09131a}
+.ruby-tile:not(:disabled):active{transform:translateY(1px);box-shadow:inset 0 1px #ffffff13,0 2px 0 #09131a}
+.ruby-tile.is-gem{border-color:#48bc85;background:radial-gradient(circle at 50% 35%,#23684d,#103b2c 70%);color:#9affc8;text-shadow:0 0 14px #68ffb8aa;box-shadow:inset 0 0 22px #4df0a122,0 0 17px #40df9224,0 4px 0 #09271c}
+.ruby-tile.is-mine{border-color:#ff6677;background:radial-gradient(circle at 50% 35%,#772b3b,#35131e 72%);color:#ff9aa7;text-shadow:0 0 14px #ff5365aa;box-shadow:inset 0 0 24px #ff455522,0 0 20px #ff53652b,0 4px 0 #210b12}
+.ruby-tile.is-gem:after,.ruby-tile.is-mine:after{border-color:#ffffff15}
+.ruby-board-top{margin-bottom:15px;padding:2px 2px 12px;border-bottom:1px solid #263a45}
+.ruby-multiplier.is-live{font-size:34px;text-shadow:0 0 25px #ffc76a45}
+.ruby-progress-track{width:92px;height:5px;background:#263b45}
+.ruby-risk-note{border-left-color:#e3b65e;background:#19232a;color:#b7c6ce}
+.ruby-board-cashout{border-radius:11px}
+.ruby-hero{border-color:#4a3b3a;background:radial-gradient(circle at 82% 14%,#59411e 0,transparent 27%),radial-gradient(circle at 15% 110%,#5a1a2b 0,transparent 45%),linear-gradient(135deg,#21131c,#0c151c 78%)}
+.ruby-vault-mark{border-color:#9a7940;background:linear-gradient(145deg,#62491f,#1c1c20);box-shadow:0 0 0 7px #ffcf7d0a,0 0 38px #ffc76a20,inset 0 0 22px #ffcf7d12}
+.ruby-vault-mark span{color:#ffe0a0;text-shadow:0 0 20px #ffc76a55}
+@media(max-width:680px){.ruby-grid{gap:6px;padding:7px;border-radius:12px}.ruby-tile{border-radius:8px}.ruby-board-heading{margin-bottom:8px}.ruby-board-heading small{font-size:8px}}
+
+/* Gem and bomb icon styling */
+.ruby-tile-art{display:grid;place-items:center;width:100%;height:100%;font-size:clamp(30px,5vw,48px);line-height:1;transform:translateY(-1px);filter:drop-shadow(0 5px 5px #0005);user-select:none}
+.ruby-tile .gem-art{filter:hue-rotate(65deg) saturate(1.55) brightness(1.15) drop-shadow(0 0 9px #36ff65aa);transform:translateY(-1px) scale(1.04)}
+.ruby-tile .mine-art{filter:saturate(1.15) brightness(1.08) drop-shadow(0 0 9px #ff4565aa);transform:translateY(-1px) scale(1.02)}
+.ruby-tile .sealed-art{font-size:clamp(22px,4vw,34px);opacity:.6;color:#8ba9b7}
+.ruby-tile.is-gem{background:radial-gradient(circle at 50% 42%,#174e36,#0d2b21 72%)}
+.ruby-tile.is-mine{background:radial-gradient(circle at 50% 42%,#571d2b,#26121a 72%)}
+
+
+
+/* Cinematic vault scene: make the game feel like a playable mobile title */
+.ruby-game-scene{min-height:270px;position:relative;isolation:isolate;display:grid;grid-template-columns:1fr .8fr;align-items:center;overflow:hidden;margin:0 0 14px;border:1px solid #6e3043;border-radius:20px;background:radial-gradient(ellipse at 78% 48%,#7a193d 0,transparent 37%),radial-gradient(ellipse at 18% 90%,#143e63 0,transparent 48%),linear-gradient(120deg,#0a1421 0%,#17101d 55%,#270d1b 100%);box-shadow:0 18px 42px #0007,inset 0 1px #ffffff12}
+.ruby-game-scene:before{content:"";position:absolute;inset:0;z-index:-1;background:repeating-linear-gradient(118deg,transparent 0 28px,#d8b0ff08 29px 30px),linear-gradient(0deg,#070b12b8,transparent 55%);pointer-events:none}
+.ruby-scene-sky{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:-1}
+.ruby-scene-sky i{position:absolute;width:3px;height:3px;border-radius:50%;background:#fff0c2;box-shadow:0 0 10px 3px #ff8c9d66;animation:ruby-dust 5s linear infinite}
+.ruby-scene-sky i:nth-child(1){left:8%;top:22%;animation-delay:-1s}.ruby-scene-sky i:nth-child(2){left:34%;top:75%;animation-delay:-3s}.ruby-scene-sky i:nth-child(3){left:61%;top:16%;animation-delay:-2s}.ruby-scene-sky i:nth-child(4){left:86%;top:36%;animation-delay:-4s}.ruby-scene-sky i:nth-child(5){left:72%;top:78%;animation-delay:-1.8s}.ruby-scene-sky i:nth-child(6){left:45%;top:45%;animation-delay:-.6s}
+.ruby-scene-copy{position:relative;z-index:3;padding:23px 0 29px 22px;align-self:center}
+.ruby-scene-copy h1{font-size:clamp(31px,7vw,48px);line-height:.98;font-weight:1000;letter-spacing:-1.8px;margin:10px 0 13px;color:#fff;text-shadow:0 3px 0 #32101d,0 8px 24px #0009}
+.ruby-scene-copy h1 span{display:block;color:#ff536e;text-shadow:0 0 24px #ff244c55,0 3px 0 #591326}
+.ruby-scene-copy p{margin:0;color:#d3d9e5;font-size:9px;font-weight:950;letter-spacing:1.7px;line-height:1.5}
+.ruby-scene-status{display:inline-flex;align-items:center;gap:7px;margin-top:18px;padding:8px 10px;border:1px solid #ff8c9d44;border-radius:999px;background:#0b111bc9;color:#f6d4df;font-size:8px;font-weight:950;letter-spacing:1px;box-shadow:inset 0 1px #ffffff0a}
+.ruby-scene-dot{width:6px;height:6px;border-radius:50%;background:#ff647f;box-shadow:0 0 10px #ff647f;animation:ruby-pulse 1.5s infinite}
+.ruby-scene-vault{height:235px;position:relative;display:grid;place-items:center;perspective:500px;overflow:hidden}
+.ruby-vault-halo{position:absolute;width:175px;height:175px;border-radius:50%;background:radial-gradient(circle,#ff375b45 0%,#bd285022 42%,transparent 70%);filter:blur(3px);animation:ruby-halo 3s ease-in-out infinite}
+.ruby-vault-ring{position:absolute;width:145px;height:145px;border:1px solid #ff71854d;border-radius:50%;transform:rotateX(65deg) rotateZ(-20deg);box-shadow:0 0 25px #ff3e5b14,inset 0 0 20px #ff3e5b0d}
+.ruby-vault-ring.ring-one{animation:ruby-ring-spin 16s linear infinite}.ruby-vault-ring.ring-two{width:118px;height:118px;border-color:#ffd88b70;transform:rotateX(65deg) rotateZ(35deg);animation:ruby-ring-spin 12s linear infinite reverse}
+.ruby-vault-door{position:relative;z-index:2;width:106px;height:126px;display:grid;place-items:center;border:4px solid #d7a95e;border-radius:12px;background:linear-gradient(135deg,#76502a,#1d1d29 34%,#4b1c30 70%,#171521);box-shadow:0 0 0 5px #130f1b,0 0 0 7px #93673f,0 0 35px #ff416a48,inset 0 0 22px #000c;transform:rotate(-5deg);animation:ruby-door-float 4s ease-in-out infinite}
+.ruby-vault-door:before,.ruby-vault-door:after{content:"";position:absolute;width:8px;height:8px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#fff0ba,#c28a3d);box-shadow:0 0 8px #ffc76a66;left:8px}.ruby-vault-door:before{top:9px}.ruby-vault-door:after{bottom:9px}
+.ruby-vault-inner{width:69px;height:85px;display:grid;place-items:center;border:2px solid #bd8b4d;border-radius:8px;background:radial-gradient(circle,#9c2040,#351426 72%);box-shadow:inset 0 0 22px #0008,0 0 18px #ff3c632b}
+.ruby-vault-inner span{font-size:45px;color:#ffcf7d;text-shadow:0 0 20px #ffb74d99;animation:ruby-gem-glint 2.5s ease-in-out infinite}
+.ruby-scene-gem{position:absolute;z-index:3;color:#ff617f;font-size:24px;text-shadow:0 0 15px #ff365f;filter:drop-shadow(0 6px 5px #0009);animation:ruby-gem-float 3.2s ease-in-out infinite}
+.ruby-scene-gem.gem-a{top:28px;left:17%;transform:rotate(14deg)}.ruby-scene-gem.gem-b{top:64px;right:8%;font-size:17px;color:#8eeaff;text-shadow:0 0 15px #45cfff;animation-delay:-1s}.ruby-scene-gem.gem-c{bottom:34px;left:19%;font-size:14px;color:#ffd27a;animation-delay:-2s}
+.ruby-scene-floor{position:absolute;bottom:7px;left:3%;right:3%;height:26px;background:linear-gradient(180deg,#472438,#10131d);border-top:1px solid #ff7a8844;clip-path:polygon(12% 0,88% 0,100% 100%,0 100%);box-shadow:0 0 20px #000}
+.ruby-scene-bottom{position:absolute;bottom:0;left:0;right:0;display:flex;justify-content:center;gap:10px;padding:9px;background:#080d16bd;border-top:1px solid #ffffff10;color:#d6a9b5;font-size:8px;font-weight:950;letter-spacing:1.4px}
+.ruby-game-scene.scene-live{border-color:#d6a65b;box-shadow:0 0 0 1px #ffc76a15,0 18px 42px #0007}.ruby-game-scene.scene-live .ruby-vault-door{box-shadow:0 0 0 5px #130f1b,0 0 0 7px #d3a85e,0 0 48px #ffc76a55,inset 0 0 22px #000c}
+.ruby-game-scene.scene-secured{border-color:#4bce91;background:radial-gradient(ellipse at 78% 48%,#176d4d 0,transparent 42%),linear-gradient(120deg,#0a1421,#10251d 65%,#102b23)}.ruby-game-scene.scene-secured .ruby-vault-door{border-color:#7be5ad;box-shadow:0 0 0 5px #101a18,0 0 0 7px #57c68c,0 0 44px #43e79b66,inset 0 0 22px #000c}.ruby-game-scene.scene-secured .ruby-vault-inner{border-color:#78e4a8;background:radial-gradient(circle,#226a49,#143424 72%)}
+.ruby-game-scene.scene-crash{border-color:#f34e64;background:radial-gradient(ellipse at 78% 48%,#8d1d31 0,transparent 48%),linear-gradient(120deg,#0a1421,#220d18 65%,#380b19)}.ruby-game-scene.scene-crash .ruby-vault-door{animation:ruby-crash-shake .35s linear 2;border-color:#ff5c71;box-shadow:0 0 0 5px #130f1b,0 0 0 7px #a42b41,0 0 45px #ff244c77,inset 0 0 22px #000c}.ruby-game-scene.scene-crash .ruby-vault-halo{background:radial-gradient(circle,#ff174555,#bd285022 42%,transparent 70%)}
+@keyframes ruby-dust{0%{opacity:0;transform:translateY(12px) scale(.7)}30%{opacity:1}100%{opacity:0;transform:translateY(-40px) scale(1.3)}}
+@keyframes ruby-halo{0%,100%{transform:scale(.92);opacity:.65}50%{transform:scale(1.12);opacity:1}}
+@keyframes ruby-ring-spin{from{rotate:0deg}to{rotate:360deg}}
+@keyframes ruby-door-float{0%,100%{translate:0 1px;rotate:-5deg}50%{translate:0 -5px;rotate:-2deg}}
+@keyframes ruby-gem-float{0%,100%{translate:0 0;rotate:0deg}50%{translate:0 -8px;rotate:12deg}}
+@keyframes ruby-gem-glint{0%,100%{filter:brightness(1);transform:scale(.95)}50%{filter:brightness(1.5);transform:scale(1.08)}}
+@keyframes ruby-halo{0%,100%{transform:scale(.92);opacity:.65}50%{transform:scale(1.12);opacity:1}}
+@keyframes ruby-crash-shake{0%,100%{translate:0 0}25%{translate:-5px 1px}75%{translate:5px -1px}}
+@media(max-width:480px){.ruby-game-scene{min-height:230px;grid-template-columns:1fr .72fr;border-radius:16px}.ruby-scene-copy{padding:18px 0 26px 15px}.ruby-scene-copy h1{font-size:clamp(29px,8vw,39px)}.ruby-scene-copy p{font-size:7px;letter-spacing:1px}.ruby-scene-status{font-size:7px;padding:7px 8px;margin-top:13px}.ruby-scene-vault{height:205px;transform:scale(.9);transform-origin:center}.ruby-vault-door{width:88px;height:108px}.ruby-vault-inner{width:58px;height:72px}.ruby-vault-inner span{font-size:37px}.ruby-vault-ring{width:122px;height:122px}.ruby-vault-ring.ring-two{width:98px;height:98px}.ruby-scene-bottom{font-size:7px;letter-spacing:.9px}}
+@media(prefers-reduced-motion:reduce){.ruby-game-scene *,.ruby-game-scene:before{animation:none!important;transition:none!important}}
