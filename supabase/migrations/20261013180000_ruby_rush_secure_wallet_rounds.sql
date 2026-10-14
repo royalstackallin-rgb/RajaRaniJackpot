@@ -49,7 +49,6 @@ declare
   r public.ruby_rush_rounds%rowtype;
   seen integer[];
   picks integer;
-  max_picks integer;
   chance numeric := 1;
   mult numeric;
   i integer;
@@ -66,17 +65,10 @@ begin
     return jsonb_build_object('mine_hit',true,'safe_picks',r.safe_picks,'status','lost','revealed_positions',to_jsonb(seen),'mine_positions',to_jsonb(r.mine_positions));
   end if;
   picks := r.safe_picks+1;
-  max_picks := case r.mine_count when 2 then 14 when 4 then 12 when 6 then 10 when 8 then 8 when 12 then 6 end;
   for i in 0..(picks-1) loop chance := chance*((25-r.mine_count-i)::numeric/(25-i)::numeric); end loop;
   mult := floor((0.97/chance)*100)/100;
-  if picks >= max_picks then
-    paid := floor(r.stake*mult);
-    update public.ruby_rush_rounds set revealed_positions=seen,safe_picks=picks,status='cashed',payout=paid,finished_at=now() where id=r.id;
-    b := public.change_wallet_balance(r.user_id,paid,'game_payout','Ruby Rush automatic cash-out at published safe-pick cap · '||r.id::text);
-    return jsonb_build_object('mine_hit',false,'safe_picks',picks,'max_safe_picks',max_picks,'multiplier',mult,'potential_return',paid,'payout',paid,'balance',b,'status','cashed','auto_cashout',true,'revealed_positions',to_jsonb(seen));
-  end if;
   update public.ruby_rush_rounds set revealed_positions=seen,safe_picks=picks where id=r.id;
-  return jsonb_build_object('mine_hit',false,'safe_picks',picks,'max_safe_picks',max_picks,'multiplier',mult,'potential_return',floor(r.stake*mult),'status','playing','revealed_positions',to_jsonb(seen));
+  return jsonb_build_object('mine_hit',false,'safe_picks',picks,'multiplier',mult,'potential_return',floor(r.stake*mult),'status','playing','revealed_positions',to_jsonb(seen));
 end $$;
 
 create or replace function public.ruby_rush_cash_out(p_round_id uuid)
@@ -85,8 +77,6 @@ declare
   r public.ruby_rush_rounds%rowtype;
   chance numeric := 1;
   mult numeric;
-  paid bigint;
-  b bigint;
   i integer;
 begin
   if auth.uid() is null then raise exception 'Please sign in'; end if;
