@@ -150,8 +150,8 @@ export default function RubyRush() {
 
   const tileLabel = (index) => {
     if (!round || (round.status === 'playing' && !round.revealed.has(index))) return '▣'
-    if (round?.mines.has(index)) return '✹'
-    return '◆'
+    if (round?.mines.has(index)) return '💣'
+    return '💎'
   }
 
   const tileClass = (index) => {
