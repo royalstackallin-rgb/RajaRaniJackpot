@@ -64,14 +64,7 @@ export default function RubyRush() {
       }
       setRestoringRound(true)
       try {
-        const { data, error } = await supabase
-          .from('ruby_rush_rounds')
-          .select('id, stake, mine_count, revealed_positions, safe_picks, status')
-          .eq('user_id', userId)
-          .eq('status', 'playing')
-          .order('created_at', { ascending: false })
-          .limit(1)
-          .maybeSingle()
+        const { data, error } = await supabase.rpc('ruby_rush_get_active_round')
         if (error) throw error
         if (cancelled) return
         if (data) {
