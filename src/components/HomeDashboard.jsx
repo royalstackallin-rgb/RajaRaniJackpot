@@ -287,6 +287,11 @@ export default function HomeDashboard({ onOpenGame, onOpenBookings, onOpenResult
         </button>
       </div>
 
+      <article className="rise-home-card">
+        <div className="rise-home-art"><span className="rise-orb rise-orb-one" /><span className="rise-orb rise-orb-two" /><span className="rise-art-label">RISE <i>OR</i> RUIN</span><span className="rise-art-subtitle">ONE MORE STEP?</span></div>
+        <div className="rise-home-copy"><span className="home-eyebrow">TARGETORSTAKE ORIGINAL · PRACTICE</span><h2>Climb higher. Know when to stop.</h2><p>Risk another step to grow your multiplier, or cash out your practice points before the tower falls.</p><button type="button" onClick={() => onOpenGame('rise-or-ruin')}>Play Rise or Ruin <span>→</span></button></div>
+      </article>
+
       <article className="ruby-home-card">
         <img className="ruby-home-art ruby-home-art-image" src="https://raw.githubusercontent.com/royalstackallin-rgb/RajaRaniJackpot/main/src/assets/Rubyrush.png" alt="Ruby Rush artwork" loading="eager" style={{ display: 'block', width: '100%', height: 'auto', aspectRatio: '2.4 / 1', objectFit: 'cover', padding: 0 }} />
         <div className="ruby-home-copy"><span className="home-eyebrow">TARGETORSTAKE ORIGINAL</span><h2>Risk it. Reveal it. Secure it.</h2><p>Uncover hidden gems, watch your multiplier climb, and decide when to cash out. One wrong pick ends your run — how far will you go?</p><button type="button" onClick={() => onOpenGame('ruby-rush')}>Enter Ruby Rush <span>→</span></button></div>
