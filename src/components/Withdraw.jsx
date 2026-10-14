@@ -32,7 +32,7 @@ export default function Withdraw() {
 
   useEffect(() => { refresh() }, [refresh])
 
-  const maxWithdrawable = balance === null ? 0 : Math.max(0, Number(balance) - 200)
+  const maxWithdrawable = balance === null ? 0 : Math.max(0, Number(balance))
 
   const submitWithdrawal = async (event) => {
     event.preventDefault()
@@ -42,8 +42,8 @@ export default function Withdraw() {
       setMessage('Enter a whole withdrawal amount between ₹1 and ₹50,000.')
       return
     }
-    if (balance === null || amountValue > Math.max(0, Number(balance) - 200)) {
-      setMessage('You must keep at least 200 coins in your wallet after withdrawal.')
+    if (balance === null || amountValue > Math.max(0, Number(balance))) {
+      setMessage('Your wallet balance is insufficient for this withdrawal.')
       return
     }
     if (!withdrawQr) {
@@ -89,11 +89,11 @@ export default function Withdraw() {
     <div className="wallet-balance-card">
       <span>AVAILABLE BALANCE</span>
       <strong>{refreshing && balance === null ? 'Loading…' : money(balance)}</strong>
-      <small>Your requested withdrawal amount is reserved when the request succeeds. At least ₹200 in coins must remain in your wallet.</small>
+      <small>Your requested withdrawal amount is reserved when the request succeeds.</small>
     </div>
     <form className="wallet-deposit-card" onSubmit={submitWithdrawal}>
       <h2>Request withdrawal</h2>
-      <p>No minimum withdrawal amount. At least 200 coins must remain after withdrawal. {balance === null ? 'Loading available limit…' : `Maximum you can request now: ${money(Math.min(50000, maxWithdrawable))}.`} Upload your UPI QR image for host review.</p>
+      <p>No minimum withdrawal amount. {balance === null ? 'Loading available limit…' : `Maximum you can request now: ${money(Math.min(50000, maxWithdrawable))}.`} Upload your UPI QR image for host review.</p>
       <label htmlFor="withdraw-amount">Withdrawal amount (₹)</label>
       <input id="withdraw-amount" type="number" min="1" max={Math.min(50000, maxWithdrawable)} step="1" value={withdrawAmount} onChange={e => setWithdrawAmount(e.target.value)} required />
       <label htmlFor="withdraw-qr">Your UPI QR image (JPG/PNG/WEBP, max 5 MB)</label>
