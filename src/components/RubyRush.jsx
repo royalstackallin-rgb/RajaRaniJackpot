@@ -162,13 +162,23 @@ export default function RubyRush() {
 
   return (
     <section className="ruby-rush">
-      <div className="ruby-hero">
-        <div className="ruby-hero-copy">
-          <span className="ruby-kicker">TARGETORSTAKE ORIGINAL · SERVER-VERIFIED ROUNDS</span>
+      <div className={`ruby-game-scene ${round?.status === 'lost' ? 'scene-crash' : round?.status === 'cashed' ? 'scene-secured' : round?.status === 'playing' ? 'scene-live' : ''}`}>
+        <div className="ruby-scene-sky" aria-hidden="true"><i /><i /><i /><i /><i /><i /></div>
+        <div className="ruby-scene-copy">
+          <span className="ruby-kicker">TARGETORSTAKE ORIGINAL</span>
           <h1>RUBY <span>RUSH</span></h1>
-          <p>Crack the vault. Find the gems. Know when to walk away.</p>
+          <p>ENTER THE VAULT. TAKE THE TREASURE.</p>
+          <div className="ruby-scene-status"><span className="ruby-scene-dot" />{round?.status === 'lost' ? 'VAULT COLLAPSED' : round?.status === 'cashed' ? 'TREASURE SECURED' : round?.status === 'playing' ? 'VAULT IN PROGRESS' : 'THE VAULT AWAITS'}</div>
         </div>
-        <div className="ruby-vault-mark" aria-hidden="true"><span>✦</span></div>
+        <div className="ruby-scene-vault" aria-hidden="true">
+          <div className="ruby-vault-halo" />
+          <div className="ruby-vault-ring ring-one" />
+          <div className="ruby-vault-ring ring-two" />
+          <div className="ruby-vault-door"><div className="ruby-vault-inner"><span>✦</span></div></div>
+          <div className="ruby-scene-gem gem-a">◆</div><div className="ruby-scene-gem gem-b">◆</div><div className="ruby-scene-gem gem-c">◆</div>
+          <div className="ruby-scene-floor" />
+        </div>
+        <div className="ruby-scene-bottom"><span>◆ HIGH RISK</span><span>•</span><span>HIGH REWARD ◆</span></div>
       </div>
 
       <div className="ruby-balance-row">
