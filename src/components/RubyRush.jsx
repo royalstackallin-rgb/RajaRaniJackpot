@@ -151,7 +151,7 @@ export default function RubyRush() {
   const tileLabel = (index) => {
     if (!round || (round.status === 'playing' && !round.revealed.has(index))) return '▣'
     if (round?.mines.has(index)) return '✹'
-    return '♦'
+    return '◆'
   }
 
   const tileClass = (index) => {
@@ -192,7 +192,7 @@ export default function RubyRush() {
                 onClick={() => revealTile(index)}
                 disabled={round?.status !== 'playing' || round.revealed.has(index) || busy}
                 aria-label={!round || (round.status === 'playing' && !round.revealed.has(index)) ? `Reveal tile ${index + 1}` : `Tile ${index + 1}: ${round?.mines.has(index) ? 'mine' : 'gem'}`}
-              >{tileLabel(index)}</button>
+              ><span className={tileClass(index) === 'ruby-tile is-gem' ? 'ruby-tile-art gem-art' : tileClass(index) === 'ruby-tile is-mine' ? 'ruby-tile-art mine-art' : 'ruby-tile-art sealed-art'} aria-hidden="true">{tileLabel(index)}</span></button>
             ))}
           </div>
           <div className={`ruby-message ${round?.status === 'lost' ? 'is-loss' : round?.status === 'cashed' ? 'is-win' : ''}`} role="status"><span className="ruby-message-icon" aria-hidden="true">{round?.status === 'lost' ? '×' : round?.status === 'cashed' ? '✓' : round?.status === 'playing' ? '✦' : 'i'}</span><span>{message}</span></div>
