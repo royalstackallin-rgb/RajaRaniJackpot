@@ -1,0 +1,6 @@
+{
+  "appId": "com.targetorstake.app",
+  "appName": "TARGETORSTAKE",
+  "webDir": "dist",
+  "bundledWebRuntime": false
+}
