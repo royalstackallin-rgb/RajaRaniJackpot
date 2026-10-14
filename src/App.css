@@ -3351,3 +3351,8 @@ body[data-round-theme] .main-menu button:not(.active) {
 .coming-soon-status span{width:6px;height:6px;border-radius:50%;background:var(--coming-accent);box-shadow:0 0 8px color-mix(in srgb,var(--coming-accent) 60%,transparent)}
 @media(max-width:390px){.home-coming-soon{padding:17px 11px}.home-coming-soon-grid{gap:7px}.home-coming-soon-card{min-height:184px;padding:12px 8px 10px}.coming-soon-tag{font-size:7px}.home-coming-soon-card p{font-size:9px}.coming-soon-status{font-size:8px}}
 @media(prefers-reduced-motion:reduce){.home-coming-soon-card{scroll-behavior:auto}}
+
+
+/* Two upcoming titles remain after removing the already-developed Ruby Rush. */
+.home-coming-soon-grid{grid-template-columns:repeat(2,minmax(0,1fr));max-width:520px;margin-inline:auto}
+@media(max-width:520px){.home-coming-soon-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.home-coming-soon-card{min-height:180px}}
