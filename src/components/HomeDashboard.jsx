@@ -286,6 +286,38 @@ export default function HomeDashboard({ onOpenGame, onOpenBookings, onOpenResult
         </button>
       </div>
 
+
+      <section className="home-coming-soon" aria-labelledby="home-coming-soon-title">
+        <div className="home-coming-soon-heading">
+          <span className="home-eyebrow">THE NEXT LEVEL</span>
+          <h2 id="home-coming-soon-title">More Games Coming Soon</h2>
+          <p>New ways to play are on the way. Stay tuned.</p>
+        </div>
+        <div className="home-coming-soon-grid">
+          <article className="home-coming-soon-card coming-soon-royal">
+            <span className="coming-soon-symbol" aria-hidden="true">♛</span>
+            <span className="coming-soon-tag">IN DEVELOPMENT</span>
+            <h3>Royal Reels</h3>
+            <p>Spin into a new kind of excitement.</p>
+            <span className="coming-soon-status"><span /> Coming Soon</span>
+          </article>
+          <article className="home-coming-soon-card coming-soon-ruby">
+            <span className="coming-soon-symbol" aria-hidden="true">◆</span>
+            <span className="coming-soon-tag">IN DEVELOPMENT</span>
+            <h3>Ruby Rush</h3>
+            <p>Choose your path. See what you reveal.</p>
+            <span className="coming-soon-status"><span /> Coming Soon</span>
+          </article>
+          <article className="home-coming-soon-card coming-soon-poker">
+            <span className="coming-soon-symbol" aria-hidden="true">♠</span>
+            <span className="coming-soon-tag">ON THE ROADMAP</span>
+            <h3>Poker Arena</h3>
+            <p>A table for your next big showdown.</p>
+            <span className="coming-soon-status"><span /> Coming Soon</span>
+          </article>
+        </div>
+      </section>
+
     </section>
   )
 }
