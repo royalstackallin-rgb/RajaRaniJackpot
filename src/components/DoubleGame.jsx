@@ -15,12 +15,12 @@ const TIMES = [
 const NUMBERS = Array.from({ length: 100 }, (_, i) => String(i).padStart(2, '0'))
 
 const TWIN_FORTUNE_ODDS = [
-  { range: '₹0 (no bets)', target: '100' },
-  { range: '₹1–₹70', target: '70' },
-  { range: '₹71–₹100', target: '50' },
-  { range: '₹101–₹300', target: '30' },
-  { range: '₹301–₹500', target: '20' },
-  { range: 'Above ₹500', target: '10' },
+  { range: '₹0 (no bets)', target: 'Receives remaining probability' },
+  { range: 'Above ₹0 to below ₹50', target: '0.50%' },
+  { range: '₹50 to below ₹100', target: '0.40%' },
+  { range: '₹100 to below ₹300', target: '0.10%' },
+  { range: '₹300 to below ₹500', target: '0.05%' },
+  { range: '₹500 and above', target: '0.01%' },
 ]
 
 function istDateString(date = new Date()) {
@@ -322,11 +322,11 @@ export default function DoubleGame({ historyOnly = false, onOpenBookings, onOpen
           </ol>
           <p className="how-to-play-example"><strong>Example:</strong> A ₹10 stake on number 27 has a potential payout of ₹800 if 27 is the winning number. Selecting 10 numbers at ₹10 each costs ₹100 in total.</p>
           <details className="double-odds-disclosure">
-            <summary>Winning weights <span aria-hidden="true">＋</span></summary>
-            <p>Every Twin Fortune round has exactly one winning number. The server totals all pending stakes on each number, assigns that number a weight from the table, and makes one secure random draw across the combined weights. A number's actual chance is its weight divided by the total weight of all 100 numbers, so the percentage changes with the round's stakes.</p>
+            <summary>Winning probabilities <span aria-hidden="true">＋</span></summary>
+            <p>Every Twin Fortune round has exactly one winning number. The server totals all pending stakes on each number and applies the probability tier in the table. The probability removed from numbers with bets is allocated equally among numbers with ₹0 stake. If all 100 numbers have bets, any remaining probability is distributed among all numbers in proportion to their assigned probabilities.</p>
             <div className="double-odds-table-wrap">
               <table className="double-odds-table">
-                <thead><tr><th>Total stake per number (all players)</th><th>Relative weight</th></tr></thead>
+                <thead><tr><th>Total stake per number (all players)</th><th>Winning probability</th></tr></thead>
                 <tbody>
                   {TWIN_FORTUNE_ODDS.map((odds) => (
                     <tr key={odds.range}><td>{odds.range}</td><td>{odds.target}</td></tr>
@@ -334,7 +334,7 @@ export default function DoubleGame({ historyOnly = false, onOpenBookings, onOpen
                 </tbody>
               </table>
             </div>
-            <small>Weights: ₹0 stake = 100; ₹1–₹70 = 70; ₹71–₹100 = 50; ₹101–₹300 = 30; ₹301–₹500 = 20; above ₹500 = 10. Actual chance = that number's weight ÷ total weights for numbers 00–99. Even when no one books a number, it remains eligible to win. A winning number is always drawn.</small>
+            <small>Numbers with no stake receive the remaining probability equally. Stake tiers apply to combined pending bets from all players. If all numbers have bets, the remaining probability is distributed proportionally across all 100 numbers. All numbers remain eligible, and exactly one winning number is drawn each round.</small>
           </details>
 
         </div>
