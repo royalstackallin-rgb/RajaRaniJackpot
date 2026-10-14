@@ -37,7 +37,10 @@ begin
   insert into public.rise_ruin_wallets(user_id, balance)
   values (v_user, 100) on conflict (user_id) do nothing;
   select balance into v_balance from public.rise_ruin_wallets where user_id = v_user for update;
-  if v_balance < 100 then raise exception 'Not enough practice points. Cash out or wait until you have 100 points.'; end if;
+  -- Practice-only refill: keep the demo playable after a ruined run.
+  if v_balance < 100 then
+    update public.rise_ruin_wallets set balance=100, updated_at=pg_catalog.now() where user_id=v_user returning balance into v_balance;
+  end if;
   if exists (select 1 from public.rise_ruin_runs where user_id=v_user and status='rising') then
     raise exception 'Finish your current Rise or Ruin run first';
   end if;
