@@ -74,7 +74,7 @@ export default function RiseOrRuin() {
   }
 
   const multiplier = run ? Number((1.2 ** run.step).toFixed(2)) : 1
-  const canStart = balance !== null && balance >= STARTING_POINTS && !run && !busy
+  const canStart = balance !== null && !run && !busy
 
   return <main className="rise-game">
     <section className="rise-header">
@@ -95,7 +95,7 @@ export default function RiseOrRuin() {
       <div className={`rise-level rise-ground ${run?.step === 0 ? 'is-current' : ''}`}><span>START</span><div className="rise-level-bar" /><strong>1.00×</strong></div>
     </section>
     <section className="rise-controls">
-      {!run || run.status !== 'rising' ? <button className="rise-start" type="button" disabled={!canStart} onClick={start}>{busy ? 'PLEASE WAIT…' : balance !== null && balance < STARTING_POINTS ? 'NEED 100 PRACTICE POINTS' : 'START CLIMB · 100 POINTS'}</button> : <>
+      {!run || run.status !== 'rising' ? <button className="rise-start" type="button" disabled={!canStart} onClick={start}>{busy ? 'PLEASE WAIT…' : balance !== null && balance < STARTING_POINTS ? 'REFILL & START · 100 POINTS' : 'START CLIMB · 100 POINTS'}</button> : <>
         <div className="rise-step-copy"><span>{run.step === 0 ? 'THE FIRST STEP IS THE RISKIEST' : `STEP ${run.step} OF ${MAX_STEPS}`}</span><strong>{run.step === 0 ? 'Ready to rise?' : `Potential return: ${money(Math.floor(100 * multiplier))}`}</strong></div>
         <button className="rise-climb" type="button" disabled={busy || run.step >= MAX_STEPS} onClick={climb}>{busy ? 'CLIMBING…' : run.step >= MAX_STEPS ? 'MAX HEIGHT REACHED' : '↑ RISE ONE STEP'}</button>
         <button className="rise-cashout" type="button" disabled={busy || run.step < 1} onClick={cashOut}>SECURE {run.step > 0 ? money(Math.floor(100 * multiplier)) : ''} POINTS</button>
