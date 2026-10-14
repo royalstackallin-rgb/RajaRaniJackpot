@@ -301,13 +301,6 @@ export default function HomeDashboard({ onOpenGame, onOpenBookings, onOpenResult
             <p>Spin into a new kind of excitement.</p>
             <span className="coming-soon-status"><span /> Coming Soon</span>
           </article>
-          <article className="home-coming-soon-card coming-soon-ruby">
-            <span className="coming-soon-symbol" aria-hidden="true">◆</span>
-            <span className="coming-soon-tag">IN DEVELOPMENT</span>
-            <h3>Ruby Rush</h3>
-            <p>Choose your path. See what you reveal.</p>
-            <span className="coming-soon-status"><span /> Coming Soon</span>
-          </article>
           <article className="home-coming-soon-card coming-soon-poker">
             <span className="coming-soon-symbol" aria-hidden="true">♠</span>
             <span className="coming-soon-tag">ON THE ROADMAP</span>
