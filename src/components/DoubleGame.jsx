@@ -104,9 +104,12 @@ export default function DoubleGame({ historyOnly = false, onOpenBookings, onOpen
   const currentRound = useMemo(() => {
     const timestamp = now.getTime()
     const recentResult = [...rounds].reverse().find((round) => {
-      if (!['drawn', 'settled'].includes(round.status) || !round.drawn_at) return false
-      const drawnAt = new Date(round.drawn_at).getTime()
-      return timestamp >= drawnAt && timestamp - drawnAt < 5 * 60 * 1000
+      if (!['drawn', 'settled'].includes(round.status)) return false
+      // Keep the result visible for five minutes after its scheduled draw time,
+      // not five minutes after the database processed it. This prevents a batch
+      // catch-up of overdue rounds from locking bookings for the next round.
+      const scheduledAt = roundTimestamp(round)
+      return timestamp >= scheduledAt && timestamp - scheduledAt < 5 * 60 * 1000
     })
     if (recentResult) return recentResult
 
