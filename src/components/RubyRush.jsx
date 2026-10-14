@@ -19,6 +19,7 @@ export default function RubyRush() {
   const [history, setHistory] = useState([])
   const [walletLoading, setWalletLoading] = useState(true)
   const [busy, setBusy] = useState(false)
+  const [restoringRound, setRestoringRound] = useState(true)
   const [userId, setUserId] = useState(null)
 
   const refreshWallet = useCallback(async () => {
@@ -45,9 +46,64 @@ export default function RubyRush() {
 
   useEffect(() => {
     refreshWallet()
-    const { data: authListener } = supabase.auth.onAuthStateChange(() => refreshWallet())
+    const { data: authListener } = supabase.auth.onAuthStateChange(() => {
+      // Defer follow-up requests until the auth event callback has completed.
+      Promise.resolve().then(() => refreshWallet())
+    })
     return () => authListener.subscription.unsubscribe()
   }, [refreshWallet])
+
+  // Resume an unfinished round after the player closes the page and returns.
+  // Do not fetch mine_positions here; hidden mine locations must stay server-side.
+  useEffect(() => {
+    let cancelled = false
+    async function restoreActiveRound() {
+      if (!userId) {
+        setRestoringRound(true)
+        return
+      }
+      setRestoringRound(true)
+      try {
+        const { data, error } = await supabase
+          .from('ruby_rush_rounds')
+          .select('id, stake, mine_count, revealed_positions, safe_picks, status')
+          .eq('user_id', userId)
+          .eq('status', 'playing')
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .maybeSingle()
+        if (error) throw error
+        if (cancelled) return
+        if (data) {
+          const restoredMineCount = Number(data.mine_count)
+          const safePicks = Number(data.safe_picks || 0)
+          setMineCount(restoredMineCount)
+          setBet(String(data.stake))
+          setRound({
+            id: data.id,
+            stake: Number(data.stake),
+            mineCount: restoredMineCount,
+            mines: new Set(),
+            revealed: new Set((data.revealed_positions || []).map(Number)),
+            safePicks,
+            multiplier: null,
+            potentialReturn: null,
+            status: 'playing',
+            outcome: null,
+          })
+          setMessage('Resumed your unfinished vault run. Continue where you left off or cash out after a safe pick.')
+        } else {
+          setRound((current) => current?.status === 'playing' ? null : current)
+        }
+      } catch (error) {
+        if (!cancelled) setMessage(error.message || 'Could not check for an unfinished vault run.')
+      } finally {
+        if (!cancelled) setRestoringRound(false)
+      }
+    }
+    restoreActiveRound()
+    return () => { cancelled = true }
+  }, [userId])
 
   const multiplier = useMemo(() => {
     if (round?.multiplier != null) return Number(round.multiplier)
@@ -60,7 +116,7 @@ export default function RubyRush() {
   }, [round, mineCount])
 
   const numericBet = Number(bet)
-  const validBet = Number.isSafeInteger(numericBet) && numericBet >= 1 && credits !== null && numericBet <= credits && !walletLoading && !busy && Boolean(userId)
+  const validBet = Number.isSafeInteger(numericBet) && numericBet >= 1 && credits !== null && numericBet <= credits && !walletLoading && !restoringRound && !busy && Boolean(userId)
   const potentialReturn = round?.status === 'playing'
     ? Number(round.potentialReturn ?? Math.floor(Number(round.stake) * multiplier))
     : 0
@@ -236,7 +292,7 @@ export default function RubyRush() {
             ) : round ? (
               <p className="ruby-active-round-note">Round finished — use Play Again directly under the board.</p>
             ) : (
-              <button type="button" className="ruby-start ruby-bet-main" onClick={startRound} disabled={!validBet}>{busy ? 'PLEASE WAIT…' : walletLoading ? 'LOADING WALLET…' : !userId ? 'SIGN IN TO PLAY' : 'BET'}</button>
+              <button type="button" className="ruby-start ruby-bet-main" onClick={startRound} disabled={!validBet}>{busy ? 'PLEASE WAIT…' : walletLoading || restoringRound ? 'CHECKING ROUND…' : !userId ? 'SIGN IN TO PLAY' : 'BET'}</button>
             )}
             <p className="ruby-practice-hint">Stake and payouts are checked by the server.</p>
           </div>
